@@ -1,12 +1,10 @@
-import com.github.rinde.rinsim.core.model.time.TickListener;
-import com.github.rinde.rinsim.core.model.time.TimeLapse;
-
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class Pheromone implements TickListener{
+public class Pheromone {
     private ArrayList<boolean[]>  tasks;
     private ArrayList<Integer> values;
-
+    private double evaporateRate = 0.1;
 
     public Pheromone(){
         tasks = new ArrayList<>();
@@ -15,7 +13,6 @@ public class Pheromone implements TickListener{
     }
 
     public void createLists(){
-
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 for (int k = 0; k < 2; k++) {
@@ -39,14 +36,13 @@ public class Pheromone implements TickListener{
         else{ return false; }
     }
 
-    @Override
-    public void tick(TimeLapse timeLapse){
-
+    public  void evaporate(){
+        Iterator it = values.iterator();
+        while (it.hasNext()){
+            int v = (Integer)it.next();
+            if(v > 0){
+                v -= evaporateRate;
+            }
+        }
     }
-
-    @Override
-    public void afterTick(TimeLapse timeLapse) {
-    }
-
-
 }

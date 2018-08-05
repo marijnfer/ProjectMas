@@ -99,7 +99,7 @@ public final class Main {
                                 .withDistanceUnit(SI.METER)
                                 .withVehicleLength(VEHICLE_LENGTH))
                 .addModel(viewBuilder)
-                .addModel(CommModel.builder()) // to make communication possible
+                .addModel(CommModel.builder())
                 .addModel(DefaultPDPModel.builder())
                 .build();
 
@@ -177,6 +177,24 @@ public final class Main {
             }
 
         }
+
+        Iterator itAs = factory.getAssemblyPoints().iterator();
+        ArrayList<Crossroad> crossroads = factory.getCrossroads();
+        loop:
+        while (itAs.hasNext()){
+            AssemblyPoint as = (AssemblyPoint)itAs.next() ;
+            for(int i = 0; i<crossroads.size();i++){
+                if(Point.distance(as,crossroads.get(i))==0){
+                    crossroads.get(i).setPheromone(new Pheromone(),as);
+                    break loop;
+                }
+            }
+
+        }
+        for(Crossroad cr: crossroads){
+            sim.register(cr);
+        }
+
 
         sim.addTickListener(new TickListener() {
             @Override

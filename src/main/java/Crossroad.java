@@ -13,6 +13,8 @@ public class Crossroad extends Point implements CommUser, TickListener{
     private Optional<CommDevice> comDevice;
     private ArrayList<CommUser> backwardsReachable;
     private int stationNr;
+    private Pheromone pheromone;
+    private AssemblyPoint assemblyPoint;
 
     public Crossroad(double px, double py){
         super(px,py);
@@ -23,7 +25,15 @@ public class Crossroad extends Point implements CommUser, TickListener{
 
     @Override
     public void tick(TimeLapse timeLapse){
+        if(pheromone != null){
+            pheromone.evaporate();
+        }
 
+    }
+
+    public void setPheromone(Pheromone pheromone, AssemblyPoint assemblyPoint){
+        this.pheromone = pheromone;
+        this.assemblyPoint = assemblyPoint;
     }
 
     @Override

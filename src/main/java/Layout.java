@@ -102,25 +102,25 @@ public class Layout {
         Graphs.addBiPath(g,assembly.get(6,3),assembly.get(7,2));
         Graphs.addBiPath(g,assembly.get(6,4),assembly.get(7,3));
 
-        //Connection Assemblers row 0
+        //Connect Assemblers row 0
         Graphs.addBiPath(g,assembly.get(0,0),assembly.get(10,0));
         Graphs.addBiPath(g,assembly.get(0,1),assembly.get(10,1));
         Graphs.addBiPath(g,assembly.get(0,2),assembly.get(10,2));
         Graphs.addBiPath(g,assembly.get(0,3),assembly.get(10,3));
 
-        //Connection Assemblers row 1
+        //Connect Assemblers row 1
         Graphs.addBiPath(g,assembly.get(1,0),assembly.get(11,0));
         Graphs.addBiPath(g,assembly.get(1,1),assembly.get(11,1));
         Graphs.addBiPath(g,assembly.get(1,2),assembly.get(11,2));
         Graphs.addBiPath(g,assembly.get(1,3),assembly.get(11,3));
 
-        //Connection Assemblers row 3
+        //Connect Assemblers row 3
         Graphs.addBiPath(g,assembly.get(3,0),assembly.get(13,0));
         Graphs.addBiPath(g,assembly.get(3,1),assembly.get(13,1));
         Graphs.addBiPath(g,assembly.get(3,2),assembly.get(13,2));
         Graphs.addBiPath(g,assembly.get(3,3),assembly.get(13,3));
 
-        //Connection Assemblers row 5
+        //Connect Assemblers row 5
         Graphs.addBiPath(g,assembly.get(5,0),assembly.get(15,0));
         Graphs.addBiPath(g,assembly.get(5,1),assembly.get(15,1));
         Graphs.addBiPath(g,assembly.get(5,2),assembly.get(15,2));

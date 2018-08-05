@@ -12,6 +12,7 @@ import com.github.rinde.rinsim.geom.Point;
 import com.google.common.base.Optional;
 import org.apache.commons.math3.random.RandomGenerator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,14 +26,14 @@ public class AGV  extends Vehicle implements CommUser {
     private Optional<Point> destination;
     private Queue<Point> path;
     private Optional<CommDevice> comDevice;
-
     private Optional<Parcel> curr;
-    private boolean b = false;
     private Factory factory;
-    AGVState state;
+    private AGVState state;
+
+    private ArrayList<Crossroad> startExplorerAnts;
 
 
-    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng) {
+    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng) {//ArrayList<Crossroad> startExplorerAnts
         super(VehicleDTO.builder()
                 .capacity(capacity)
                 .startPosition(startPosition)
@@ -45,6 +46,7 @@ public class AGV  extends Vehicle implements CommUser {
         curr = Optional.absent();
         this.factory = factory;
         state = AGVState.IDLE;
+        this.startExplorerAnts = startExplorerAnts;
     }
 
     @Override
@@ -72,7 +74,6 @@ public class AGV  extends Vehicle implements CommUser {
         comDevice = Optional.of(builder.build());
 
     }
-
 
     @Override
     protected void tickImpl(TimeLapse time) {
@@ -167,13 +168,22 @@ public class AGV  extends Vehicle implements CommUser {
 
         }
 
-        private boolean burnIn(){
+    private boolean burnIn(){
             if(burnInTick == 0){
                 return true;
             }
             burnInTick--;
             return false;
+    }
+
+    private void sendExplorationAnts(Iterator crossroads){
+        while (crossroads.hasNext()){
+            factory.sendAnts(crossroads);
         }
+    }
+
+
+
 
 
 }

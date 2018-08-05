@@ -12,14 +12,12 @@ public class Crossroad extends Point implements CommUser, TickListener{
     private static int RANGE = 50;
     private Optional<CommDevice> comDevice;
     private ArrayList<CommUser> backwardsReachable;
-    private int stationNr;
     private Pheromone pheromone;
     private AssemblyPoint assemblyPoint;
 
     public Crossroad(double px, double py){
         super(px,py);
         backwardsReachable = new ArrayList<>();
-        this.stationNr = stationNr;
     }
 
 
@@ -34,6 +32,7 @@ public class Crossroad extends Point implements CommUser, TickListener{
     public void setPheromone(Pheromone pheromone, AssemblyPoint assemblyPoint){
         this.pheromone = pheromone;
         this.assemblyPoint = assemblyPoint;
+
     }
 
     @Override
@@ -63,5 +62,10 @@ public class Crossroad extends Point implements CommUser, TickListener{
 
     public CommUser getCommUser() {
         return this;
+    }
+
+    public boolean pheromonePresent(){
+        if(pheromone == null){return  false;}
+        return true;
     }
 }

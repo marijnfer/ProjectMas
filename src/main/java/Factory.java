@@ -1,6 +1,7 @@
 import com.github.rinde.rinsim.core.Simulator;
 import com.github.rinde.rinsim.core.model.comm.CommUser;
 import com.github.rinde.rinsim.core.model.road.CollisionGraphRoadModelImpl;
+import com.github.rinde.rinsim.geom.Connection;
 import com.github.rinde.rinsim.geom.Point;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Factory {
     private ArrayList<DeliveryPoint> deliverPoints;
     private ArrayList<InboundPoint> inboundPoints;
     private ArrayList<AssemblyPoint> assemblyPoints;
+    private ArrayList<Connect>  connections;
 
     private int deliveryCounter;
 
@@ -28,6 +30,7 @@ public class Factory {
         deliverPoints = new ArrayList<>();
         inboundPoints= new ArrayList<>();
         assemblyPoints = new ArrayList<>();
+        connections = new ArrayList<>();
 
         getPoints();
 
@@ -66,6 +69,7 @@ public class Factory {
 
             if(p instanceof AssemblyPoint){
                 assemblyPoints.add((AssemblyPoint)p);
+
             }
         }
 
@@ -85,18 +89,10 @@ public class Factory {
             while (it2.hasNext()){
                 Crossroad ap = (Crossroad)it2.next();
                 ap.setBackwardsReachable(cds);
+
             }
         }
-
-        int a = 0;
-
     }
-
-    private void setBackwardsReachable(){
-
-    }
-
-
 
     public ArrayList<InboundPoint> getInboundPoints(){
         return inboundPoints;
@@ -189,5 +185,48 @@ public class Factory {
         return temp;
     }
 
+    public ArrayList<Path> sendAnts(Iterator cross){
+        ArrayList<Path> paths = new ArrayList<>();
+        while (cross.hasNext()){
+            Crossroad cr = (Crossroad)cross.next();
 
+
+        }
+        return paths;
+    }
+
+    public void addConnect(Crossroad cr){
+        connections.add(new Connect(cr));
+        System.out.println("con added");
+    }
+
+    public void buildConnects() {
+        for (Connect con : connections) {
+            for(Connection c: getRoadModel().getGraph().getConnections()){
+                if(searchCrossroad(c.to()) != null){
+                    Crossroad cross = searchCrossroad(c.to());
+                    if (Point.distance(c.from(),con.getCrossroad()) == 0 ) {
+                        con.addCoupledCrossroad(searchCrossroad(c.to()));
+                    }
+                }
+            }
+        }
+    }
+
+    private Crossroad searchCrossroad(Point p){
+        for(Crossroad cr : crossroads){
+            if(Point.distance(cr,p)==0){
+                return cr;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Crossroad> getCrossroadsStation(int nr) {
+        ArrayList<Crossroad> temp = new ArrayList<>();
+        for(Crossroad c: crossroads){
+
+        }
+        return null;
+    }
 }

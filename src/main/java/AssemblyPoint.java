@@ -64,6 +64,7 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
                 }
             }
         }
+
     }
 
     private void updateExploreInfo(ExploreMessage em){

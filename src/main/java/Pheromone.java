@@ -25,7 +25,7 @@ public class Pheromone {
                                 ba[2] = toBoolean(k);
                                 ba[3] = toBoolean(l);
                                 ba[4] = toBoolean(m);
-                                ba[6] = toBoolean(n);
+                                ba[5] = toBoolean(n);
                                 tasks.add(ba);
                                 values.add(0);
                             }}}}}}

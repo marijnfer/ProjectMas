@@ -178,28 +178,48 @@ public final class Main {
 
         }
 
+        //couple assemblypoints crossroad
         Iterator itAs = factory.getAssemblyPoints().iterator();
         ArrayList<Crossroad> crossroads = factory.getCrossroads();
-        loop:
-        while (itAs.hasNext()){
-            AssemblyPoint as = (AssemblyPoint)itAs.next() ;
-            for(int i = 0; i<crossroads.size();i++){
-                if(Point.distance(as,crossroads.get(i))==0){
-                    crossroads.get(i).setPheromone(new Pheromone(),as);
-                    break loop;
+        for(Crossroad cr : crossroads){
+            boolean added = false;
+            for (AssemblyPoint as : factory.getAssemblyPoints()){
+                System.out.println(Point.distance(as,cr));
+                if(Point.distance(as,cr) == 2){
+                    cr.setPheromone(new Pheromone(), as);
+                    factory.addConnect(cr);
+                    added = true;
                 }
             }
-
+            if(!added){
+                factory.addConnect(cr);
+            }
         }
+
+        /*
+        while (itAs.hasNext()){
+            AssemblyPoint as = (AssemblyPoint)itAs.next() ;
+            loop:
+
+            for(int i = 0; i<crossroads.size();i++){
+                if(Point.distance(as,crossroads.get(i))==2){
+                    crossroads.get(i).setPheromone(new Pheromone(),as);
+                }
+                factory.addConnect(crossroads.get(i));
+                break loop;
+
+            }        }
+
+            */
         for(Crossroad cr: crossroads){
             sim.register(cr);
         }
 
+        factory.buildConnects();
 
         sim.addTickListener(new TickListener() {
             @Override
             public void tick(TimeLapse time) {
-                //System.out.println(factory.getFullPOints());
 
                 if (time.getStartTime() > 100000000) {
                     sim.stop();

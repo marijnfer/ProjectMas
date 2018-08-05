@@ -69,7 +69,6 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     private void updateExploreInfo(ExploreMessage em){
         ExploreInfo ei = em.getInfo();
         int index = containsPoint(ei.getSender());
-        //System.out.println(index);
         if(index !=-1){
             exploreTree.remove(index);
         }

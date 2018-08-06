@@ -26,4 +26,12 @@ public class Connect {
     public ArrayList<Crossroad> getCoupled() {
         return coupled;
     }
+
+    public ArrayList<Connect> coupledToConnects() {
+        ArrayList<Connect> cons = new ArrayList<>();
+        for(Crossroad c: coupled){
+            cons.add(new Connect(c));
+        }
+        return cons;
+    }
 }

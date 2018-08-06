@@ -19,6 +19,7 @@ public class Factory {
     private ArrayList<InboundPoint> inboundPoints;
     private ArrayList<AssemblyPoint> assemblyPoints;
     private ArrayList<Connect>  connections;
+    private ArrayList<Task> tasks;
 
     private int deliveryCounter;
 
@@ -31,6 +32,7 @@ public class Factory {
         inboundPoints= new ArrayList<>();
         assemblyPoints = new ArrayList<>();
         connections = new ArrayList<>();
+        tasks = new ArrayList<>();
 
         getPoints();
 
@@ -142,7 +144,6 @@ public class Factory {
             if(i.equals(ip)){
                 if(i.getStored()){
                     i.setStored(bool);
-                    System.out.println(bool);
                 }
                 return;
             }
@@ -185,26 +186,88 @@ public class Factory {
         return temp;
     }
 
-    public ArrayList<Path> sendAnts(Iterator cross){
-        ArrayList<Path> paths = new ArrayList<>();
-        while (cross.hasNext()){
-            Crossroad cr = (Crossroad)cross.next();
+    public ArrayList<ArrayList<Crossroad>> sendAnts(ArrayList<Crossroad> cross,Task task){
+        ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
+        ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
 
+        for(Crossroad cr: cross){
+            ArrayList<Crossroad> t = new ArrayList<>();
+            t.add(cr);
+            tempCr.add(t);
+        }
+
+
+
+
+
+        while(tempCr.size() !=0){
+            ArrayList<Crossroad> first = tempCr.get(0);
+            tempCr.remove(0);
+            ArrayList<Crossroad> con = findConnections(first.get(first.size()-1));
+            int ii =0;
+            for(Crossroad cr: con){
+                //check if viable connection
+                if(viableConnection(task,first,cr)){
+                    ArrayList<Crossroad> copy = new ArrayList<>(first);
+                    copy.add(cr);
+                    if(cr.pheromonePresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
+                        paths.add(copy);
+                    }else {
+                        tempCr.add(copy);
+                        System.out.println(cr.getAssemblyPoint());
+                    }
+
+                }
+            }
 
         }
         return paths;
     }
 
+    private boolean viableConnection(Task task,ArrayList<Crossroad> current, Crossroad toAdd){
+        int lastStation = lastStation(current);
+        int nextStation = task.nextStation(lastStation);
+        //if no crossroad is present => keep searching
+        if(!toAdd.pheromonePresent()){
+            return true;
+        } else{
+            int toAddStation = toAdd.getAssemblyPoint().getStationNr();
+            if(toAddStation <= nextStation){return true;}
+        }
+        return false;
+    }
+
+    private int lastStation(ArrayList<Crossroad> crs){
+        int lastIndex = crs.size() -1;
+        int station = -1;
+        while(station == -1){
+            //Pheromone present => crossroad present
+            if(crs.get(lastIndex).pheromonePresent()){
+                return crs.get(lastIndex).getAssemblyPoint().getStationNr();
+            } else{
+                lastIndex--;
+            }
+        }
+        return station;
+    }
+
+    private ArrayList<Crossroad> findConnections(Crossroad cr){
+        for(Connect con: connections){
+            if(Point.distance(con.getCrossroad(),cr)==0){
+                return  con.getCoupled();
+            }
+        }
+        return null;
+    }
+
     public void addConnect(Crossroad cr){
         connections.add(new Connect(cr));
-        System.out.println("con added");
     }
 
     public void buildConnects() {
         for (Connect con : connections) {
             for(Connection c: getRoadModel().getGraph().getConnections()){
                 if(searchCrossroad(c.to()) != null){
-                    Crossroad cross = searchCrossroad(c.to());
                     if (Point.distance(c.from(),con.getCrossroad()) == 0 ) {
                         con.addCoupledCrossroad(searchCrossroad(c.to()));
                     }
@@ -225,8 +288,10 @@ public class Factory {
     public ArrayList<Crossroad> getCrossroadsStation(int nr) {
         ArrayList<Crossroad> temp = new ArrayList<>();
         for(Crossroad c: crossroads){
-
+            if(c.pheromonePresent() && c.getAssemblyPoint().getStationNr() == nr){
+                temp.add(c);
+            }
         }
-        return null;
+        return temp;
     }
 }

@@ -23,7 +23,26 @@ public class Task extends Parcel {
         tasks = t;
     }
 
+
     public void removeFirstTask(){
         tasks.remove(0);
+    }
+
+    public int nextStation(int lastStation){
+        for(int i = lastStation+1; i<tasks.size();i++){
+           if(tasks.get(i)){
+               return i;
+           }
+        }
+        return -1;
+    }
+
+    public int lastStation(){
+        for(int i = tasks.size()-1; i > 0; i--){
+            if(tasks.get(i)){
+                return i;
+            }
+        }
+        return -1;
     }
 }

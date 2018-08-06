@@ -30,10 +30,10 @@ public class AGV  extends Vehicle implements CommUser {
     private Factory factory;
     private AGVState state;
 
-    private ArrayList<Crossroad> startExplorerAnts;
+     ArrayList<Crossroad> startExplorerAnts;
 
 
-    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng) {//ArrayList<Crossroad> startExplorerAnts
+    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts) {
         super(VehicleDTO.builder()
                 .capacity(capacity)
                 .startPosition(startPosition)
@@ -83,9 +83,7 @@ public class AGV  extends Vehicle implements CommUser {
         final PDPModel pm = getPDPModel();
         final RoadModel rm = getRoadModel();
 
-        if(!burnIn()){
-            return;
-        }
+        if(!burnIn()){ return; }
 
         if (!time.hasTimeLeft()) { return; }
 
@@ -98,7 +96,7 @@ public class AGV  extends Vehicle implements CommUser {
                     if(Point.distance(p,new Point(0,14))==0) {
                         curr = Optional.fromNullable(RoadModels.findClosestObject(
                                 p, rm, Parcel.class));
-                        int a = 0;
+                        factory.sendAnts(startExplorerAnts,t);
                     }
                 } catch (Exception e){}
 
@@ -175,15 +173,5 @@ public class AGV  extends Vehicle implements CommUser {
             burnInTick--;
             return false;
     }
-
-    private void sendExplorationAnts(Iterator crossroads){
-        while (crossroads.hasNext()){
-            factory.sendAnts(crossroads);
-        }
-    }
-
-
-
-
 
 }

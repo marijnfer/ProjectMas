@@ -105,9 +105,6 @@ public final class Main {
 
         final Factory factory = new Factory(sim);
 
-        AGV agv = new AGV(new Point(2,0),10,factory,sim.getRandomGenerator());
-        sim.register(agv);
-
         Iterator it = factory.getInboundPoints().iterator();
         ArrayList<DeliveryPoint> deliveryPoints = factory.getDeliverPoints();
 
@@ -184,7 +181,6 @@ public final class Main {
         for(Crossroad cr : crossroads){
             boolean added = false;
             for (AssemblyPoint as : factory.getAssemblyPoints()){
-                System.out.println(Point.distance(as,cr));
                 if(Point.distance(as,cr) == 2){
                     cr.setPheromone(new Pheromone(), as);
                     factory.addConnect(cr);
@@ -216,6 +212,19 @@ public final class Main {
         }
 
         factory.buildConnects();
+
+        AGV agv = new AGV(new Point(2,0),10,factory,sim.getRandomGenerator(),factory.getCrossroadsStation(0));
+        sim.register(agv);
+
+        Task t = new Task(
+                Parcel
+                        .builder(new Point(0,0),factory.nextDeliveryPoint())
+                        .serviceDuration(SERVICE_DURATION)
+                        .neededCapacity(1 + sim.getRandomGenerator().nextInt(5))
+                        .buildDTO());
+        t.setTasks(factory.taskGenerator());
+        ArrayList<ArrayList<Crossroad>> f = factory.sendAnts(agv.startExplorerAnts,t);
+
 
         sim.addTickListener(new TickListener() {
             @Override

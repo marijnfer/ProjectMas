@@ -21,14 +21,14 @@ public class Layout {
         Graphs.addPath(g,assembly.get(0,3),assembly.get(1,3));
         Graphs.addPath(g,assembly.get(0,2),assembly.get(1,3));
 
-        Graphs.addPath(g,assembly.get(1,0),assembly.get(2,0));
-        Graphs.addPath(g,assembly.get(2,0),assembly.get(3,0));
-        Graphs.addPath(g,assembly.get(2,0),assembly.get(3,1));
+        Graphs.addPath(g,assembly.get(1,0),assembly.get(3,0));
+
+        Graphs.addPath(g,assembly.get(1,0),assembly.get(3,1));
+        Graphs.addPath(g,assembly.get(3,0),assembly.get(3,1));
 
         Graphs.addPath(g,assembly.get(1,1),assembly.get(3,1));
         Graphs.addPath(g,assembly.get(1,2),assembly.get(1,1));
         Graphs.addPath(g,assembly.get(1,1), assembly.get(2,2));
-
 
         Graphs.addPath(g,assembly.get(1,2),assembly.get(2,2));
         Graphs.addPath(g,assembly.get(2,2),assembly.get(3,2));
@@ -245,6 +245,7 @@ public class Layout {
         p21.addBackwardsReachable(p11);
 
         p22.addBackwardsReachable(p11);
+        p22.addBackwardsReachable(p21);
         p22.addBackwardsReachable(p12);
 
         p23.addBackwardsReachable(p12);

@@ -68,4 +68,8 @@ public class Crossroad extends Point implements CommUser, TickListener{
         if(pheromone == null){return  false;}
         return true;
     }
+
+    public AssemblyPoint getAssemblyPoint() {
+        return assemblyPoint;
+    }
 }

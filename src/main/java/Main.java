@@ -182,7 +182,7 @@ public final class Main {
             boolean added = false;
             for (AssemblyPoint as : factory.getAssemblyPoints()){
                 if(Point.distance(as,cr) == 2){
-                    cr.setPheromone(new Pheromone(), as);
+                    cr.setAssemblyPoint(as);
                     factory.addConnect(cr);
                     added = true;
                 }
@@ -199,7 +199,7 @@ public final class Main {
 
             for(int i = 0; i<crossroads.size();i++){
                 if(Point.distance(as,crossroads.get(i))==2){
-                    crossroads.get(i).setPheromone(new Pheromone(),as);
+                    crossroads.get(i).setAssemblyPoint(new Pheromone(),as);
                 }
                 factory.addConnect(crossroads.get(i));
                 break loop;
@@ -223,7 +223,6 @@ public final class Main {
                         .neededCapacity(1 + sim.getRandomGenerator().nextInt(5))
                         .buildDTO());
         t.setTasks(factory.taskGenerator());
-        ArrayList<ArrayList<Crossroad>> f = factory.sendAnts(agv.startExplorerAnts,t);
 
 
         sim.addTickListener(new TickListener() {
@@ -244,12 +243,13 @@ public final class Main {
                             int i = sim.getRandomGenerator().nextInt(temp.size());
                             InboundPoint emptyIP =  temp.get(i);
                             ip.setStored(true);
-                            sim.register(new Task(
-                                    Parcel
+                            Task t = new Task(Parcel
                                             .builder(emptyIP,factory.nextDeliveryPoint())
                                             .serviceDuration(SERVICE_DURATION)
                                             .neededCapacity(1 + sim.getRandomGenerator().nextInt(5))
-                                            .buildDTO()));
+                                            .buildDTO());
+                            t.setTasks(factory.taskGenerator());
+                            sim.register(t);
 
                             return;
                         }

@@ -40,14 +40,7 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     public void tick(TimeLapse timeLapse){
         handleMessages();
         sendInfo();
-        /*handleMessages();
-        sendInfo();
-        if(stationNr == 3){
-            int i = 0;
-        }
-        if(exploreTree.size() != 0){
-            int i = 0;
-        }*/
+
 
 
     }

@@ -113,29 +113,12 @@ public class Factory {
     }
 
     public Point nextDeliveryPoint(){
-        /*
         if(deliveryCounter == deliverPoints.size()-1){
             deliveryCounter = 0;
             return deliverPoints.get(0);
         } else {
             deliveryCounter++;
             return deliverPoints.get(deliveryCounter);
-        }*/
-        /*
-        if(deliveryCounter == crossroads.size()-1){
-            deliveryCounter = 0;
-            return crossroads.get(0);
-        } else {
-            deliveryCounter++;
-            return crossroads.get(deliveryCounter);
-        }
-        */
-        if(deliveryCounter == assemblyPoints.size()-1){
-            deliveryCounter = 0;
-            return assemblyPoints.get(0);
-        } else {
-            deliveryCounter++;
-            return assemblyPoints.get(deliveryCounter);
         }
     }
 
@@ -183,10 +166,12 @@ public class Factory {
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
             }
         }
+        System.out.println(temp);
+
         return temp;
     }
 
-    public ArrayList<ArrayList<Crossroad>> sendAnts(ArrayList<Crossroad> cross,Task task){
+    public ArrayList<ArrayList<Crossroad>> findPossiblePaths(ArrayList<Crossroad> cross,Task task){
         ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
         ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
 
@@ -195,10 +180,6 @@ public class Factory {
             t.add(cr);
             tempCr.add(t);
         }
-
-
-
-
 
         while(tempCr.size() !=0){
             ArrayList<Crossroad> first = tempCr.get(0);
@@ -210,11 +191,10 @@ public class Factory {
                 if(viableConnection(task,first,cr)){
                     ArrayList<Crossroad> copy = new ArrayList<>(first);
                     copy.add(cr);
-                    if(cr.pheromonePresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
+                    if(cr.assemblyPointPresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
                         paths.add(copy);
                     }else {
                         tempCr.add(copy);
-                        System.out.println(cr.getAssemblyPoint());
                     }
 
                 }
@@ -224,11 +204,24 @@ public class Factory {
         return paths;
     }
 
+    public void sendAnts(ArrayList<Crossroad> cross,Task task){
+        ArrayList<ArrayList<Crossroad>> allPaths = findPossiblePaths(cross,task);
+        ArrayList<Double> totalPheromone = new ArrayList<>();
+
+        for(ArrayList<Crossroad> path: allPaths){
+
+            for(Crossroad cr: path){
+
+            }
+        }
+    }
+
+
     private boolean viableConnection(Task task,ArrayList<Crossroad> current, Crossroad toAdd){
         int lastStation = lastStation(current);
         int nextStation = task.nextStation(lastStation);
-        //if no crossroad is present => keep searching
-        if(!toAdd.pheromonePresent()){
+        //if no assemblyPoint is present => keep searching
+        if(!toAdd.assemblyPointPresent()){
             return true;
         } else{
             int toAddStation = toAdd.getAssemblyPoint().getStationNr();
@@ -241,8 +234,8 @@ public class Factory {
         int lastIndex = crs.size() -1;
         int station = -1;
         while(station == -1){
-            //Pheromone present => crossroad present
-            if(crs.get(lastIndex).pheromonePresent()){
+        //AssemblyPoint present => crossroad present
+            if(crs.get(lastIndex).assemblyPointPresent()){
                 return crs.get(lastIndex).getAssemblyPoint().getStationNr();
             } else{
                 lastIndex--;
@@ -288,7 +281,7 @@ public class Factory {
     public ArrayList<Crossroad> getCrossroadsStation(int nr) {
         ArrayList<Crossroad> temp = new ArrayList<>();
         for(Crossroad c: crossroads){
-            if(c.pheromonePresent() && c.getAssemblyPoint().getStationNr() == nr){
+            if(c.assemblyPointPresent() && c.getAssemblyPoint().getStationNr() == nr){
                 temp.add(c);
             }
         }

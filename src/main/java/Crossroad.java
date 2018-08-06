@@ -29,11 +29,11 @@ public class Crossroad extends Point implements CommUser, TickListener{
 
     }
 
-    public void setPheromone(Pheromone pheromone, AssemblyPoint assemblyPoint){
-        this.pheromone = pheromone;
+    public void setAssemblyPoint(AssemblyPoint assemblyPoint){
         this.assemblyPoint = assemblyPoint;
-
     }
+
+
 
     @Override
     public void afterTick(TimeLapse timeLapse) {
@@ -64,8 +64,8 @@ public class Crossroad extends Point implements CommUser, TickListener{
         return this;
     }
 
-    public boolean pheromonePresent(){
-        if(pheromone == null){return  false;}
+    public boolean assemblyPointPresent(){
+        if(assemblyPoint == null){return  false;}
         return true;
     }
 

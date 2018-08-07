@@ -9,18 +9,15 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     private static int RANGE = 50;
-    private int initMessageTicks =3;
     private Optional<CommDevice> comDevice;
-    private ArrayList<AssemblyPoint> backwardsReachable;
+    private ArrayList<Point> backwardsReachable;
     private int stationNr;
     private ArrayList<AssemblyPoint> reachable;
 
-    private boolean initMessageSend;
     private int resources;
     private ArrayList<ExploreInfo> exploreTree;
 
@@ -98,12 +95,30 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
      * Send explore information to all backwards reachable nodes
      */
     private void sendInfo(){
+        /*
         Iterator it = backwardsReachable.iterator();
         while (it.hasNext()){
             AssemblyPoint ap = (AssemblyPoint)it.next();
             ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
             comDevice.get().send(em,ap);
         }
+        */
+
+        for(Point p:  backwardsReachable){
+            if(p instanceof AssemblyPoint){
+                AssemblyPoint ap = (AssemblyPoint)p;
+                ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
+                comDevice.get().send(em,ap);
+            }
+            if(p instanceof Crossroad){
+                Crossroad cr = (Crossroad)p;
+                if(cr.getFunction() == 10){
+                    ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
+                    comDevice.get().send(em,cr);
+                }
+            }
+        }
+
     }
 
     @Override
@@ -128,7 +143,7 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         return stationNr;
     }
 
-    public void addBackwardsReachable(AssemblyPoint as){
+    public void addBackwardsReachable(Point as){
         backwardsReachable.add(as);
         //as.addReachable(this);
 

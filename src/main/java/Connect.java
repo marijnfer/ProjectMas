@@ -6,7 +6,6 @@ public class Connect {
     private Crossroad crossroad;
     private ArrayList<Crossroad> coupled;
     private ArrayList<Double> distances;
-
     private ArrayList<Integer> travelTime;
 
     public Connect(Crossroad crossroad){
@@ -36,5 +35,9 @@ public class Connect {
             cons.add(new Connect(c));
         }
         return cons;
+    }
+
+    public void addTravelTime(int t){
+        travelTime.add(t);
     }
 }

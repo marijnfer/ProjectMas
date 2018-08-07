@@ -189,11 +189,13 @@ public final class Main {
             if(!added){
                 factory.addConnect(cr);
             }
+            sim.register(cr);
         }
 
 
 
         factory.buildConnects();
+        factory.buildAllconnections();
 
         Iterator itCr = factory.getCrossroads().iterator();
         while (itCr.hasNext()){

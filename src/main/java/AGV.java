@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static java.lang.StrictMath.abs;
+
 public class AGV  extends Vehicle implements CommUser {
 
     RandomGenerator rng;
@@ -90,17 +92,23 @@ public class AGV  extends Vehicle implements CommUser {
     }
 
 
-    private void print(){
+    private synchronized void print(){
+        /*
         System.out.print(counter);
         System.out.print("  ");
         System.out.print(counter-lastTick);
         System.out.print("  ");
-        System.out.print(latestPos);
+        System.out.print(currentCrossroad);
         System.out.print("  ");
         System.out.println(getRoadModel().getPosition(this  ));
+        factory.addData(latestPos,getRoadModel().getPosition(this),counter-lastTick);
         lastTick = counter;
         latestPos = getRoadModel().getPosition(this);
 
+
+        System.out.print(counter);
+        System.out.print("  ");
+        System.out.println(state); */
     }
 
     @Override
@@ -110,7 +118,6 @@ public class AGV  extends Vehicle implements CommUser {
         counter++;
 
 
-        latestPos = rm.getPosition(this);
         /*
         for(Crossroad cr: startExplorerAnts){
             if(rm.getPosition(this).equals(cr)){
@@ -132,7 +139,7 @@ public class AGV  extends Vehicle implements CommUser {
                 try {
                      Task t  = (Task)it.next();
                      Point p = t.getPickupLocation();
-                    if(Point.distance(p,new Point(0,14))==0) {
+                    if(Point.distance(p,new Point(0,18))==0) {
                         curr = Optional.fromNullable(RoadModels.findClosestObject(
                                 p, rm, Parcel.class));
                         pickUpLocation = curr.get().getPickupLocation();
@@ -162,8 +169,8 @@ public class AGV  extends Vehicle implements CommUser {
             pm.pickup(this,curr.get(),time);
             InboundPoint ip = (InboundPoint)curr.get().getPickupLocation();
             ip.setStored(false);
-
             currentDestination =  nextDestination();
+
             path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
             state = AGVState.DRIVINGTOASSEMBLYcross;
             print();
@@ -198,6 +205,7 @@ public class AGV  extends Vehicle implements CommUser {
             currentDestination = currentCrossroad;
             path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
             state = AGVState.DRIVINGAWAYASSEMBLY;
+            print();
             return;
         }
 
@@ -212,6 +220,7 @@ public class AGV  extends Vehicle implements CommUser {
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLYcross;
             } else{
+
                 currentDestination = deliveryLocation;
                 path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
                 state = AGVState.DELEVERING;
@@ -242,20 +251,6 @@ public class AGV  extends Vehicle implements CommUser {
             print();
             return;
         }
-
-        /*
-        if(state == AGVState.ASSEMBLING && rm.getPosition(this).equals(currentDestination)) {
-
-
-
-
-            if (state == AGVState.DELEVERING && rm.getPosition(this).equals(deliveryLocation)) {
-                pm.deliver(this, curr.get(), time);
-                curr = Optional.absent();
-                state = AGVState.IDLE;
-                return;
-            }
-        }       */
     }
 
     private boolean needToVisitAssembly(Point p){
@@ -282,22 +277,25 @@ public class AGV  extends Vehicle implements CommUser {
 
     private double calculateTicks(ArrayList<Crossroad> crs, Task t){
         double d = 0;
-        if(needToVisitAssembly(crs.get(0))){
-            d += 16;
+        for(Crossroad cr: crs){
+            if(needToVisitAssembly(cr)){
+                d += 32;
+            }
         }
+
         //16 to go in and out of assembly
         for(int i = 1; i < crs.size();i++){
             Point p0 = crs.get(i-1);
             Point p1 = crs.get(i);
-            if(p1.x == p0.x ^ p1.y == p0.y){ //rechte verbinding
-                d+=88;
-            } else if(p1.x != p0.x ^ p1.y != p0.y){//schuine verbinding
-                d+= 118;
-            }
+            double xDiff = abs(p0.x - p1.x);
+            double yDiff = abs(p0.y - p1.y);
+
+            if(yDiff == 0 && xDiff == 5){d+=37;}
+            else if((xDiff == 0 && yDiff ==10) ||(xDiff == 10 && yDiff ==0) ){d+=73;}
+            else if((xDiff == 10 && yDiff ==10)){d += 103;}
+            else {System.out.println("length not found");}
 
         }
-
-
 
         return d;
 

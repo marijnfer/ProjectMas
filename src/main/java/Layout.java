@@ -9,11 +9,24 @@ public class Layout {
 
     static ListenableGraph<LengthData> getGraph() {
         final Graph<LengthData> g = new TableGraph<>();
-        final Table<Integer, Integer, Point> assembly = createAssemblyLine(new Point(10,2));
+
+        Crossroad cr1 = new Crossroad(2,14);
+        Crossroad cr2 = new Crossroad(2,24);
+        cr1.setFunction(10);
+        cr2.setFunction(10);
+
+        //Inbound
+        final Table<Integer, Integer, Point> inbound = createInbound(new Point(0,0),cr1,cr2);
+        for(int i = 10; i<21; i++){
+            Graphs.addBiPath(g,inbound.column(i).values());
+        }
+        for(int i = 10;i<20;i++){
+            Graphs.addBiPath(g,inbound.get(1,i),inbound.get(1,1+i));
+        }
+
+        final Table<Integer, Integer, Point> assembly = createAssemblyLine(new Point(10,2),cr1,cr2);
 
         //Graphs.addBiPath(g,assembly.row(0).values());
-
-
         Graphs.addPath(g,assembly.get(0,0),assembly.get(1,0));
         Graphs.addPath(g,assembly.get(0,1),assembly.get(1,0));
         Graphs.addPath(g,assembly.get(0,1),assembly.get(1,1));
@@ -37,7 +50,6 @@ public class Layout {
         Graphs.addPath(g,assembly.get(1,3),assembly.get(3,3));
         Graphs.addPath(g,assembly.get(3,3),assembly.get(3,2));
 
-
         Graphs.addPath(g,assembly.get(3,0),assembly.get(5,0));
         Graphs.addPath(g,assembly.get(3,1),assembly.get(5,0));
         Graphs.addPath(g,assembly.get(3,1),assembly.get(4,1));
@@ -49,26 +61,8 @@ public class Layout {
         Graphs.addPath(g,assembly.get(4,2),assembly.get(5,2));
         Graphs.addPath(g,assembly.get(3,2),assembly.get(5,3));
 
-
         Graphs.addPath(g,assembly.get(5,2),assembly.get(5,3));
 
-       // Graphs.addPath(g,assembly.get(6,1),assembly.get(6,0));
-       // Graphs.addPath(g,assembly.get(6,2),assembly.get(6,3));
-
-       // Graphs.addBiPath(g,assembly.get(6,1),assembly.get(7,1));
-      //  Graphs.addBiPath(g,assembly.get(6,2),assembly.get(7,2));
-
-
-
-
-        //Inbound
-        final Table<Integer, Integer, Point> inbound = createInbound(new Point(0,0));
-        for(int i = 10; i<21; i++){
-            Graphs.addBiPath(g,inbound.column(i).values());
-        }
-        for(int i = 10;i<20;i++){
-            Graphs.addBiPath(g,inbound.get(1,i),inbound.get(1,1+i));
-        }
         //inbound and assembly
         Graphs.addPath(g,inbound.get(1,10),assembly.get(0,1));
         Graphs.addPath(g,inbound.get(1,20),assembly.get(0,2));
@@ -87,14 +81,6 @@ public class Layout {
         Graphs.addPath(g,inbound.get(1,0),inbound.get(1,10));
         Graphs.addPath(g,inbound.get(1,42),inbound.get(1,20));
         Graphs.addBiPath(g,assembly.row(6).values());
-        /*
-        //DB up
-        Graphs.addPath(g,assembly.get(6,2),assembly.get(6,1));
-        Graphs.addPath(g,assembly.get(6,1),assembly.get(6,0));
-        //DB bottom
-        Graphs.addPath(g,assembly.get(6,3),assembly.get(6,4));
-        Graphs.addPath(g,assembly.get(6,4),assembly.get(6,5));
-        */
 
         //Driveback + delivery points
         Graphs.addBiPath(g,assembly.get(6,1),assembly.get(7,0));
@@ -130,7 +116,7 @@ public class Layout {
         return new ListenableGraph<>(g);
     }
 
-    private static ImmutableTable<Integer, Integer, Point> createAssemblyLine(Point p) {
+    private static ImmutableTable<Integer, Integer, Point> createAssemblyLine(Point p, Crossroad cr1, Crossroad cr2) {
         final ImmutableTable.Builder<Integer, Integer, Point> builder =
                 ImmutableTable.builder();
         Point offset = new Point(p.x,p.y+2);
@@ -266,12 +252,18 @@ public class Layout {
         p14.addBackwardsReachable(p03);
         p14.addBackwardsReachable(p04);
 
+        p01.addBackwardsReachable(cr1);
+        p02.addBackwardsReachable(cr1);
+        p03.addBackwardsReachable(cr2);
+        p04.addBackwardsReachable(cr2);
+
+
 
         return builder.build();
     }
 
 
-    private static ImmutableTable<Integer, Integer, Point> createInbound(Point offset) {
+    private static ImmutableTable<Integer, Integer, Point> createInbound(Point offset, Crossroad cr1, Crossroad cr2) {
         final ImmutableTable.Builder<Integer, Integer, Point> builder =
                 ImmutableTable.builder();
         builder.put(1,0,new Point(offset.x+2,offset.y));
@@ -279,7 +271,13 @@ public class Layout {
 
         for(int i = 10; i<21; i++){
             builder.put(0,i,new InboundPoint(offset.x,offset.y +i +4));
-            builder.put(1,i,new Point(offset.x+2, offset.y + i+4));
+            if(i==10){
+                builder.put(1,i,cr1);
+            } else if (i==20) {
+                builder.put(1,i,cr2);
+            }else{
+                builder.put(1,i,new Point(offset.x+2, offset.y + i+4));
+            }
         }
 
         return builder.build();

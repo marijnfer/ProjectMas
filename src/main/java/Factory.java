@@ -21,6 +21,10 @@ public class Factory {
     private ArrayList<Connect>  connections;
     private ArrayList<Task> tasks;
 
+
+    private ArrayList<Connect> allConnections;
+
+
     private int deliveryCounter;
 
     public Factory(Simulator simulator){
@@ -33,6 +37,7 @@ public class Factory {
         assemblyPoints = new ArrayList<>();
         connections = new ArrayList<>();
         tasks = new ArrayList<>();
+        allConnections = new ArrayList<>();
 
         getPoints();
 
@@ -167,7 +172,14 @@ public class Factory {
             }
         }
 
-        return temp;
+        ArrayList<Boolean> temp2 = new ArrayList<>();
+        temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);
+        return temp2;
+
+
+
+
+        //return temp;
     }
 
     public ArrayList<ArrayList<Crossroad>> findPossiblePaths(ArrayList<Crossroad> cross,Task task){
@@ -289,5 +301,33 @@ public class Factory {
 
     public ArrayList<Connect> getConnections() {
         return connections;
+    }
+
+    public void buildAllconnections(){
+        for(Connect c: connections){
+            for(Crossroad cr: c.getCoupled()){
+                Connect con = new Connect(c.getCrossroad());
+                con.addCoupledCrossroad(cr);
+                allConnections.add(con);
+            }
+        }
+    }
+
+    public void addData(Point c1, Point c2,int ticks){
+        try{
+            Connect c = searchAllconnection(c1,c2);
+            c.addTravelTime(ticks);
+        } catch (Exception e){}
+    }
+
+    public Connect searchAllconnection(Point c1, Point c2){
+        for(Connect con: allConnections){
+            if(Point.distance(c1,con.getCrossroad())==0){
+                if(Point.distance(c2,con.getCoupled().get(0))==0){
+                    return con;
+                }
+            }
+        }
+        return null;
     }
 }

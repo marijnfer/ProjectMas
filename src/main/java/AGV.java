@@ -36,15 +36,19 @@ public class AGV  extends Vehicle implements CommUser {
     private Point deliveryLocation;
     private Task currentTask;
     private AssemblyPoint currentAssembly;
+    //Purpose: When visiting assembly driving back to coupled cross road
+    private Crossroad currentCrossroad;
 
-
+    private Point latestPos = new Point(0,0);
+    int counter = 0;
+    int lastTick = 0;
 
 
     public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts) {
         super(VehicleDTO.builder()
                 .capacity(capacity)
                 .startPosition(startPosition)
-                .speed(1)
+                .speed(0.5)
                 .build());
         curr = Optional.absent();
         this.rng = rng;
@@ -62,6 +66,7 @@ public class AGV  extends Vehicle implements CommUser {
         Crossroad p = destinations.get(0);
         if(p.assemblyPointPresent()){
             currentAssembly = p.getAssemblyPoint();
+            currentCrossroad = p;
         }
         destinations.remove(0);
         return p;
@@ -84,17 +89,45 @@ public class AGV  extends Vehicle implements CommUser {
 
     }
 
+
+    private void print(){
+        System.out.print(counter);
+        System.out.print("  ");
+        System.out.print(counter-lastTick);
+        System.out.print("  ");
+        System.out.print(latestPos);
+        System.out.print("  ");
+        System.out.println(getRoadModel().getPosition(this  ));
+        lastTick = counter;
+        latestPos = getRoadModel().getPosition(this);
+
+    }
+
     @Override
     protected void tickImpl(TimeLapse time) {
         final PDPModel pm = getPDPModel();
         final RoadModel rm = getRoadModel();
+        counter++;
+
+
+        latestPos = rm.getPosition(this);
+        /*
+        for(Crossroad cr: startExplorerAnts){
+            if(rm.getPosition(this).equals(cr)){
+                double total = counter + calculateTicks(destinations,currentTask);
+                System.out.print("Totalllllllllllllllllll  ");
+
+                System.out.println(total);
+            }
+
+        }   */
 
         if(!burnIn()){ return; }
 
         if (!time.hasTimeLeft()) { return; }
 
         if(state == AGVState.IDLE){
-            Iterator it =RoadModels.findClosestObjects(rm.getPosition(this),getRoadModel()).iterator();
+            Iterator it = RoadModels.findClosestObjects(rm.getPosition(this),rm).iterator();
             while(it.hasNext()){
                 try {
                      Task t  = (Task)it.next();
@@ -104,13 +137,14 @@ public class AGV  extends Vehicle implements CommUser {
                                 p, rm, Parcel.class));
                         pickUpLocation = curr.get().getPickupLocation();
                         deliveryLocation = curr.get().getDeliveryLocation();
-                        destinations = factory.findPossiblePaths(startExplorerAnts,t).get(0);
+                        destinations = factory.findPossiblePaths(startExplorerAnts,t).get(rng.nextInt(factory.findPossiblePaths(startExplorerAnts,t).size()));
                         currentTask = t;
+
 
                     }
                 } catch (Exception ex){}
            }
-           path = new LinkedList<>(getRoadModel().getShortestPathTo(this, pickUpLocation));
+           path = new LinkedList<>(rm.getShortestPathTo(this, pickUpLocation));
 
             rm.followPath(this,path,time);
             state = AGVState.INBOUND;
@@ -130,8 +164,9 @@ public class AGV  extends Vehicle implements CommUser {
             ip.setStored(false);
 
             currentDestination =  nextDestination();
-            path = new LinkedList<>(getRoadModel().getShortestPathTo(this, currentDestination));
+            path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
             state = AGVState.DRIVINGTOASSEMBLYcross;
+            print();
             return;
         }
 
@@ -142,14 +177,15 @@ public class AGV  extends Vehicle implements CommUser {
 
         if(state == AGVState.DRIVINGTOASSEMBLYcross && rm.getPosition(this).equals(currentDestination)){
             if(needToVisitAssembly(currentDestination)){
-                state = AGVState.DRIVINGTOASSEMBLY;
                 currentDestination = currentAssembly;
-                path = new LinkedList<>(getRoadModel().getShortestPathTo(this,currentDestination));
+                path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
+                state = AGVState.DRIVINGTOASSEMBLY;
             } else {
                 currentDestination = nextDestination();
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLYcross;
             }
+            print();
             return;
         }
 
@@ -159,24 +195,43 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if(state == AGVState.DRIVINGTOASSEMBLY && rm.getPosition(this).equals(currentAssembly)) {
+            currentDestination = currentCrossroad;
+            path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
+            state = AGVState.DRIVINGAWAYASSEMBLY;
+            return;
+        }
+
+        if(state == AGVState.DRIVINGAWAYASSEMBLY && !rm.getPosition(this).equals(currentCrossroad)) {
+            rm.followPath(this,path,time);
+            return;
+        }
+
+        if(state == AGVState.DRIVINGAWAYASSEMBLY && rm.getPosition(this).equals(currentCrossroad)) {
             if(destinations.size() != 0){
                 currentDestination = nextDestination();
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLYcross;
             } else{
                 currentDestination = deliveryLocation;
-                path = new LinkedList<>(getRoadModel().getShortestPathTo(this, currentDestination));
+                path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
                 state = AGVState.DELEVERING;
             }
+            print();
             return;
         }
+
+
+
+
+        /*
+
+         */
         if (state == AGVState.DELEVERING && !rm.getPosition(this).equals(deliveryLocation)) {
             if (time.hasTimeLeft()) {
                 currentDestination = deliveryLocation;
-                path = new LinkedList<>(getRoadModel().getShortestPathTo(this, currentDestination));
+                path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
                 rm.followPath(this, path, time);
             }
-
             return;
         }
 
@@ -184,6 +239,7 @@ public class AGV  extends Vehicle implements CommUser {
             pm.deliver(this, curr.get(), time);
             curr = Optional.absent();
             state = AGVState.IDLE;
+            print();
             return;
         }
 
@@ -222,6 +278,31 @@ public class AGV  extends Vehicle implements CommUser {
                 }
                 burnInTick--;
                 return false;
+    }
+
+    private double calculateTicks(ArrayList<Crossroad> crs, Task t){
+        double d = 0;
+        if(needToVisitAssembly(crs.get(0))){
+            d += 16;
         }
+        //16 to go in and out of assembly
+        for(int i = 1; i < crs.size();i++){
+            Point p0 = crs.get(i-1);
+            Point p1 = crs.get(i);
+            if(p1.x == p0.x ^ p1.y == p0.y){ //rechte verbinding
+                d+=88;
+            } else if(p1.x != p0.x ^ p1.y != p0.y){//schuine verbinding
+                d+= 118;
+            }
+
+        }
+
+
+
+        return d;
+
+    }
+
+
 
 }

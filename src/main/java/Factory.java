@@ -166,7 +166,6 @@ public class Factory {
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
             }
         }
-        System.out.println(temp);
 
         return temp;
     }
@@ -244,7 +243,7 @@ public class Factory {
         return station;
     }
 
-    private ArrayList<Crossroad> findConnections(Crossroad cr){
+    public ArrayList<Crossroad> findConnections(Crossroad cr){
         for(Connect con: connections){
             if(Point.distance(con.getCrossroad(),cr)==0){
                 return  con.getCoupled();
@@ -286,5 +285,9 @@ public class Factory {
             }
         }
         return temp;
+    }
+
+    public ArrayList<Connect> getConnections() {
+        return connections;
     }
 }

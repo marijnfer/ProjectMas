@@ -33,6 +33,9 @@ public class Crossroad extends Point implements CommUser, TickListener{
         this.assemblyPoint = assemblyPoint;
     }
 
+    public void setPheromone(Pheromone pheromone){
+        this.pheromone = pheromone;
+    }
 
 
     @Override

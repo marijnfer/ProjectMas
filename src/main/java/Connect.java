@@ -7,10 +7,13 @@ public class Connect {
     private ArrayList<Crossroad> coupled;
     private ArrayList<Double> distances;
 
+    private ArrayList<Integer> travelTime;
+
     public Connect(Crossroad crossroad){
         this.crossroad = crossroad;
         coupled = new ArrayList<>();
         distances = new ArrayList<>();
+        travelTime = new ArrayList<>();
 
     }
 

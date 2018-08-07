@@ -175,14 +175,13 @@ public final class Main {
 
         }
 
-        //couple assemblypoints crossroad
-        Iterator itAs = factory.getAssemblyPoints().iterator();
         ArrayList<Crossroad> crossroads = factory.getCrossroads();
         for(Crossroad cr : crossroads){
             boolean added = false;
             for (AssemblyPoint as : factory.getAssemblyPoints()){
                 if(Point.distance(as,cr) == 2){
                     cr.setAssemblyPoint(as);
+                    cr.setPheromone(new Pheromone(as.getStationNr()));
                     factory.addConnect(cr);
                     added = true;
                 }
@@ -192,38 +191,33 @@ public final class Main {
             }
         }
 
-        /*
-        while (itAs.hasNext()){
-            AssemblyPoint as = (AssemblyPoint)itAs.next() ;
-            loop:
 
-            for(int i = 0; i<crossroads.size();i++){
-                if(Point.distance(as,crossroads.get(i))==2){
-                    crossroads.get(i).setAssemblyPoint(new Pheromone(),as);
-                }
-                factory.addConnect(crossroads.get(i));
-                break loop;
-
-            }        }
-
-            */
-        for(Crossroad cr: crossroads){
-            sim.register(cr);
-        }
 
         factory.buildConnects();
+
+        Iterator itCr = factory.getCrossroads().iterator();
+        while (itCr.hasNext()){
+            Crossroad cr = (Crossroad)itCr.next();
+            if(!cr.assemblyPointPresent()){
+                int size = factory.findConnections(cr).size();
+                if(size !=0){
+                    cr.setPheromone(new Pheromone(5));
+                }
+            }
+        }
+
+
 
         AGV agv = new AGV(new Point(2,0),10,factory,sim.getRandomGenerator(),factory.getCrossroadsStation(0));
         sim.register(agv);
 
-        Task t = new Task(
-                Parcel
-                        .builder(new Point(0,0),factory.nextDeliveryPoint())
-                        .serviceDuration(SERVICE_DURATION)
-                        .neededCapacity(1 + sim.getRandomGenerator().nextInt(5))
-                        .buildDTO());
-        t.setTasks(factory.taskGenerator());
-
+        /*
+        for(Connect c: factory.getConnections()){
+            System.out.print(c.getCrossroad());
+            System.out.print("  ");
+            System.out.println(c.getCoupled());
+        }
+        */
 
         sim.addTickListener(new TickListener() {
             @Override
@@ -231,7 +225,7 @@ public final class Main {
 
                 if (time.getStartTime() > 100000000) {
                     sim.stop();
-                } else if (sim.getRandomGenerator().nextDouble() < 0.5) {
+                } else if (sim.getRandomGenerator().nextDouble() < 1) {
                     Iterator it = factory.getInboundPoints().iterator();
                     ArrayList<InboundPoint> temp = new ArrayList<>();
                     while(it.hasNext()){

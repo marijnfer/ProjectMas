@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     private static int RANGE = 50;
+    private static int RESERVATIONRESET = 10;
+
     private Optional<CommDevice> comDevice;
     private ArrayList<Point> backwardsReachable;
     private int stationNr;
@@ -20,6 +22,9 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     private int resources;
     private ArrayList<ExploreInfo> exploreTree;
+    private ArrayList<Reservation> reservations;
+    private int tickCounter = 0;
+
 
 
 
@@ -30,16 +35,16 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         exploreTree = new ArrayList<>();
         this.stationNr = stationNr;
         resources = 10;
+        reservations = new ArrayList<>();
     }
 
 
     @Override
     public void tick(TimeLapse timeLapse){
+        tickCounter++;
         handleMessages();
         sendInfo();
-
-
-
+        updateReservations();
     }
 
     private void handleMessages(){
@@ -137,7 +142,26 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         return Optional.of((Point)this);
     }
 
+    public void makeReservation(Reservation res){
+        if(!reservations.contains(res)){
+            reservations.add(res);
+        }
+    }
 
+    private void updateReservations(){
+        ArrayList<Reservation> temp = new ArrayList<>();
+        for(Reservation r : reservations){
+            int endDuration = r.getTick()+r.getDuration();
+            int endEvaporation = r.getTimeStamp() + RESERVATIONRESET;
+            if(endDuration <= tickCounter){ }
+            else if(endEvaporation <= tickCounter){}
+            else {temp.add(r);}
+        }
+    }
+
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
+    }
 
     public int getStationNr(){
         return stationNr;

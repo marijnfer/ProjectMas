@@ -84,7 +84,7 @@ public final class Main {
                     //.withAutoPlay()
                     //.withSimulatorEndTime(TEST_END_TIME)
                     .withTitleAppendix("Factory")
-                    //.withSpeedUp(TEST_SPEED_UP)
+                    .withSpeedUp(2)
                     //.withNoResizing()
                     .withResolution(700,700)
                     ;
@@ -111,8 +111,8 @@ public final class Main {
         while (it.hasNext()){
             InboundPoint ip = (InboundPoint)it.next();
             ip.setStored(true);
-            Task p = new Task( //
-                    Parcel.builder(ip, factory.nextDeliveryPoint())
+            Task p = new Task(
+                    Parcel.builder(ip,factory.nextDeliveryPoint())
                             .serviceDuration(SERVICE_DURATION)
                             .neededCapacity(1 + sim.getRandomGenerator().nextInt(5))
                             .buildDTO());
@@ -174,7 +174,7 @@ public final class Main {
             }
 
         }
-
+        ArrayList<Crossroad> exploreStart = new ArrayList<>();
         ArrayList<Crossroad> crossroads = factory.getCrossroads();
         for(Crossroad cr : crossroads){
             boolean added = false;
@@ -189,6 +189,9 @@ public final class Main {
             if(!added){
                 factory.addConnect(cr);
             }
+            if(cr.getFunction() == 10){
+                exploreStart.add(cr);
+            }
             sim.register(cr);
         }
 
@@ -200,7 +203,7 @@ public final class Main {
         Iterator itCr = factory.getCrossroads().iterator();
         while (itCr.hasNext()){
             Crossroad cr = (Crossroad)itCr.next();
-            if(!cr.assemblyPointPresent()){
+            if(!cr.assemblyPointPresent() && cr.y >5){
                 int size = factory.findConnections(cr).size();
                 if(size !=0){
                     cr.setPheromone(new Pheromone(5));
@@ -210,7 +213,7 @@ public final class Main {
 
 
 
-        AGV agv = new AGV(new Point(2,0),10,factory,sim.getRandomGenerator(),factory.getCrossroadsStation(0));
+        AGV agv = new AGV(new Point(25,5),10,factory,sim.getRandomGenerator(),exploreStart);
         sim.register(agv);
 
         /*

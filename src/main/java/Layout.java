@@ -2,6 +2,8 @@ import com.github.rinde.rinsim.geom.*;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 
+import java.util.ArrayList;
+
 public class Layout {
     private static final int ROWS = 4;
     private static final int COLUMNS = 5;
@@ -10,23 +12,38 @@ public class Layout {
     static ListenableGraph<LengthData> getGraph() {
         final Graph<LengthData> g = new TableGraph<>();
 
-        Crossroad cr1 = new Crossroad(2,14);
-        Crossroad cr2 = new Crossroad(2,24);
-        cr1.setFunction(10);
-        cr2.setFunction(10);
+        ArrayList<InboundPoint> ibs = new ArrayList<>();
+        ArrayList<Crossroad> crs1 = new ArrayList<>();
+        ArrayList<DeliveryPoint> dps = new ArrayList<>();
+        ArrayList<Crossroad> crs2 = new ArrayList<>();
 
-        //Inbound
-        final Table<Integer, Integer, Point> inbound = createInbound(new Point(0,0),cr1,cr2);
-        for(int i = 10; i<21; i++){
-            Graphs.addBiPath(g,inbound.column(i).values());
-        }
-        for(int i = 10;i<20;i++){
-            Graphs.addBiPath(g,inbound.get(1,i),inbound.get(1,1+i));
+        for(int i = 0; i < 10; i++){
+            ibs.add(new InboundPoint(i+10,3));
+            crs1.add(new Crossroad(i+10,5));
         }
 
-        final Table<Integer, Integer, Point> assembly = createAssemblyLine(new Point(10,2),cr1,cr2);
+        for(int i =0; i < 4; i++){
+            dps.add(new DeliveryPoint(i+25,3));
+            crs2.add(new Crossroad(i+25,5));
+        }
 
-        //Graphs.addBiPath(g,assembly.row(0).values());
+
+        final Table<Integer, Integer, Point> bounds = createBounds(ibs,crs1,dps,crs2);
+        final Table<Integer, Integer, Point> assembly = createAssemblyLine(new Point(10,7));
+
+        // Bound
+        for(int i = 0; i < 14;i++){
+            Graphs.addBiPath(g,bounds.get(i,0),bounds.get(i,1));
+        }
+        for(int i = 0; i < 13;i++){
+            Graphs.addPath(g,bounds.get(i+1,1),bounds.get(i,1));
+        }
+
+        //Bound + assembly
+        Graphs.addPath(g,assembly.get(6,0),bounds.get(13,1));
+        Graphs.addPath(g,bounds.get(0,1),assembly.get(-1,0));
+
+        //Assembly
         Graphs.addPath(g,assembly.get(0,0),assembly.get(1,0));
         Graphs.addPath(g,assembly.get(0,1),assembly.get(1,0));
         Graphs.addPath(g,assembly.get(0,1),assembly.get(1,1));
@@ -63,30 +80,22 @@ public class Layout {
 
         Graphs.addPath(g,assembly.get(5,2),assembly.get(5,3));
 
-        //inbound and assembly
-        Graphs.addPath(g,inbound.get(1,10),assembly.get(0,1));
-        Graphs.addPath(g,inbound.get(1,20),assembly.get(0,2));
-        Graphs.addPath(g,inbound.get(1,10),assembly.get(0,0));
-        Graphs.addPath(g,inbound.get(1,20),assembly.get(0,3));
+        //Assembly
+        for(int i = 1; i<5;i++){
+            Graphs.addPath(g,assembly.get(-1,i),assembly.get(0,i-1));
+        }
+        for(int i = 0; i < 4;i++ ){
+            Graphs.addPath(g,assembly.get(-1,i),assembly.get(-1,i+1));
+        }
 
-        //Assembly + drive back road
-        Graphs.addPath(g,assembly.get(5,0),assembly.get(6,1));
-        Graphs.addPath(g,assembly.get(5,1),assembly.get(6,2));
-        Graphs.addPath(g,assembly.get(5,2),assembly.get(6,3));
-        Graphs.addPath(g,assembly.get(5,3),assembly.get(6,4));
+        Graphs.addBiPath(g,assembly.get(6,4),assembly.get(6,3));
+        Graphs.addBiPath(g,assembly.get(6,3),assembly.get(6,2));
+        Graphs.addBiPath(g,assembly.get(6,2),assembly.get(6,1));
+        Graphs.addBiPath(g,assembly.get(6,1),assembly.get(6,0));
 
-        //Drive back
-        Graphs.addPath(g,assembly.get(6,0),inbound.get(1,0));
-        Graphs.addPath(g,assembly.get(6,5),inbound.get(1,42));
-        Graphs.addPath(g,inbound.get(1,0),inbound.get(1,10));
-        Graphs.addPath(g,inbound.get(1,42),inbound.get(1,20));
-        Graphs.addBiPath(g,assembly.row(6).values());
-
-        //Driveback + delivery points
-        Graphs.addBiPath(g,assembly.get(6,1),assembly.get(7,0));
-        Graphs.addBiPath(g,assembly.get(6,2),assembly.get(7,1));
-        Graphs.addBiPath(g,assembly.get(6,3),assembly.get(7,2));
-        Graphs.addBiPath(g,assembly.get(6,4),assembly.get(7,3));
+        for(int i = 1; i<5; i++){
+            Graphs.addPath(g,assembly.get(5,i-1),assembly.get(6,i));
+        }
 
         //Connect Assemblers row 0
         Graphs.addBiPath(g,assembly.get(0,0),assembly.get(10,0));
@@ -116,10 +125,25 @@ public class Layout {
         return new ListenableGraph<>(g);
     }
 
-    private static ImmutableTable<Integer, Integer, Point> createAssemblyLine(Point p, Crossroad cr1, Crossroad cr2) {
+    private static ImmutableTable<Integer, Integer, Point> createAssemblyLine(Point p) {
         final ImmutableTable.Builder<Integer, Integer, Point> builder =
                 ImmutableTable.builder();
         Point offset = new Point(p.x,p.y+2);
+        Crossroad cr1 = new Crossroad(5,9);
+        Crossroad cr2 = new Crossroad(5,19);
+        Crossroad cr3 = new Crossroad(5,29);
+        Crossroad cr4 = new Crossroad(5,39);
+        cr1.setFunction(10);
+        cr2.setFunction(10);
+        cr3.setFunction(10);
+        cr4.setFunction(10);
+        //Row -
+        builder.put(-1,0,new Point(cr1.x,cr1.y-4));
+        builder.put(-1,1,cr1);
+        builder.put(-1,2,cr2);
+        builder.put(-1,3,cr3);
+        builder.put(-1,4,cr4);
+
 
         //Row 0
         builder.put(0,0,new Crossroad(0+offset.x,0+offset.y));
@@ -208,14 +232,6 @@ public class Layout {
 
         builder.put(6,5,new Point(35+offset.x,36+p.y));
 
-        //Row 7
-        builder.put(7,0,new DeliveryPoint(38+offset.x,2+p.y));
-        builder.put(7,1,new DeliveryPoint(38+offset.x,12+p.y));
-        builder.put(7,2,new DeliveryPoint(38+offset.x,22+p.y));
-        builder.put(7,3,new DeliveryPoint(38+offset.x,32+p.y));
-
-        builder.put(100,100, new Point(50,50));
-
         p31.addBackwardsReachable(p21);
         p31.addBackwardsReachable(p22);
 
@@ -253,9 +269,9 @@ public class Layout {
         p14.addBackwardsReachable(p04);
 
         p01.addBackwardsReachable(cr1);
-        p02.addBackwardsReachable(cr1);
-        p03.addBackwardsReachable(cr2);
-        p04.addBackwardsReachable(cr2);
+        p02.addBackwardsReachable(cr2);
+        p03.addBackwardsReachable(cr3);
+        p04.addBackwardsReachable(cr4);
 
 
 
@@ -263,21 +279,19 @@ public class Layout {
     }
 
 
-    private static ImmutableTable<Integer, Integer, Point> createInbound(Point offset, Crossroad cr1, Crossroad cr2) {
+    private static ImmutableTable<Integer, Integer, Point> createBounds(ArrayList<InboundPoint> ibs, ArrayList<Crossroad> crs1,
+                                                                        ArrayList<DeliveryPoint> dps, ArrayList<Crossroad> crs2) {
         final ImmutableTable.Builder<Integer, Integer, Point> builder =
                 ImmutableTable.builder();
-        builder.put(1,0,new Point(offset.x+2,offset.y));
-        builder.put(1,42,new Point(offset.x+2,38+offset.y));
 
-        for(int i = 10; i<21; i++){
-            builder.put(0,i,new InboundPoint(offset.x,offset.y +i +4));
-            if(i==10){
-                builder.put(1,i,cr1);
-            } else if (i==20) {
-                builder.put(1,i,cr2);
-            }else{
-                builder.put(1,i,new Point(offset.x+2, offset.y + i+4));
-            }
+        for(int i = 0; i<ibs.size();i++){
+            builder.put(i,0,ibs.get(i));
+            builder.put(i,1,crs1.get(i));
+        }
+
+        for(int i = 0; i<dps.size();i++){
+            builder.put(10+i,0,dps.get(i));
+            builder.put(10+i,1,crs2.get(i));
         }
 
         return builder.build();

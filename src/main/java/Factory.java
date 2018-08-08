@@ -174,7 +174,7 @@ public class Factory {
 
         ArrayList<Boolean> temp2 = new ArrayList<>();
         temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);
-        return temp2;
+        return temp;
 
 
 
@@ -251,6 +251,9 @@ public class Factory {
             } else{
                 lastIndex--;
             }
+            if(lastIndex == -1){
+                return lastIndex;
+            }
         }
         return station;
     }
@@ -265,19 +268,23 @@ public class Factory {
     }
 
     public void addConnect(Crossroad cr){
-        connections.add(new Connect(cr));
+        if(cr.y > 5){
+            connections.add(new Connect(cr));
+        }
     }
 
     public void buildConnects() {
         for (Connect con : connections) {
             for(Connection c: getRoadModel().getGraph().getConnections()){
                 if(searchCrossroad(c.to()) != null){
-                    if (Point.distance(c.from(),con.getCrossroad()) == 0 ) {
+                    if (Point.distance(c.from(),con.getCrossroad()) == 0) {
+                        if(c.to().x != 5)
                         con.addCoupledCrossroad(searchCrossroad(c.to()));
                     }
                 }
             }
         }
+        int i = 0;
     }
 
     private Crossroad searchCrossroad(Point p){
@@ -330,4 +337,34 @@ public class Factory {
         }
         return null;
     }
+
+    public void makeReservations(AGV agv, Reservation res, Point p){
+        if(p instanceof Crossroad){
+            Crossroad cr = searchCrossroad((Crossroad)p);
+            cr.makeReservation(res);
+        }
+        if(p instanceof AssemblyPoint){
+            AssemblyPoint ap = (AssemblyPoint)p;
+            ap.makeReservation(res);
+        }
+    }
+
+    private Crossroad searchCrossRoad(Crossroad cr){
+        for(Crossroad c: crossroads){
+            if(Point.distance(c,cr)==0){
+                return  c;
+            }
+        }
+        return null;
+    }
+
+    private AssemblyPoint searchAssembly(AssemblyPoint as){
+        for(AssemblyPoint a: assemblyPoints){
+            if(Point.distance(a,as)==0){
+                return  a;
+            }
+        }
+        return null;
+    }
 }
+

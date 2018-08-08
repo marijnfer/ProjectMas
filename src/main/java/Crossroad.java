@@ -12,24 +12,30 @@ import java.util.ArrayList;
 
 public class Crossroad extends Point implements CommUser, TickListener{
     private static int RANGE = 50;
+    private static int RESERVATIONRESET = 10;
     private Optional<CommDevice> comDevice;
     private ArrayList<CommUser> backwardsReachable;
     private Pheromone pheromone;
     private AssemblyPoint assemblyPoint;
     private int function = -1;
-
+    private int tickCounter = 0;
     private ArrayList<ExploreInfo> exploreTree;
+
+    private ArrayList<Reservation> reservations;
 
 
     public Crossroad(double px, double py){
         super(px,py);
         backwardsReachable = new ArrayList<>();
         exploreTree = new ArrayList<>();
+        reservations = new ArrayList<>();
     }
 
 
     @Override
     public void tick(TimeLapse timeLapse){
+        tickCounter++;
+        updateReservations();
         if(pheromone != null){
             pheromone.evaporate();
         }
@@ -128,5 +134,26 @@ public class Crossroad extends Point implements CommUser, TickListener{
 
     public int getFunction(){
         return function;
+    }
+
+    public void makeReservation(Reservation res){
+        if(!reservations.contains(res)){
+            reservations.add(res);
+        }
+    }
+
+    private void updateReservations(){
+        ArrayList<Reservation> temp = new ArrayList<>();
+        for(Reservation r : reservations){
+            int endDuration = r.getTick()+r.getDuration();
+            int endEvaporation = r.getTimeStamp() + RESERVATIONRESET;
+            if(endDuration <= tickCounter){ }
+            else if(endEvaporation <= tickCounter){}
+            else {temp.add(r);}
+        }
+    }
+
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
     }
 }

@@ -182,6 +182,19 @@ public class Factory {
         //return temp;
     }
 
+    public void sendAnts(ArrayList<Crossroad> cross,Task task){
+        ArrayList<ArrayList<Crossroad>> allPaths = findPossiblePaths(cross,task);
+        ArrayList<Double> totalPheromone = new ArrayList<>();
+
+        for(ArrayList<Crossroad> path: allPaths){
+
+            for(Crossroad cr: path){
+
+            }
+        }
+    }
+
+
     public ArrayList<ArrayList<Crossroad>> findPossiblePaths(ArrayList<Crossroad> cross,Task task){
         ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
         ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
@@ -215,18 +228,54 @@ public class Factory {
         return paths;
     }
 
-    public void sendAnts(ArrayList<Crossroad> cross,Task task){
-        ArrayList<ArrayList<Crossroad>> allPaths = findPossiblePaths(cross,task);
-        ArrayList<Double> totalPheromone = new ArrayList<>();
+    private ArrayList<Crossroad> toArray(Crossroad cr){
+        ArrayList<Crossroad> ar = new ArrayList<>();
+        ar.add(cr);
+        return ar;
+    }
+    public ArrayList<ArrayList<Crossroad>> findPossiblePaths2(Crossroad start, Task task, AssemblyPoint lastAP){
+        ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
+        ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
 
-        for(ArrayList<Crossroad> path: allPaths){
+        ArrayList<Crossroad> t = new ArrayList<>();
+        t.add(start);
+        tempCr.add(t);
 
-            for(Crossroad cr: path){
+        while(tempCr.size() !=0){
+            ArrayList<Crossroad> first = tempCr.get(0);
+            tempCr.remove(0);
+            ArrayList<Crossroad> con = findConnections(first.get(first.size()-1));
+            int ii =0;
+            for(Crossroad cr: con){
+                //check if viable connection
+                if(viableConnection2(task,first,cr,lastAP.getStationNr())){
+                    ArrayList<Crossroad> copy = new ArrayList<>(first);
+                    copy.add(cr);
+                    if(cr.assemblyPointPresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
+                        paths.add(copy);
+                    }else {
+                        tempCr.add(copy);
+                    }
 
+                }
             }
+
         }
+        return paths;
     }
 
+    private boolean viableConnection2(Task task,ArrayList<Crossroad> current, Crossroad toAdd, int lastStation){
+        //int lastStation = lastStation(current);
+        int nextStation = task.nextStation(lastStation);
+        //if no assemblyPoint is present => keep searching
+        if(!toAdd.assemblyPointPresent()){
+            return true;
+        } else{
+            int toAddStation = toAdd.getAssemblyPoint().getStationNr();
+            if(toAddStation <= nextStation){return true;}
+        }
+        return false;
+    }
 
     private boolean viableConnection(Task task,ArrayList<Crossroad> current, Crossroad toAdd){
         int lastStation = lastStation(current);
@@ -338,7 +387,7 @@ public class Factory {
         return null;
     }
 
-    public void makeReservations(AGV agv, Reservation res, Point p){
+    public void makeReservations(Reservation res, Point p){
         if(p instanceof Crossroad){
             Crossroad cr = searchCrossroad((Crossroad)p);
             cr.makeReservation(res);

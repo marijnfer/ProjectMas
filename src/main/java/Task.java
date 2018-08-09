@@ -38,7 +38,7 @@ public class Task extends Parcel {
     }
 
     public int lastStation(){
-        for(int i = tasks.size()-1; i > 0; i--){
+        for(int i = tasks.size()-1; i >= 0; i--){
             if(tasks.get(i)){
                 return i;
             }

@@ -213,16 +213,12 @@ public final class Main {
 
 
 
-        AGV agv = new AGV(new Point(25,5),10,factory,sim.getRandomGenerator(),exploreStart);
+        AGV agv = new AGV(new Point(19,5),10,factory,sim.getRandomGenerator(),exploreStart);
         sim.register(agv);
-
-        /*
-        for(Connect c: factory.getConnections()){
-            System.out.print(c.getCrossroad());
-            System.out.print("  ");
-            System.out.println(c.getCoupled());
-        }
-        */
+        AGV agv2 = new AGV(new Point(19,5),10,factory,sim.getRandomGenerator(),exploreStart);
+        //sim.register(agv2);
+        AGV agv3 = new AGV(new Point(25,5),10,factory,sim.getRandomGenerator(),exploreStart);
+       // sim.register(agv3);
 
         sim.addTickListener(new TickListener() {
             @Override

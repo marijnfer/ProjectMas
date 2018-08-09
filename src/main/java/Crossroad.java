@@ -145,7 +145,7 @@ public class Crossroad extends Point implements CommUser, TickListener{
     private void updateReservations(){
         ArrayList<Reservation> temp = new ArrayList<>();
         for(Reservation r : reservations){
-            int endDuration = r.getTick()+r.getDuration();
+            double endDuration = r.getTick()+r.getDuration();
             int endEvaporation = r.getTimeStamp() + RESERVATIONRESET;
             if(endDuration <= tickCounter){ }
             else if(endEvaporation <= tickCounter){}

@@ -1,10 +1,10 @@
 public class Reservation {
     private AGV agv;
-    private int tick;
+    private double tick;
     private int duration;
     private int timeStamp;
 
-    public Reservation(AGV agv, int tick, int duration, int timeStamp){
+    public Reservation(AGV agv, double tick, int duration, int timeStamp){
         this.agv = agv;
         this.tick = tick;
         this.duration = duration;
@@ -15,7 +15,7 @@ public class Reservation {
         return duration;
     }
 
-    public int getTick() {
+    public double getTick() {
         return tick;
     }
 

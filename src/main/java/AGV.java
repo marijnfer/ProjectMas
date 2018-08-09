@@ -12,10 +12,7 @@ import com.github.rinde.rinsim.geom.Point;
 import com.google.common.base.Optional;
 import org.apache.commons.math3.random.RandomGenerator;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import static java.lang.StrictMath.abs;
 
@@ -24,10 +21,10 @@ public class AGV  extends Vehicle implements CommUser {
     RandomGenerator rng;
     private static int RANGE = 100;
     private int burnInTick = 20;
+    private Optional<CommDevice> comDevice;
     ArrayList<Crossroad> startExplorerAnts;
 
     private Queue<Point> path;
-    private Optional<CommDevice> comDevice;
     private Optional<Parcel> curr;
     private Factory factory;
     private AGVState state;
@@ -35,8 +32,10 @@ public class AGV  extends Vehicle implements CommUser {
     private ArrayList<Reservation> reservations;
 
     private Point pickUpLocation;
-    private ArrayList<Crossroad> destinations;
+    private ArrayList<Point> destinations1;
     private ArrayList<Point> destinations2;
+    private ArrayList<Crossroad> destinations3; //assembly
+    private ArrayList<Point> destinations4;
     private Point currentDestination;
     private Point deliveryLocation;
     private Task currentTask;
@@ -47,10 +46,6 @@ public class AGV  extends Vehicle implements CommUser {
     private Point latestPos = new Point(0,0);
     int counter = 0;
     int lastTick = 0;
-
-    Point firstDestination;
-
-
 
     public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts) {
         super(VehicleDTO.builder()
@@ -65,19 +60,22 @@ public class AGV  extends Vehicle implements CommUser {
         this.factory = factory;
         state = AGVState.IDLE;
         this.startExplorerAnts = startExplorerAnts;
+        destinations1 = new ArrayList<>();
         destinations2 = new ArrayList<>();
+        destinations3 = new ArrayList<>();
+        destinations4 = new ArrayList<>();
     }
 
     @Override
     public void afterTick(TimeLapse timeLapse) {}
 
     private Point nextDestination() {
-        Crossroad p = destinations.get(0);
+        Crossroad p = destinations3.get(0);
         if(p.assemblyPointPresent()){
             currentAssembly = p.getAssemblyPoint();
             currentCrossroad = p;
         }
-        destinations.remove(0);
+        destinations3.remove(0);
         return p;
     }
 
@@ -98,27 +96,15 @@ public class AGV  extends Vehicle implements CommUser {
 
     }
 
-
     private synchronized void print(){
-        /*
         System.out.print(counter);
         System.out.print("  ");
-        System.out.print(counter-lastTick);
-        System.out.print("  ");
-        System.out.print(currentCrossroad);
-        System.out.print("  ");
-        System.out.print(getRoadModel().getPosition(this  ));
-
-        System.out.print("  ");
-
         System.out.println(state);
-        */
+
         factory.addData(latestPos,getRoadModel().getPosition(this),counter-lastTick);
 
         lastTick = counter;
         latestPos = getRoadModel().getPosition(this);
-
-
     }
 
     @Override
@@ -132,80 +118,60 @@ public class AGV  extends Vehicle implements CommUser {
         if (!time.hasTimeLeft()) { return; }
 
         if(state == AGVState.IDLE){
-                Iterator it = RoadModels.findClosestObjects(rm.getPosition(this),rm).iterator();
-            while(it.hasNext()){
+            Iterator it = RoadModels.findClosestObjects(getPosition().get(),rm).iterator();
+            ArrayList<Task> t = new ArrayList<>();
+            while (it.hasNext()){
                 try {
-                     Task t  = (Task)it.next();
-                     Point p = t.getPickupLocation();
-                    if(Point.distance(p,new Point(10,3))==0) {
-                        curr = Optional.fromNullable(RoadModels.findClosestObject(p, rm, Parcel.class));
-                        pickUpLocation = curr.get().getPickupLocation();
-                        deliveryLocation = curr.get().getDeliveryLocation();
-                        currentTask = t;
-                    }
-                } catch (Exception ex){}
-           }
-           destinations2 = new ArrayList<>();
-           for(Point p: rm.getShortestPathTo(this,pickUpLocation)){
-                destinations2.add(p);
-           }
-           System.out.print(String.format("%d arrived in     ",counter));
-           System.out.println(calculateTicksOutToIn(destinations2));
-           currentDestination = destinations2.get(0); destinations2.remove(0);
+                    Task ta = (Task)it.next();
+                    t.add(ta);
+                } catch (Exception e){}
+            }
+
+            curr = Optional.fromNullable(t.get(rng.nextInt(t.size())));
+            pickUpLocation = curr.get().getPickupLocation();
+            deliveryLocation = curr.get().getDeliveryLocation();
+            currentTask = (Task)curr.get();
+
+            double d1 = buildDestinationsToInbound(getPosition().get());
+            double d3 = buildDestinationsAssembly();
+            double d2 = buildDestinationsInboundToAss(pickUpLocation,destinations3.get(0));
+            destinations3.remove(0);
+            double d4 = buildDestinationsAssemblyToOut(destinations3.get(destinations3.size()-1),deliveryLocation);
+
+           currentDestination = destinations1.get(0); destinations1.remove(0);
            path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
 
            rm.followPath(this,path,time);
-           state = AGVState.INBOUND;
+           state = AGVState.TOINBOUND;
+           System.out.println(String.format("%f   %f   %f   %f",d1,d2,d3,d4));
+           print();
            return;
         }
 
-        if(state == AGVState.INBOUND && !rm.getPosition(this).equals(currentDestination)){
-            rm.followPath(this,path,time);
+        if((state == AGVState.TOINBOUND) && !rm.getPosition(this).equals(currentDestination)){
+            try{
+                rm.followPath(this,path,time);
+            }catch (Exception e){}
             return;
         }
 
-        if(state == AGVState.INBOUND && rm.getPosition(this).equals(currentDestination)){
-            if(destinations2.size() == 0){
+        if(state == AGVState.TOINBOUND && rm.getPosition(this).equals(currentDestination)){
+            if(destinations1.size() == 0){
                 pm.pickup(this,curr.get(),time);
                 InboundPoint ip = (InboundPoint)curr.get().getPickupLocation();
                 ip.setStored(false);
 
-                destinations = factory.findPossiblePaths(startExplorerAnts,currentTask).
-                        get(rng.nextInt(factory.findPossiblePaths(startExplorerAnts,currentTask).size()));
-
-                System.out.println(counter);
-                //firstDestination = currentDestination;
-                destinations2 = new ArrayList<>();
-                double duration = calculateTicksAssembly(destinations);
-                path = new LinkedList<>(rm.getShortestPathTo(this,nextDestination()));
-                for(Point p: path){
-                    destinations2.add(p);
-                }
-                System.out.print("inb to ass  ");
-                System.out.print(counter);
-                System.out.print("  ");
-                System.out.print(calculateTicksInToAss(destinations2));
-                System.out.print("  ass to out  ");
-                System.out.print(counter);
-                System.out.print("  ");
-                System.out.println(duration);
-
-                destinations2.remove(0);
-
-
                 currentDestination = destinations2.get(0); destinations2.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
-
-                print();
                 state = AGVState.INBOUNDTOASSEMBLY;
-
-            } else{
-                currentDestination = destinations2.get(0); destinations2.remove(0);
+                print();
+            } else {
+                currentDestination = destinations1.get(0); destinations1.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
-                rm.followPath(this,path,time);
-
+                try{
+                    rm.followPath(this,path,time);
+                } catch (Exception e){}
             }
-
             return;
         }
 
@@ -217,7 +183,7 @@ public class AGV  extends Vehicle implements CommUser {
         if(state == AGVState.INBOUNDTOASSEMBLY && rm.getPosition(this).equals(currentDestination)){
             if(destinations2.size() == 0){
                 state = AGVState.DRIVINGTOASSEMBLYcross;
-
+                print();
                 return;
 
             }else {
@@ -235,19 +201,16 @@ public class AGV  extends Vehicle implements CommUser {
 
         if(state == AGVState.DRIVINGTOASSEMBLYcross && rm.getPosition(this).equals(currentDestination)){
             if(needToVisitAssembly(currentDestination)){
-                System.out.println(counter);
 
                 currentDestination = currentAssembly;
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLY;
+                print();
             } else {
-                currentDestination = nextDestination();
-                System.out.println(counter);
-
+                currentDestination = destinations3.get(0); destinations3.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLYcross;
             }
-            print();
             return;
         }
 
@@ -270,30 +233,16 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if(state == AGVState.DRIVINGAWAYASSEMBLY && rm.getPosition(this).equals(currentCrossroad)) {
-            if(destinations.size() != 0){
-                currentDestination = nextDestination();
-                System.out.println(counter);
-
-                path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
-                state = AGVState.DRIVINGTOASSEMBLYcross;
-            } else{
-                Iterator it = rm.getShortestPathTo(this,deliveryLocation).iterator();
-                destinations2 = new ArrayList<>();
-                while (it.hasNext()){
-                    Point p = (Point)it.next();
-                    destinations2.add(p);
-                }
-                double a = calculateTicksAssToOut(destinations2);
-                destinations2.remove(0);
-                currentDestination = destinations2.get(0); destinations2.remove(0);
+            if(destinations3.size() == 0){
+                currentDestination = destinations4.get(0); destinations4.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
                 state = AGVState.DELEVERING;
-                System.out.print("Assembly to out");
-                System.out.print(a);
-                System.out.print("  ");
-                System.out.println(counter);
+                print();
+            } else{
+                currentDestination = destinations3.get(0);destinations3.remove(0);
+                path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
+                state = AGVState.DRIVINGTOASSEMBLYcross;
             }
-            print();
             return;
         }
 
@@ -305,19 +254,67 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if (state == AGVState.DELEVERING && rm.getPosition(this).equals(currentDestination)) {
-            if(destinations2.size() == 0){
+            if(destinations4.size() == 0){
                 pm.deliver(this, curr.get(), time);
                 curr = Optional.absent();
+                currentCrossroad = null;
+                currentAssembly = null;
                 state = AGVState.IDLE;
+                print();
                 return;
             } else {
-                currentDestination = destinations2.get(0); destinations2.remove(0);
+                currentDestination = destinations4.get(0); destinations4.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
-
             }
 
         }
 
+    }
+
+    private void buildDestinations(){
+        RoadModel rm = getRoadModel();
+        Point p2 = null;
+
+        destinations3 = factory.findPossiblePaths(startExplorerAnts, currentTask).
+                get(rng.nextInt(factory.findPossiblePaths(startExplorerAnts, currentTask).size()));
+
+
+        if(state == AGVState.INBOUNDTOASSEMBLY) p2 = getPosition().get();
+        else                                    p2 = pickUpLocation;
+        for(Point p: rm.getShortestPathTo(p2,destinations3.get(0))) destinations2.add(p);
+
+    }
+
+    private double buildDestinationsToInbound(Point location){
+        RoadModel rm = getRoadModel();
+        for(Point p: rm.getShortestPathTo(location,pickUpLocation)) destinations1.add(p);
+        double duration = calculateTicksOutToIn(destinations1);
+        destinations1.remove(0);//first element is the current location
+        return duration;
+    }
+
+    private double buildDestinationsInboundToAss(Point location, Point destination){
+        RoadModel rm = getRoadModel();
+        for(Point p: rm.getShortestPathTo(location,destination)) destinations2.add(p);
+        double duration = calculateTicksInToAss(destinations2);
+        destinations2.remove(0);
+        return duration;
+    }
+
+    private double buildDestinationsAssembly(){
+        destinations3 = factory.findPossiblePaths(startExplorerAnts,currentTask)
+                .get(rng.nextInt(factory.findPossiblePaths(startExplorerAnts,currentTask).size()));
+        double duration = calculateTicksAssembly(destinations3);
+        //Need to remove first manually because this location is needed
+        return duration;
+    }
+
+    private double buildDestinationsAssemblyToOut(Point location, Point deliveryLocation){
+        RoadModel rm = getRoadModel();
+        for(Point p: rm.getShortestPathTo(location,deliveryLocation)) destinations4.add(p);
+        double duration = calculateTicksAssToOut(destinations4);
+        destinations4.remove(0);
+        return duration;
     }
 
     private boolean needToVisitAssembly(Point p){
@@ -440,9 +437,55 @@ public class AGV  extends Vehicle implements CommUser {
 
     }
 
-   
+    private void makeReservations(ArrayList<Point> pts, String type){
+        ArrayList<Double> ticks = new ArrayList<>();
+        ArrayList<ArrayList<Point>> list = pointsLists(pts);
+        switch (type){
+            case "ass to out":
+                for(ArrayList<Point> al: list){
+                    ticks.add(calculateTicksAssToOut(al));
+                }
+                break;
+            case "out to in":
+                for(ArrayList<Point> al: list){
+                    ticks.add(calculateTicksOutToIn(al));
+                }
+        }
+
+        for(int i = 0; i < pts.size(); i++){
+            Reservation res = new Reservation(this,ticks.get(i),10,counter);
+            factory.makeReservations(res,pts.get(i));
+        }
+    }
+
+    private void makeReservationsAssembly(ArrayList<Crossroad> crs){
+
+    }
+
+    private ArrayList<ArrayList<Point>> pointsLists(ArrayList<Point> pts){
+        ArrayList<ArrayList<Point>> temp = new ArrayList<>();
+        ArrayList<Point> lastElement = new ArrayList<>();
 
 
+        for(int i = 0; i < pts.size(); i++){
+            lastElement.add(pts.get(0));
+            temp.add(lastElement);
+        }
 
+        return temp;
+    }
+
+    private ArrayList<ArrayList<Crossroad>> crossRoadLists(ArrayList<Crossroad> pts){
+        ArrayList<ArrayList<Crossroad>> temp = new ArrayList<>();
+        ArrayList<Crossroad> lastElement = new ArrayList<>();
+
+
+        for(int i = 0; i < pts.size(); i++){
+            lastElement.add(pts.get(0));
+            temp.add(lastElement);
+        }
+
+        return temp;
+    }
 
 }

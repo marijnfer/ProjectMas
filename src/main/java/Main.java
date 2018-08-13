@@ -203,7 +203,7 @@ public final class Main {
         Iterator itCr = factory.getCrossroads().iterator();
         while (itCr.hasNext()){
             Crossroad cr = (Crossroad)itCr.next();
-            if(!cr.assemblyPointPresent() && cr.y >5){
+            if(!cr.assemblyPointPresent() && cr.y >5 && cr.x < 45){
                 int size = factory.findConnections(cr).size();
                 if(size !=0){
                     cr.setPheromone(new Pheromone(5));

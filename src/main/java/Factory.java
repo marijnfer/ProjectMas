@@ -182,81 +182,34 @@ public class Factory {
         //return temp;
     }
 
-    public void sendAnts(ArrayList<Crossroad> cross,Task task){
-        ArrayList<ArrayList<Crossroad>> allPaths = findPossiblePaths(cross,task);
-        ArrayList<Double> totalPheromone = new ArrayList<>();
+    public ArrayList<ArrayList<Crossroad>> findPossiblePaths(Crossroad crossroad,Task task){
 
-        for(ArrayList<Crossroad> path: allPaths){
-
-            for(Crossroad cr: path){
-
-            }
-        }
-    }
-
-
-    public ArrayList<ArrayList<Crossroad>> findPossiblePaths(ArrayList<Crossroad> cross,Task task){
         ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
         ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
-
-        for(Crossroad cr: cross){
-            ArrayList<Crossroad> t = new ArrayList<>();
-            t.add(cr);
-            tempCr.add(t);
-        }
-
-        while(tempCr.size() !=0){
-            ArrayList<Crossroad> first = tempCr.get(0);
-            tempCr.remove(0);
-            ArrayList<Crossroad> con = findConnections(first.get(first.size()-1));
-            int ii =0;
-            for(Crossroad cr: con){
-                //check if viable connection
-                if(viableConnection(task,first,cr)){
-                    ArrayList<Crossroad> copy = new ArrayList<>(first);
-                    copy.add(cr);
-                    if(cr.assemblyPointPresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
-                        paths.add(copy);
-                    }else {
-                        tempCr.add(copy);
-                    }
-
-                }
-            }
-
-        }
-        return paths;
-    }
-
-    private ArrayList<Crossroad> toArray(Crossroad cr){
-        ArrayList<Crossroad> ar = new ArrayList<>();
-        ar.add(cr);
-        return ar;
-    }
-    public ArrayList<ArrayList<Crossroad>> findPossiblePaths2(Crossroad start, Task task, AssemblyPoint lastAP){
-        ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
-        ArrayList<ArrayList<Crossroad>> tempCr = new ArrayList<>();
+        ArrayList<Double> ticks = new ArrayList<>();
+        ArrayList<Double> tempTicks = new ArrayList<>();
 
         ArrayList<Crossroad> t = new ArrayList<>();
-        t.add(start);
-        tempCr.add(t);
+        t.add(crossroad);tempCr.add(t);tempTicks.add(0.0);
 
         while(tempCr.size() !=0){
             ArrayList<Crossroad> first = tempCr.get(0);
             tempCr.remove(0);
             ArrayList<Crossroad> con = findConnections(first.get(first.size()-1));
-            int ii =0;
-            for(Crossroad cr: con){
-                //check if viable connection
-                if(viableConnection2(task,first,cr,lastAP.getStationNr())){
-                    ArrayList<Crossroad> copy = new ArrayList<>(first);
-                    copy.add(cr);
-                    if(cr.assemblyPointPresent()&& cr.getAssemblyPoint().getStationNr() == task.lastStation()){
-                        paths.add(copy);
-                    }else {
-                        tempCr.add(copy);
-                    }
 
+            if(con != null) {
+                for (Crossroad cr : con) {
+                    //check if viable connection
+                    if (viableConnection(task, first, cr)) {
+                        ArrayList<Crossroad> copy = new ArrayList<>(first);
+                        copy.add(cr);
+                        if (cr.assemblyPointPresent() && cr.getAssemblyPoint().getStationNr() == task.lastStation()) {
+                            paths.add(copy);
+                        } else {
+                            tempCr.add(copy);
+                        }
+
+                    }
                 }
             }
 
@@ -264,18 +217,6 @@ public class Factory {
         return paths;
     }
 
-    private boolean viableConnection2(Task task,ArrayList<Crossroad> current, Crossroad toAdd, int lastStation){
-        //int lastStation = lastStation(current);
-        int nextStation = task.nextStation(lastStation);
-        //if no assemblyPoint is present => keep searching
-        if(!toAdd.assemblyPointPresent()){
-            return true;
-        } else{
-            int toAddStation = toAdd.getAssemblyPoint().getStationNr();
-            if(toAddStation <= nextStation){return true;}
-        }
-        return false;
-    }
 
     private boolean viableConnection(Task task,ArrayList<Crossroad> current, Crossroad toAdd){
         int lastStation = lastStation(current);
@@ -317,7 +258,7 @@ public class Factory {
     }
 
     public void addConnect(Crossroad cr){
-        if(cr.y > 5){
+        if(cr.y > 5 && cr.x < 45){
             connections.add(new Connect(cr));
         }
     }
@@ -396,6 +337,49 @@ public class Factory {
             AssemblyPoint ap = (AssemblyPoint)p;
             ap.makeReservation(res);
         }
+        if(p instanceof InboundPoint){
+            ((InboundPoint) p).makeReservation(res);
+        }
+        if(p instanceof DeliveryPoint){
+            ((DeliveryPoint) p).makeReservation(res);
+        }
+    }
+
+    public Reservation getRervations(Point p, int tick, AGV agv){
+            if(p instanceof Crossroad){
+                Crossroad cr = (Crossroad)p;
+                if(cr.getReservationTick(tick) != null){
+                    if(cr.getReservationTick(tick).getAgv() != agv){
+                        return (cr.getReservationTick(tick));
+                    }
+                }
+        }
+            if(p instanceof AssemblyPoint){
+                AssemblyPoint cr = (AssemblyPoint)p;
+                if(cr.getReservationTick(tick) != null){
+                    if(cr.getReservationTick(tick).getAgv() != agv){
+                        return (cr.getReservationTick(tick));
+                    }
+                }            }
+
+            if(p instanceof InboundPoint){
+                InboundPoint cr= (InboundPoint)p;
+                if(cr.getReservationTick(tick) != null){
+                    if(cr.getReservationTick(tick).getAgv() != agv){
+                        return (cr.getReservationTick(tick));
+                    }
+                }            }
+
+            if(p instanceof DeliveryPoint){
+                DeliveryPoint cr = (DeliveryPoint)p;
+                if(cr.getReservationTick(tick) != null){
+                    if(cr.getReservationTick(tick).getAgv() != agv){
+                        return (cr.getReservationTick(tick));
+                    }
+                }            }
+
+
+        return null;
     }
 
     private Crossroad searchCrossRoad(Crossroad cr){
@@ -412,6 +396,13 @@ public class Factory {
             if(Point.distance(a,as)==0){
                 return  a;
             }
+        }
+        return null;
+    }
+
+    public Connect searchConnect(Crossroad cr){
+        for(Connect con: connections){
+            if(Point.distance(cr,con.getCrossroad()) == 0) return con;
         }
         return null;
     }

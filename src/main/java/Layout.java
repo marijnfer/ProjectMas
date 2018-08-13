@@ -225,12 +225,11 @@ public class Layout {
 
         //Row 6
         builder.put(6,0,new Point(35+offset.x,0+p.y-2));
-        builder.put(6,1,new Point(35+offset.x,0+p.y+2));
-        builder.put(6,2,new Point(35+offset.x,12+p.y));
-        builder.put(6,3,new Point(35+offset.x,22+p.y));
-        builder.put(6,4,new Point(35+offset.x,0+p.y+32));
+        builder.put(6,1,new Crossroad(35+offset.x,0+p.y+2));
+        builder.put(6,2,new Crossroad(35+offset.x,12+p.y));
+        builder.put(6,3,new Crossroad(35+offset.x,22+p.y));
+        builder.put(6,4,new Crossroad(35+offset.x,0+p.y+32));
 
-        builder.put(6,5,new Point(35+offset.x,36+p.y));
 
         p31.addBackwardsReachable(p21);
         p31.addBackwardsReachable(p22);

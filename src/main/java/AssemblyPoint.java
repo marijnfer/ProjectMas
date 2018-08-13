@@ -9,6 +9,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class AssemblyPoint extends Point implements CommUser, TickListener {
 
@@ -143,17 +144,36 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     }
 
     public void makeReservation(Reservation res){
-        if(!reservations.contains(res)){
-            reservations.add(res);
+        Iterator it = reservations.iterator();
+        while(it.hasNext()){
+            Reservation r = (Reservation)it.next();
+            if(r.overlapping(res)){
+                reservations.remove(r);
+                reservations.add(res);
+                System.out.print(this);
+                System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                return;
+            }
         }
+        reservations.add(res);
+        System.out.print(this);
+        System.out.println(String.format("AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+    }
+
+    public Reservation getReservationTick(int tick){
+        for(Reservation r: reservations){
+            if(r.containsTick(tick)){
+                return r;
+            }
+        }
+        return null;
     }
 
     private void updateReservations(){
         ArrayList<Reservation> temp = new ArrayList<>();
         for(Reservation r : reservations){
-            double endDuration = r.getTick()+r.getDuration();
             int endEvaporation = r.getTimeStamp() + RESERVATIONRESET;
-            if(endDuration <= tickCounter){ }
+            if(r.getStopTick() <= tickCounter){ }
             else if(endEvaporation <= tickCounter){}
             else {temp.add(r);}
         }

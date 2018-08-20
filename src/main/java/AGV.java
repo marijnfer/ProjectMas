@@ -12,10 +12,7 @@ import com.github.rinde.rinsim.geom.Point;
 import com.google.common.base.Optional;
 import org.apache.commons.math3.random.RandomGenerator;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import static java.lang.StrictMath.abs;
 
@@ -31,8 +28,6 @@ public class AGV  extends Vehicle implements CommUser {
     private Optional<Parcel> curr;
     private Factory factory;
     private AGVState state;
-
-    private ArrayList<Reservation> reservations;
 
     private Point pickUpLocation;
     private ArrayList<Point> destinations1;
@@ -50,6 +45,7 @@ public class AGV  extends Vehicle implements CommUser {
     private Point latestPos = new Point(0,0);
     int counter = 0;
     int lastTick = 0;
+    private ArrayList<Reservation> allReservations;
 
     public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts) {
         super(VehicleDTO.builder()
@@ -70,6 +66,7 @@ public class AGV  extends Vehicle implements CommUser {
         destinations4 = new ArrayList<>();
         previousDP = new Point(-10,-10);
         deliveryLocation = new Point(-20,-20);
+        allReservations = new ArrayList<>();
     }
 
     @Override
@@ -142,7 +139,7 @@ public class AGV  extends Vehicle implements CommUser {
 
             int d1 = buildDestinationsToInbound(getPosition().get(),counter);
             //calculate amount of ticks for every possible point and use that information to choose the best possible path
-            ArrayList<ArrayList<Integer>> d2 = buildDestinationsInboundToAss(pickUpLocation,d1);
+            ArrayList<ArrayList<Integer>> d2 = buildDestinationsInboundToAss(pickUpLocation,d1,startExplorerAnts);
             ArrayList<Integer> d2End = new ArrayList<>();
             for(ArrayList<Integer> ar: d2) d2End.add(ar.get(ar.size()-1));
 
@@ -156,6 +153,7 @@ public class AGV  extends Vehicle implements CommUser {
             for(Point p: rm.getShortestPathTo(pickUpLocation,destinations3.get(0))) destinations2.add(p);
             reservateInboundToAssembly(d2.get(startExplorerAnts.indexOf(startd2)),destinations2);
 
+            sendReservation();
 
             currentDestination = destinations1.get(0); destinations1.remove(0);
            path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
@@ -177,16 +175,33 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if(state == AGVState.TOINBOUND && rm.getPosition(this).equals(currentDestination)){
-            if(destinations1.size() == 0){
+            if(destinations1.size() == 0){ //arrival at inbound
                 pm.pickup(this,curr.get(),time);
                 InboundPoint ip = (InboundPoint)curr.get().getPickupLocation();
                 ip.setStored(false);
+                allReservations.clear();
+
+                ArrayList<ArrayList<Integer>> d2 = buildDestinationsInboundToAss(pickUpLocation,counter,startExplorerAnts);
+                ArrayList<Integer> d2End = new ArrayList<>();
+                for(ArrayList<Integer> ar: d2) d2End.add(ar.get(ar.size()-1));
+
+                double d3 = buildDestinationsAssembly(startExplorerAnts,d2End);
+                Point startd2 = destinations3.get(0);
+                double d2final = d2End.get(startExplorerAnts.indexOf(startd2));
+
+                double d4 = buildDestinationsAssemblyToOut(destinations3.get(destinations3.size()-1),deliveryLocation, (int)(d3));
+
+                destinations2.clear();
+                for(Point p: rm.getShortestPathTo(pickUpLocation,destinations3.get(0))) destinations2.add(p);
+                reservateInboundToAssembly(d2.get(startExplorerAnts.indexOf(startd2)),destinations2);
+
+                sendReservation();
+
 
                 currentDestination = destinations2.get(0); destinations2.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
                 state = AGVState.INBOUNDTOASSEMBLY;
-                print();
-            } else {
+            } else { // driving to inbound
                 currentDestination = destinations1.get(0); destinations1.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 try{
@@ -202,15 +217,49 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if(state == AGVState.INBOUNDTOASSEMBLY && rm.getPosition(this).equals(currentDestination)){
-            if(destinations2.size() == 0){
+            if(destinations2.size() == 0){ //arrived at assembly
                 state = AGVState.DRIVINGTOASSEMBLYcross;
                 print();
                 return;
 
             }else {
+                /**
+                 * Arrived at crossroad on way to assembly
+                 * Calculate new best path: 2 possibilities
+                 * 1. Current crossroad is starting point for assembly: clear destinations 2 and set state to DRIVINGTOASSEMBLYcross
+                 * 2. Need to driving further: continue to follow destinations2
+                 *
+                 * ?!?!?!?8?! Hier kan nog wel een fout zitten kijken vorige scenarios implementeren
+                 */
+
+                allReservations.clear();
+
+                ArrayList<Crossroad> begin = new ArrayList<>();
+                for(Crossroad c: startExplorerAnts){
+                    if(c.y >= getPosition().get().y) begin.add(c);
+                }
+
+                ArrayList<ArrayList<Integer>> d2 = buildDestinationsInboundToAss(currentDestination,counter,begin);
+                ArrayList<Integer> d2End = new ArrayList<>();
+                if(currentDestination instanceof InboundPoint) for(ArrayList<Integer> ar: d2) d2End.add(ar.get(ar.size()-1)-10);
+                else for(ArrayList<Integer> ar: d2) d2End.add(ar.get(ar.size()-1));
+
+                double d3 = buildDestinationsAssembly(begin,d2End);
+                Point startd2 = destinations3.get(0);
+                double d2final = d2End.get(begin.indexOf(startd2));
+                double d4 = buildDestinationsAssemblyToOut(destinations3.get(destinations3.size()-1),deliveryLocation, (int)(d3));
+                destinations2.clear();
+
+                for(Point p: rm.getShortestPathTo(getPosition().get(),destinations3.get(0))) destinations2.add(p);
+                reservateInboundToAssembly(d2.get(begin.indexOf(startd2)),destinations2);
+
+                sendReservation();
+                destinations2.remove(0);
                 currentDestination = destinations2.get(0); destinations2.remove(0);
+
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 rm.followPath(this,path,time);
+
                 return;
             }
         }
@@ -228,7 +277,7 @@ public class AGV  extends Vehicle implements CommUser {
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLY;
                 print();
-            } else {
+            } else { // hier nieuwe padden controleren
                 currentDestination = nextDestination();
 
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
@@ -256,6 +305,7 @@ public class AGV  extends Vehicle implements CommUser {
         }
 
         if(state == AGVState.DRIVINGAWAYASSEMBLY && rm.getPosition(this).equals(currentCrossroad)) {
+            //bij beide nieuwe padden controleren
             if(destinations3.size() == 0){
                 currentDestination = destinations4.get(0); destinations4.remove(0);
                 path = new LinkedList<>(rm.getShortestPathTo(this, currentDestination));
@@ -304,7 +354,8 @@ public class AGV  extends Vehicle implements CommUser {
         //make reservations outbound
         if(Point.distance(destinations1.get(0),previousDP) == 0){
             Reservation res = new Reservation(this,tick+1, tick +19,counter,previousDP);
-            factory.makeReservations(res,previousDP);
+            allReservations.add(res);
+            //factory.makeReservations(res,previousDP);
         }
 
         destinations1.remove(0);//first element is the current location
@@ -312,7 +363,9 @@ public class AGV  extends Vehicle implements CommUser {
         int end = ticks.get(ticks.size()-1);
         //make reservation inbound point
         Reservation res = new Reservation(this,end-21,end,counter,pickUpLocation);
-        factory.makeReservations(res,pickUpLocation);
+        //factory.makeReservations(res,pickUpLocation);
+        allReservations.add(res);
+
 
         //make reservations outbound
         ArrayList<Point> reservationsPoints = getOutboundReservations(destinations1);
@@ -322,7 +375,9 @@ public class AGV  extends Vehicle implements CommUser {
                     int t = ticks.get(destinations1.indexOf(reservationsPoints.get(i))+1);
                     Reservation r = new Reservation(this, t - 5, t+5,
                             counter,reservationsPoints.get(i));
-                    factory.makeReservations(r, reservationsPoints.get(i));
+                    //factory.makeReservations(r, reservationsPoints.get(i));
+                    allReservations.add(r);
+
                 } catch (Exception e){
                     int hi = 0;
                 }
@@ -344,10 +399,10 @@ public class AGV  extends Vehicle implements CommUser {
         return null;
     }
 
-    private ArrayList<ArrayList<Integer>> buildDestinationsInboundToAss(Point location, int tick){
+    private ArrayList<ArrayList<Integer>> buildDestinationsInboundToAss(Point location, int tick, ArrayList<Crossroad> endPoints){
         RoadModel rm = getRoadModel();
         ArrayList<ArrayList<Integer>> durations = new ArrayList<>();
-        for(Point destination: startExplorerAnts) {
+        for(Point destination: endPoints) {
             ArrayList<Point> temp = new ArrayList<>();
             for (Point p : rm.getShortestPathTo(location, destination)) temp.add(p);
             ArrayList<Integer> ticks = calculateTicksInToAss(temp,tick);
@@ -367,14 +422,16 @@ public class AGV  extends Vehicle implements CommUser {
 
         if(Point.distance(points.get(0),pickUpLocation)==0){
             Reservation r = new Reservation(this,ticks.get(0)+1,ticks.get(0)+29,counter,pickUpLocation);
-            factory.makeReservations(r,pickUpLocation);
+            //factory.makeReservations(r,pickUpLocation);
+            allReservations.add(r);
         }
 
 
         for (int i = 1; i < toReservate.size(); i++) {
             double moment = ticks.get(points.indexOf(toReservate.get(i)));
             Reservation res = new Reservation(this, moment - 5, moment + 5, counter,toReservate.get(i));
-            factory.makeReservations(res,toReservate.get(i));
+            allReservations.add(res);
+            //factory.makeReservations(res,toReservate.get(i));
         }
     }
 
@@ -436,18 +493,23 @@ public class AGV  extends Vehicle implements CommUser {
                     if (cr.assemblyPointPresent()) {
                         if (!needToVisitAssembly(cr)) { //If you don't need to visit the AP => just make a reservation
                             Reservation res = new Reservation(this, moment - 5, moment + 5, counter, cr);
-                            factory.makeReservations(res, cr);
+                            allReservations.add(res);
+                            //factory.makeReservations(res, cr);
                         } else { //if you need to visit the AP => reservate the crossroad(twice) and the AP
                             Reservation res1 = new Reservation(this, moment - 5, moment + 5, counter, cr); // drive into AP
                             Reservation res2 = new Reservation(this, moment - 5, moment + 5 + 32, counter, cr);// AP
                             Reservation res3 = new Reservation(this, moment + 32 - 5, moment + 32 + 5, counter, cr);//drive out of AP
-                            factory.makeReservations(res1, cr);
-                            factory.makeReservations(res2, cr.getAssemblyPoint());
-                            factory.makeReservations(res3, cr);
+                            allReservations.add(res1);
+                            allReservations.add(res2);
+                            allReservations.add(res3);
+                            //factory.makeReservations(res1, cr);
+                            //factory.makeReservations(res2, cr.getAssemblyPoint());
+                            //factory.makeReservations(res3, cr);
                         }
                     } else { //if no ap is present => just make a reservation
                         Reservation res = new Reservation(this, moment - 5, moment + 5, counter, cr);
-                        factory.makeReservations(res, cr);
+                        allReservations.add(res);
+                        //factory.makeReservations(res, cr);
                     }
 
                 }
@@ -467,6 +529,7 @@ public class AGV  extends Vehicle implements CommUser {
 
     private double buildDestinationsAssemblyToOut(Point location, Point deliveryLocation,int tick){
         RoadModel rm = getRoadModel();
+        destinations4.clear();
         for(Point p: rm.getShortestPathTo(location,deliveryLocation)) destinations4.add(p);
 
         ArrayList<Integer> ticks = calculateTicksAssToOut(destinations4,tick);
@@ -491,25 +554,35 @@ public class AGV  extends Vehicle implements CommUser {
 
         int moment = ticks.get(ticks.size()-1);
         Reservation res = new Reservation(this,moment-32,moment,counter,deliveryLocation);
-        factory.makeReservations(res,deliveryLocation);
+        allReservations.add(res);
+        //factory.makeReservations(res,deliveryLocation);
 
         for(int i = 1; i < pts.size(); i++){
             Point p = pts.get(i);
             if(p.x == 45 ){//last points that needs a reservation
                 if(p.y != 39){
                     Reservation res1 = new Reservation(this,ticks.get(i)-5, ticks.get(i)+5, counter,p);
-                    factory.makeReservations(res1,p);
+                    allReservations.add(res1);
+                    //factory.makeReservations(res1,p);
                 }
                 return;
             } else {
                 Reservation res2 = new Reservation(this,ticks.get(i)-5,ticks.get(i)+5,
                         counter,p);
-                factory.makeReservations(res2,p);
+                allReservations.add(res2);
+                //factory.makeReservations(res2,p);
             }
         }
 
     }
 
+    private void sendReservation(){
+        allReservations.sort(Comparator.comparing(r -> r.getStartTick()));
+        for(Reservation res: allReservations){
+            res.setTimpSamp(counter);
+            factory.makeReservations(res,res.getPoint());
+        }
+    }
 
     private boolean needToVisitAssembly(Point p){
             Crossroad cr = (Crossroad)p;

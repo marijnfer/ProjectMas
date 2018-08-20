@@ -49,4 +49,8 @@ public class Reservation {
     public Point getPoint() {
         return point;
     }
+
+    public void setTimpSamp(int timeStamp){
+        this.timeStamp = timeStamp;
+    }
 }

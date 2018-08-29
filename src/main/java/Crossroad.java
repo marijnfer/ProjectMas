@@ -23,19 +23,28 @@ public class Crossroad extends Point implements CommUser, TickListener{
     private ArrayList<ExploreInfo> exploreTree;
     private ArrayList<Reservation> reservations;
 
+    private boolean print = true;
+
+
 
     public Crossroad(double px, double py){
         super(px,py);
         backwardsReachable = new ArrayList<>();
         exploreTree = new ArrayList<>();
         reservations = new ArrayList<>();
+        if(px == 10 && py == 39)
+        {
+           // reservations.add(new Reservation(0,1000,0,this));
+        }
+
     }
 
 
     @Override
     public void tick(TimeLapse timeLapse){
         tickCounter++;
-        updateReservations();
+        //updateReservations();
+
         if(pheromone != null){
             pheromone.evaporate();
         }
@@ -141,15 +150,19 @@ public class Crossroad extends Point implements CommUser, TickListener{
             Reservation r = (Reservation)it.next();
             if(r.overlapping(res)){
                 reservations.remove(r);
-                reservations.add(res);
-                System.out.print(this);
-                System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                reservations.add(res);/*
+                if(print && Point.distance(new Point(10,39),this) ==0)System.out.print(this);
+                if(print && Point.distance(new Point(10,39),this)==0)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                */
+                if(print)System.out.print(this);
+                if(print)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+
                 return;
             }
         }
         reservations.add(res);
-        System.out.print(this);
-        System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+        if(print)System.out.print(this);
+        if(print)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
     public Reservation getReservationTick(int tick){
@@ -173,5 +186,29 @@ public class Crossroad extends Point implements CommUser, TickListener{
 
     public ArrayList<Reservation> getReservations() {
         return reservations;
+    }
+
+    public int firstAvailableMoment(int tick, AGV agv){
+        // No need to wait
+        if(!containsTick(tick-5,agv) && !containsTick(tick+5,agv)) return tick;
+
+        while(true){
+            if(!containsTick(tick+5,agv) && !containsTick(tick+15,agv)) return tick +5;
+            tick++;
+        }
+    }
+
+    private boolean containsTick(int tick, AGV agv){
+        for(Reservation r: reservations){
+            if(r.containsTick(tick) && r.getAgv() != agv) return true;
+        }
+        return false;
+    }
+
+    private Reservation containsTickReservation(int tick, AGV agv){
+        for(Reservation r: reservations){
+            if(r.containsTick(tick) && r.getAgv() != agv) return r;
+        }
+        return null;
     }
 }

@@ -31,6 +31,7 @@ import com.github.rinde.rinsim.ui.renderers.WarehouseRenderer;
 import javax.measure.unit.SI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Example showcasing the {@link CollisionGraphRoadModelImpl} with an
@@ -39,7 +40,7 @@ import java.util.Iterator;
  */
 public final class Main {
     private static final double VEHICLE_LENGTH = 1d;
-    private static final int NUM_AGVS = 1;
+    private static final int NUM_AGVS =1;
     private static final long TEST_END_TIME = 10 * 60 * 1000L;
     private static final int TEST_SPEED_UP = 16;
     static final int SERVICE_DURATION = 10000;
@@ -176,23 +177,25 @@ public final class Main {
         }
         ArrayList<Crossroad> exploreStart = new ArrayList<>();
         ArrayList<Crossroad> crossroads = factory.getCrossroads();
-        for(Crossroad cr : crossroads){
+        for(Crossroad cr : crossroads) {
             boolean added = false;
-            for (AssemblyPoint as : factory.getAssemblyPoints()){
-                if(Point.distance(as,cr) == 2){
-                    cr.setAssemblyPoint(as);
-                    cr.setPheromone(new Pheromone(as.getStationNr()));
-                    factory.addConnect(cr);
-                    added = true;
+            if (cr.y > 5) {
+                for (AssemblyPoint as : factory.getAssemblyPoints()) {
+                    if (Point.distance(as, cr) == 2) {
+                        cr.setAssemblyPoint(as);
+                        cr.setPheromone(new Pheromone(as.getStationNr()));
+                        factory.addConnect(cr);
+                        added = true;
+                    }
                 }
+                if (!added) {
+                    factory.addConnect(cr);
+                }
+                if (cr.getFunction() == 10) {
+                    exploreStart.add(cr);
+                }
+                sim.register(cr);
             }
-            if(!added){
-                factory.addConnect(cr);
-            }
-            if(cr.getFunction() == 10){
-                exploreStart.add(cr);
-            }
-            sim.register(cr);
         }
 
 
@@ -211,14 +214,18 @@ public final class Main {
             }
         }
 
+        ArrayList<Point> spawnPoints = factory.getSpawnPoints();
+        int j =0;
+        for(int i = spawnPoints.size()-1; i>=spawnPoints.size()-NUM_AGVS;i--){
+            Random r = new Random();
+
+            AGV agv = new AGV(spawnPoints.get(i),10,factory,sim.getRandomGenerator(),exploreStart,j);
+            j++;
+            sim.register(agv);
+        }
 
 
-        AGV agv = new AGV(new Point(19,5),10,factory,sim.getRandomGenerator(),exploreStart);
-        sim.register(agv);
-        AGV agv2 = new AGV(new Point(19,5),10,factory,sim.getRandomGenerator(),exploreStart);
-        //sim.register(agv2);
-        AGV agv3 = new AGV(new Point(25,5),10,factory,sim.getRandomGenerator(),exploreStart);
-       // sim.register(agv3);
+
 
         sim.addTickListener(new TickListener() {
             @Override

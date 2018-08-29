@@ -40,7 +40,10 @@ public class Layout {
         }
 
         //Bound + assembly
-        Graphs.addPath(g,assembly.get(6,0),bounds.get(13,1));
+        Graphs.addPath(g,assembly.get(6,0),bounds.get(20,1));
+        for(int i = 19; i > 12;i--){
+            Graphs.addPath(g,bounds.get(i+1,1),bounds.get(i,1));
+        }
         Graphs.addPath(g,bounds.get(0,1),assembly.get(-1,0));
 
         //Assembly
@@ -291,6 +294,13 @@ public class Layout {
         for(int i = 0; i<dps.size();i++){
             builder.put(10+i,0,dps.get(i));
             builder.put(10+i,1,crs2.get(i));
+        }
+
+        int j = 14;
+        for(int i = 30; i<44;i = i+2){
+            builder.put(j,1, new Point(i,5));
+            j++;
+
         }
 
         return builder.build();

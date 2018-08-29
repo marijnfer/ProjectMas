@@ -26,6 +26,7 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     private ArrayList<Reservation> reservations;
     private int tickCounter = 0;
 
+    private boolean print = true;
 
 
 
@@ -150,14 +151,19 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
             if(r.overlapping(res)){
                 reservations.remove(r);
                 reservations.add(res);
-                System.out.print(this);
-                System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                /*
+                if(print && Point.distance(new Point(10,41),this) ==0)System.out.print(this);
+                if(print && Point.distance(new Point(10,41),this)==0)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                return;
+                */
+                if(print)System.out.print(this);
+                if(print)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
             }
         }
         reservations.add(res);
-        System.out.print(this);
-        System.out.println(String.format("AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+        if(print)System.out.print(this);
+        if(print)System.out.println(String.format("AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
     public Reservation getReservationTick(int tick){
@@ -193,5 +199,37 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     }
 
+    public int firstAvailableMoment(int tick, AGV agv){
+        // No need to wait
+        if(!containsTick(tick-5,agv) && !containsTick(tick+37,agv)) return tick;
+        Reservation res;
+        if(containsTickReservation(tick+37,agv) != null){
+            res = containsTickReservation(tick+37,agv);
+        } else{
+            res = containsTickReservation(tick-5,agv);
+        }
+        tick = res.getStopTick();
+
+        while(true){
+            if(!containsTick(tick-5,agv) && !containsTick(tick+37,agv)) return tick+5;
+            tick++;
+
+        }
+
+    }
+
+    private boolean containsTick(int tick, AGV agv){
+        for(Reservation r: reservations){
+            if(r.containsTick(tick) && r.getAgv() != agv) return true;
+        }
+        return false;
+    }
+
+    private Reservation containsTickReservation(int tick, AGV agv){
+        for(Reservation r: reservations){
+            if(r.containsTick(tick) && r.getAgv() != agv) return r;
+        }
+        return null;
+    }
 
 }

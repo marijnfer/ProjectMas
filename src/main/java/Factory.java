@@ -406,5 +406,26 @@ public class Factory {
         }
         return null;
     }
+
+    public ArrayList<Point> getSpawnPoints(){
+        Iterator it = getAllPointsIterator();
+        ArrayList<Point> temp = new ArrayList<>();
+
+        while(it.hasNext()){
+            Point p = (Point)it.next();
+            if(p.y == 5){
+                if(p.x >= 30 && p.x < 45) temp.add(p);
+            }
+        }
+
+        return temp;
+    }
+
+    public int nextFreeAssembly(Crossroad cr, int tick, AGV agv){
+            return cr.getAssemblyPoint().firstAvailableMoment(tick,agv);
+    }
+    public int nextCrossRoad(Crossroad cr, int tick, AGV agv){
+        return cr.firstAvailableMoment(tick,agv);
+    }
 }
 

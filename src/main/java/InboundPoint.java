@@ -11,6 +11,9 @@ public class InboundPoint extends Point  implements TickListener {
     private static int RESERVATIONRESET = 10;
     private int tickCounter = 0;
 
+    private boolean print = false;
+
+
 
     public InboundPoint(double px, double py){
         super(px,py);
@@ -43,14 +46,14 @@ public class InboundPoint extends Point  implements TickListener {
             if(r.overlapping(res)){
                 reservations.remove(r);
                 reservations.add(res);
-                System.out.print(this);
-                System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+                if(print)System.out.print(this);
+                if(print) System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
             }
         }
         reservations.add(res);
-        System.out.print(this);
-        System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
+        if(print)System.out.print(this);
+        if(print)System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
     public Reservation getReservationTick(int tick){

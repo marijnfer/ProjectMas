@@ -18,9 +18,10 @@ import static java.lang.StrictMath.abs;
 
 public class AGV  extends Vehicle implements CommUser {
 
+    private int id;
     RandomGenerator rng;
     private static int RANGE = 100;
-    private int burnInTick = 20;
+    private int burnInTick;
     private Optional<CommDevice> comDevice;
     ArrayList<Crossroad> startExplorerAnts;
 
@@ -45,9 +46,12 @@ public class AGV  extends Vehicle implements CommUser {
     private Point latestPos = new Point(0,0);
     int counter = 0;
     int lastTick = 0;
+    private int reservationCounter;
     private ArrayList<Reservation> allReservations;
+    private AGVState previousState;
+    private Reservation nextReservation;
 
-    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts) {
+    public AGV(Point startPosition, int capacity,Factory factory,RandomGenerator rng,ArrayList<Crossroad> startExplorerAnts, int id) {
         super(VehicleDTO.builder()
                 .capacity(capacity)
                 .startPosition(startPosition)
@@ -67,6 +71,8 @@ public class AGV  extends Vehicle implements CommUser {
         previousDP = new Point(-10,-10);
         deliveryLocation = new Point(-20,-20);
         allReservations = new ArrayList<>();
+        this.id = id;
+        burnInTick = 20 + id*10;
     }
 
     @Override
@@ -115,7 +121,53 @@ public class AGV  extends Vehicle implements CommUser {
         final PDPModel pm = getPDPModel();
         final RoadModel rm = getRoadModel();
         counter++;
-        System.out.println(counter);
+        if(id == 0) System.out.println(counter);
+
+        if(currentDestination != null) {
+            //double travelTime = Point.distance(getPosition().get(), currentDestination) * 7.5;
+            int eta = counter + calculateTravelTime(getPosition().get(),currentDestination);
+            if(needToVisitAssembly(currentDestination)){
+                // if you need to visit the assembly => get reservation assemblyPoint
+                try{
+                    Crossroad cr = (Crossroad) currentDestination;
+                    if (factory.getRervations(currentDestination, eta, this) != null) {
+                        nextReservation =factory.getRervations(cr.getAssemblyPoint(), eta, this);
+
+                    }
+
+                } catch (Exception e){
+
+                }
+
+            } else{ // if you don't need to visit the assembly => get reservation crossroad
+                if (factory.getRervations(currentDestination, eta, this) != null) {
+                    nextReservation =factory.getRervations(currentDestination, eta, this);
+
+                }
+            }
+        }
+
+        if(nextReservation != null && state != AGVState.WAIT){
+            if(Point.distance(getPosition().get(),currentDestination) <=2){
+                if(nextReservation.containsTick(counter)){
+                    previousState = state;
+                    state = AGVState.WAIT;
+                }
+            }
+        }
+
+        if(state == AGVState.WAIT){
+            if(!nextReservation.containsTick(counter+15)){
+                state = previousState;
+                nextReservation = null;
+                if(needToVisitAssembly(currentDestination)){
+
+                }
+            }
+            return;
+        }
+
+        if(counter % 10 == 0)sendReservation();
 
         if(!burnIn()){ return; }
 
@@ -170,13 +222,15 @@ public class AGV  extends Vehicle implements CommUser {
         if((state == AGVState.TOINBOUND) && !rm.getPosition(this).equals(currentDestination)){
             try{
                 rm.followPath(this,path,time);
-            }catch (Exception e){}
+            }catch (Exception e){System.out.println("cant move");}
             return;
         }
 
         if(state == AGVState.TOINBOUND && rm.getPosition(this).equals(currentDestination)){
             if(destinations1.size() == 0){ //arrival at inbound
-                pm.pickup(this,curr.get(),time);
+                try{
+                    pm.pickup(this,curr.get(),time);
+                } catch (Exception e){}
                 InboundPoint ip = (InboundPoint)curr.get().getPickupLocation();
                 ip.setStored(false);
                 allReservations.clear();
@@ -206,13 +260,15 @@ public class AGV  extends Vehicle implements CommUser {
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 try{
                     rm.followPath(this,path,time);
-                } catch (Exception e){}
+                }catch (Exception e){System.out.println("cant move");}
             }
             return;
         }
 
         if(state == AGVState.INBOUNDTOASSEMBLY && !rm.getPosition(this).equals(currentDestination)){
-            rm.followPath(this,path,time);
+            try{
+                rm.followPath(this,path,time);
+            }catch (Exception e){System.out.println("cant move");}
             return;
         }
 
@@ -258,7 +314,12 @@ public class AGV  extends Vehicle implements CommUser {
                 currentDestination = destinations2.get(0); destinations2.remove(0);
 
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
-                rm.followPath(this,path,time);
+                try{
+                    rm.followPath(this,path,time);
+
+                } catch (Exception e){
+                    int i = 0;
+                }
 
                 return;
             }
@@ -315,13 +376,16 @@ public class AGV  extends Vehicle implements CommUser {
                 currentDestination = nextDestination();
                 path = new LinkedList<>(rm.getShortestPathTo(this,currentDestination));
                 state = AGVState.DRIVINGTOASSEMBLYcross;
+
             }
             return;
         }
 
         if (state == AGVState.DELEVERING && !rm.getPosition(this).equals(currentDestination)) {
             if (time.hasTimeLeft()) {
-                rm.followPath(this, path, time);
+                try{
+                    rm.followPath(this, path, time);
+                } catch (Exception e){}
             }
             return;
         }
@@ -342,6 +406,21 @@ public class AGV  extends Vehicle implements CommUser {
 
         }
 
+    }
+
+    /**
+     * Estimation of ticks necessary to go from p1 to p2
+     * @param p1
+     * @param p2
+     * @return
+     */
+    private int calculateTravelTime(Point p1, Point p2){
+        List<Point> temp = getRoadModel().getShortestPathTo(p1,p2);
+        int length =0;
+        for(int i = 1; i < temp.size(); i++){
+            length += Point.distance(temp.get(i-1),temp.get(i));
+        }
+        return (int)(length*7.5);
     }
 
 
@@ -475,6 +554,7 @@ public class AGV  extends Vehicle implements CommUser {
             //function to determine which path is the best
             int index = rng.nextInt(possiblePaths.size());
             destinations3 = possiblePaths.get(index);
+            ArrayList<Integer> temp = calculateTicksAssembly(destinations3,d2.get(d2.size()-1));
             System.out.println(destinations3);
             finalTicks = ticks.get(index);
 
@@ -492,14 +572,14 @@ public class AGV  extends Vehicle implements CommUser {
                 if (cr.x > 5) {//these crossroads don't a reservation because no collision can occur
                     if (cr.assemblyPointPresent()) {
                         if (!needToVisitAssembly(cr)) { //If you don't need to visit the AP => just make a reservation
-                            Reservation res = new Reservation(this, moment - 5, moment + 5, counter, cr);
+                            Reservation res = new Reservation(this, moment - 5, moment+ 5, counter, cr);
                             allReservations.add(res);
                             //factory.makeReservations(res, cr);
                         } else { //if you need to visit the AP => reservate the crossroad(twice) and the AP
-                            Reservation res1 = new Reservation(this, moment - 5, moment + 5, counter, cr); // drive into AP
-                            Reservation res2 = new Reservation(this, moment - 5, moment + 5 + 32, counter, cr);// AP
-                            Reservation res3 = new Reservation(this, moment + 32 - 5, moment + 32 + 5, counter, cr);//drive out of AP
-                            allReservations.add(res1);
+                            //Reservation res1 = new Reservation(this, moment - 5, moment + 5, counter, cr); // drive into AP
+                            Reservation res2 = new Reservation(this, moment - 5, moment+ 5+32, counter, cr.getAssemblyPoint());// AP
+                            Reservation res3 = new Reservation(this, moment- 5+32, moment+ 5+32, counter, cr);//drive out of AP
+                            //allReservations.add(res1);
                             allReservations.add(res2);
                             allReservations.add(res3);
                             //factory.makeReservations(res1, cr);
@@ -522,8 +602,18 @@ public class AGV  extends Vehicle implements CommUser {
 
     }
     private int howLongToWait(Reservation res,int tick){
-        if(res.containsTick(tick)) return 15+res.getStopTick();
+        if(res.containsTick(tick)){
+            System.out.println("waittttttttttttttttttttttttttttt");
+            return 20+res.getStopTick()-tick;
+        }
+        return 0;
+    }
 
+    private int waitUntil(Reservation res, int tick){
+        if(res.containsTick(tick)){
+            System.out.println("waittttttttttttttttttttttttttttt");
+            return 20+res.getStopTick()-tick;
+        }
         return 0;
     }
 
@@ -542,20 +632,10 @@ public class AGV  extends Vehicle implements CommUser {
     }
 
     private void doAssToOutReservations(ArrayList<Point> pts, ArrayList<Integer> ticks){
-       //
-        int begin = 0;
-        /*
-        if(needToVisitAssembly(pts.get(0))){
-            begin = 1;
-            Reservation res = new Reservation(this,moment-32,moment,counter,deliveryLocation);
-            factory.makeReservations(res,deliveryLocation);
-        }
-        */
 
         int moment = ticks.get(ticks.size()-1);
-        Reservation res = new Reservation(this,moment-32,moment,counter,deliveryLocation);
+        Reservation res = new Reservation(this,moment-23,moment+9,counter,deliveryLocation);
         allReservations.add(res);
-        //factory.makeReservations(res,deliveryLocation);
 
         for(int i = 1; i < pts.size(); i++){
             Point p = pts.get(i);
@@ -563,14 +643,12 @@ public class AGV  extends Vehicle implements CommUser {
                 if(p.y != 39){
                     Reservation res1 = new Reservation(this,ticks.get(i)-5, ticks.get(i)+5, counter,p);
                     allReservations.add(res1);
-                    //factory.makeReservations(res1,p);
                 }
                 return;
             } else {
                 Reservation res2 = new Reservation(this,ticks.get(i)-5,ticks.get(i)+5,
                         counter,p);
                 allReservations.add(res2);
-                //factory.makeReservations(res2,p);
             }
         }
 
@@ -585,6 +663,7 @@ public class AGV  extends Vehicle implements CommUser {
     }
 
     private boolean needToVisitAssembly(Point p){
+        try{
             Crossroad cr = (Crossroad)p;
             if(cr.assemblyPointPresent()){
                 int nr = cr.getAssemblyPoint().getStationNr();
@@ -592,6 +671,8 @@ public class AGV  extends Vehicle implements CommUser {
                     return true;
                 }
             }
+        } catch (Exception e){}
+
 
 
         return false;
@@ -612,7 +693,9 @@ public class AGV  extends Vehicle implements CommUser {
 
         temp.add(d);
 
-
+        if(id == 0){
+            int a = 0;
+        }
 
         for(int i = 1; i < crs.size();i++){
             int duration = temp.get(i-1);
@@ -625,20 +708,31 @@ public class AGV  extends Vehicle implements CommUser {
             else if((xDiff == 10 && yDiff ==10)){duration += 103;}
             else if((xDiff == 8 && yDiff ==0)){duration += 59;}
             else if((xDiff == 5 && yDiff ==10)){duration += 82;}
-            else {System.out.println("length not found");}
+            else {
+                System.out.println("length not found");}
+
 
             if(p0 instanceof Crossroad){
+
                 Crossroad cr = (Crossroad)p0;
-                if(needToVisitAssembly(cr)){
-                    duration += 32;
+                if(needToVisitAssembly(cr)) {
+                    //1
+                    if (crs.get(i).getAssemblyPoint() != null) {
+                        duration = factory.nextFreeAssembly(crs.get(i), duration, this) + 32;
+                        int gfi = 0;
+                    }
+
                 }
-
             }
 
+
+            /*
             if(factory.getRervations(crs.get(i),duration,this)!= null){
-                duration += howLongToWait(factory.getRervations(crs.get(i),duration,this),duration);
+                //1
+                duration = nextFreeCrossroad(crs)
+                duration = howLongToWait(factory.getRervations(crs.get(i),duration,this),duration);
             }
-
+            */
             temp.add(duration);
 
 
@@ -675,6 +769,11 @@ public class AGV  extends Vehicle implements CommUser {
             else if((xDiff == 1 && yDiff ==0)){d += 9;}
             else if((xDiff == 10 && yDiff ==10)){d += 103;}
             else if((xDiff == 8 && yDiff ==10)){d += 93;}
+            else if((xDiff ==3  && yDiff ==0)){d += 22;}
+            else if((xDiff ==2  && yDiff ==0)){d += 15;}
+
+
+
             else {System.out.println("length not found");}
 
             if(factory.getRervations(crs.get(i),d,this)!= null){
@@ -709,7 +808,11 @@ public class AGV  extends Vehicle implements CommUser {
             else if(p0 instanceof Crossroad && p1 instanceof InboundPoint){d+=17;}
             else if((xDiff == 1 && yDiff ==0)){d += 8;}
             else if((xDiff == 6 && yDiff ==0)){d += 44;}
-            else { System.out.println("Distance not found");}
+            else if((xDiff == 2 && yDiff ==0)){d += 15;}
+
+
+            else {
+                System.out.println("Distance not found");}
 
             if(factory.getRervations(crs.get(i),d,this)!= null){
                 d += howLongToWait(factory.getRervations(crs.get(i),d,this),d);
@@ -778,7 +881,6 @@ public class AGV  extends Vehicle implements CommUser {
 
         return temp;
     }
-
 
 
 }

@@ -16,6 +16,14 @@ public class Reservation {
         this.point = point;
     }
 
+    public Reservation(double startTick, double stopTick, int timeStamp,Point point){
+        this.startTick = (int)startTick;
+        this.stopTick= (int)stopTick;
+        this.timeStamp = timeStamp;
+        this.point = point;
+    }
+
+
 
 
     public AGV getAgv() {

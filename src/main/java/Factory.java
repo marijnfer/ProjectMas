@@ -169,7 +169,20 @@ public class Factory {
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
                 case 5:
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
+            } /*
+            switch (i){
+                case 1:
+                    if(random <= 0.8){temp.add(false);} else{temp.add(false);} break;
+                case 2:
+                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
+                case 3:
+                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
+                case 4:
+                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
+                case 5:
+                    if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
             }
+            */
         }
 
         ArrayList<Boolean> temp2 = new ArrayList<>();

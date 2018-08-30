@@ -43,7 +43,7 @@ public class Crossroad extends Point implements CommUser, TickListener{
     @Override
     public void tick(TimeLapse timeLapse){
         tickCounter++;
-        //updateReservations();
+        updateReservations();
 
         if(pheromone != null){
             pheromone.evaporate();

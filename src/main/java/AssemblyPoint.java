@@ -26,7 +26,7 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     private ArrayList<Reservation> reservations;
     private int tickCounter = 0;
 
-    private boolean print = true;
+    private boolean print = false;
 
 
 
@@ -151,11 +151,11 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
             if(r.overlapping(res)){
                 reservations.remove(r);
                 reservations.add(res);
-                /*
+               /*
                 if(print && Point.distance(new Point(10,41),this) ==0)System.out.print(this);
                 if(print && Point.distance(new Point(10,41),this)==0)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
-                */
+             */
                 if(print)System.out.print(this);
                 if(print)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
@@ -199,9 +199,15 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     }
 
-    public int firstAvailableMoment(int tick, AGV agv){
+    public int firstAvailableMoment(int t, AGV agv){
+        if(reservations.size() > 0){
+            int f = 0;
+        }
         // No need to wait
-        if(!containsTick(tick-5,agv) && !containsTick(tick+37,agv)) return tick;
+        int tick = t;
+        if(!containsTick(t-5,agv) && !containsTick(t+37,agv)){
+            return tick;
+        }
         Reservation res;
         if(containsTickReservation(tick+37,agv) != null){
             res = containsTickReservation(tick+37,agv);
@@ -211,7 +217,10 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         tick = res.getStopTick();
 
         while(true){
-            if(!containsTick(tick-5,agv) && !containsTick(tick+37,agv)) return tick+5;
+            if(!containsTick(tick-5,agv) && !containsTick(tick+37,agv)) {
+                return tick+5;
+
+            }
             tick++;
 
         }

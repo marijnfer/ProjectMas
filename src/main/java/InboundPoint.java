@@ -11,7 +11,7 @@ public class InboundPoint extends Point  implements TickListener {
     private static int RESERVATIONRESET = 10;
     private int tickCounter = 0;
 
-    private boolean print = false;
+    private boolean print = true;
 
 
 

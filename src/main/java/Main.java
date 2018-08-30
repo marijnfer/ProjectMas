@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import com.github.rinde.rinsim.core.Simulator;
 import com.github.rinde.rinsim.core.model.comm.CommModel;
 import com.github.rinde.rinsim.core.model.pdp.DefaultPDPModel;
@@ -68,8 +67,9 @@ public final class Main {
                 .with(WarehouseRenderer.builder()
                         .withMargin(VEHICLE_LENGTH))
                 .with(AGVRenderer.builder()
+                                .withVehicleCoordinates()
                         .withDifferentColorsForVehicles()
-                        .withVehicleCoordinates())
+                        )
                 .with(RoadUserRenderer.builder()
                         .withImageAssociation(Task.class, "/Afbeelding1.png")
                         .withImageAssociation(AssemblyParcel0.class, "/ap0.png")

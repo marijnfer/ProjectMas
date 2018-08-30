@@ -56,10 +56,13 @@ public class Layout {
 
         Graphs.addPath(g,assembly.get(1,0),assembly.get(3,0));
 
-        Graphs.addPath(g,assembly.get(1,0),assembly.get(3,1));
+        Graphs.addPath(g,assembly.get(1,0),assembly.get(2,1));
         Graphs.addPath(g,assembly.get(3,0),assembly.get(3,1));
 
-        Graphs.addPath(g,assembly.get(1,1),assembly.get(3,1));
+        Graphs.addPath(g,assembly.get(1,1),assembly.get(2,1));
+        Graphs.addPath(g,assembly.get(2,1),assembly.get(3,1));
+
+
         Graphs.addPath(g,assembly.get(1,2),assembly.get(1,1));
         Graphs.addPath(g,assembly.get(1,1), assembly.get(2,2));
 
@@ -91,10 +94,10 @@ public class Layout {
             Graphs.addPath(g,assembly.get(-1,i),assembly.get(-1,i+1));
         }
 
-        Graphs.addBiPath(g,assembly.get(6,4),assembly.get(6,3));
-        Graphs.addBiPath(g,assembly.get(6,3),assembly.get(6,2));
-        Graphs.addBiPath(g,assembly.get(6,2),assembly.get(6,1));
-        Graphs.addBiPath(g,assembly.get(6,1),assembly.get(6,0));
+        Graphs.addPath(g,assembly.get(6,4),assembly.get(6,3));
+        Graphs.addPath(g,assembly.get(6,3),assembly.get(6,2));
+        Graphs.addPath(g,assembly.get(6,2),assembly.get(6,1));
+        Graphs.addPath(g,assembly.get(6,1),assembly.get(6,0));
 
         for(int i = 1; i<5; i++){
             Graphs.addPath(g,assembly.get(5,i-1),assembly.get(6,i));
@@ -184,6 +187,7 @@ public class Layout {
 
         //Row 2
         builder.put(2,0,new Crossroad(15+offset.x,offset.y));
+        builder.put(2,1,new Crossroad(15+offset.x,10+offset.y));
         builder.put(2,2,new Crossroad(15+offset.x,20+offset.y));
 
         //Row 3

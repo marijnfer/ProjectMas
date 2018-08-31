@@ -2,18 +2,18 @@ import com.github.rinde.rinsim.geom.Point;
 
 import java.util.ArrayList;
 
+/**
+ * Connect contains a crossroad and a list of all connected crossroads
+ */
 public class Connect {
     private Crossroad crossroad;
     private ArrayList<Crossroad> coupled;
     private ArrayList<Double> distances;
-    private ArrayList<Integer> travelTime;
 
     public Connect(Crossroad crossroad){
         this.crossroad = crossroad;
         coupled = new ArrayList<>();
         distances = new ArrayList<>();
-        travelTime = new ArrayList<>();
-
     }
 
     public void addCoupledCrossroad(Crossroad cr) {
@@ -29,15 +29,4 @@ public class Connect {
         return coupled;
     }
 
-    public ArrayList<Connect> coupledToConnects() {
-        ArrayList<Connect> cons = new ArrayList<>();
-        for(Crossroad c: coupled){
-            cons.add(new Connect(c));
-        }
-        return cons;
-    }
-
-    public void addTravelTime(int t){
-        travelTime.add(t);
-    }
 }

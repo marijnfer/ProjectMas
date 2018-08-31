@@ -7,17 +7,15 @@ import com.github.rinde.rinsim.core.model.time.TimeLapse;
 
 
 import java.util.ArrayList;
-
+/**
+ * Parcel for station 1 (only for graphic purposes)
+ */
 public class AssemblyParcel1 extends Parcel implements TickListener{
     private ArrayList<AssemblyPoint> reachable;
 
     public AssemblyParcel1(ParcelDTO dto) {
         super(dto);
         reachable = new ArrayList<>();
-    }
-
-    private void addReachable(AssemblyPoint as){
-        reachable.add(as);
     }
 
     @Override

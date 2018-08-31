@@ -30,7 +30,6 @@ import com.github.rinde.rinsim.ui.renderers.WarehouseRenderer;
 import javax.measure.unit.SI;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * Example showcasing the {@link CollisionGraphRoadModelImpl} with an
@@ -39,12 +38,8 @@ import java.util.Random;
  */
 public final class Main {
     private static final double VEHICLE_LENGTH = 1d;
-    private static final int NUM_AGVS =1;
-    private static final long TEST_END_TIME = 10 * 60 * 1000L;
-    private static final int TEST_SPEED_UP = 16;
+    private static final int NUM_AGVS =7;
     static final int SERVICE_DURATION = 10000;
-    boolean BURNIN = true;
-    int burnTickLeft = 10;
 
     private Main() {}
 
@@ -71,7 +66,7 @@ public final class Main {
                         .withDifferentColorsForVehicles()
                         )
                 .with(RoadUserRenderer.builder()
-                        .withImageAssociation(Task.class, "/Afbeelding1.png")
+                        .withImageAssociation(Task.class, "/inboundPoint.png")
                         .withImageAssociation(AssemblyParcel0.class, "/ap0.png")
                         .withImageAssociation(AssemblyParcel1.class, "/ap1.png")
                         .withImageAssociation(AssemblyParcel2.class, "/ap2.png")
@@ -82,11 +77,9 @@ public final class Main {
 
         if (testing) {
             viewBuilder = viewBuilder
-                    //.withAutoPlay()
                     //.withSimulatorEndTime(TEST_END_TIME)
                     .withTitleAppendix("Factory")
                     .withSpeedUp(2)
-                    //.withNoResizing()
                     .withResolution(700,700)
                     ;
         } else {
@@ -107,7 +100,6 @@ public final class Main {
         final Factory factory = new Factory(sim);
 
         Iterator it = factory.getInboundPoints().iterator();
-        ArrayList<DeliveryPoint> deliveryPoints = factory.getDeliverPoints();
 
         while (it.hasNext()){
             InboundPoint ip = (InboundPoint)it.next();
@@ -121,6 +113,7 @@ public final class Main {
             sim.register(p);
         }
 
+        //Add the appropriate parcel to each assembly
         Iterator it1 = factory.getAssemblyPoints().iterator();
         while (it1.hasNext()){
             AssemblyPoint ap = (AssemblyPoint)it1.next();
@@ -175,6 +168,8 @@ public final class Main {
             }
 
         }
+
+        //Couple each AssemblyPoint to its connected crossroad
         ArrayList<Crossroad> exploreStart = new ArrayList<>();
         ArrayList<Crossroad> crossroads = factory.getCrossroads();
         for(Crossroad cr : crossroads) {
@@ -183,7 +178,6 @@ public final class Main {
                 for (AssemblyPoint as : factory.getAssemblyPoints()) {
                     if (Point.distance(as, cr) == 2) {
                         cr.setAssemblyPoint(as);
-                        cr.setPheromone(new Pheromone(as.getStationNr()));
                         factory.addConnect(cr);
                         added = true;
                     }
@@ -198,34 +192,16 @@ public final class Main {
             }
         }
 
-
-
         factory.buildConnects();
         factory.buildAllconnections();
 
-        Iterator itCr = factory.getCrossroads().iterator();
-        while (itCr.hasNext()){
-            Crossroad cr = (Crossroad)itCr.next();
-            if(!cr.assemblyPointPresent() && cr.y >5 && cr.x < 45){
-                int size = factory.findConnections(cr).size();
-                if(size !=0){
-                    cr.setPheromone(new Pheromone(5));
-                }
-            }
-        }
-
         ArrayList<Point> spawnPoints = factory.getSpawnPoints();
         int j =0;
-        for(int i = spawnPoints.size()-1; i>=spawnPoints.size()-NUM_AGVS;i--){
-            Random r = new Random();
-
+        for(int i = 0; i< NUM_AGVS;i++){
             AGV agv = new AGV(spawnPoints.get(i),10,factory,sim.getRandomGenerator(),exploreStart,j);
             j++;
             sim.register(agv);
         }
-
-
-
 
         sim.addTickListener(new TickListener() {
             @Override
@@ -263,11 +239,5 @@ public final class Main {
             public void afterTick(TimeLapse timeLapse) {}
         });
         sim.start();
-        System.out.println("sim start");
     }
-
-
-
-
-
 }

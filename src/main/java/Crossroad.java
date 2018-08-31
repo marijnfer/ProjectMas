@@ -1,133 +1,39 @@
-import com.github.rinde.rinsim.core.model.comm.CommDevice;
-import com.github.rinde.rinsim.core.model.comm.CommDeviceBuilder;
-import com.github.rinde.rinsim.core.model.comm.CommUser;
-import com.github.rinde.rinsim.core.model.comm.Message;
 import com.github.rinde.rinsim.core.model.time.TickListener;
 import com.github.rinde.rinsim.core.model.time.TimeLapse;
 import com.github.rinde.rinsim.geom.Point;
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Crossroad extends Point implements CommUser, TickListener{
-    private static int RANGE = 50;
+public class Crossroad extends Point implements TickListener{
     private static int RESERVATIONRESET = 10;
-    private Optional<CommDevice> comDevice;
-    private ArrayList<CommUser> backwardsReachable;
-    private Pheromone pheromone;
     private AssemblyPoint assemblyPoint;
     private int function = -1;
     private int tickCounter = 0;
-    private ArrayList<ExploreInfo> exploreTree;
     private ArrayList<Reservation> reservations;
-
-    private boolean print = true;
-
-
 
     public Crossroad(double px, double py){
         super(px,py);
-        backwardsReachable = new ArrayList<>();
-        exploreTree = new ArrayList<>();
         reservations = new ArrayList<>();
-        if(px == 10 && py == 39)
-        {
-           // reservations.add(new Reservation(0,1000,0,this));
-        }
-
     }
-
 
     @Override
     public void tick(TimeLapse timeLapse){
         tickCounter++;
         updateReservations();
-
-        if(pheromone != null){
-            pheromone.evaporate();
-        }
-        handleMessages();
-    }
-
-
-    private void handleMessages(){
-        ImmutableList<Message> messages = comDevice.get().getUnreadMessages();
-        for(Message m: messages){
-            if(m.getContents() instanceof ExploreMessage){
-                ExploreMessage em = (ExploreMessage)m.getContents();
-                switch (em.getMessage()){
-                    case "Build tree":
-                        updateExploreInfo(em);
-
-                }
-            }
-        }
-    }
-
-    private void updateExploreInfo(ExploreMessage em){
-        ExploreInfo ei = em.getInfo();
-        int index = containsPoint(ei.getSender());
-        if(index !=-1){
-            exploreTree.remove(index);
-        }
-        exploreTree.add(ei);
-    }
-
-    /**
-     *
-     * @param p
-     * @return -1 if exploreTree doesn't contain the point otherwise the index
-     */
-    private int containsPoint(Point p){
-        for(int i = 0; i<exploreTree.size(); i++){
-            ExploreInfo ei = exploreTree.get(i);
-            if(Point.distance(ei.getSender(),p) == 0){
-                return  i;
-            }
-        }
-
-        return -1;
     }
 
     public void setAssemblyPoint(AssemblyPoint assemblyPoint){
         this.assemblyPoint = assemblyPoint;
     }
 
-    public void setPheromone(Pheromone pheromone){
-        this.pheromone = pheromone;
-    }
-
     @Override
     public void afterTick(TimeLapse timeLapse) {
     }
 
-    @Override
-    public void setCommDevice(CommDeviceBuilder builder) {
-        if (RANGE >= 0) {
-            builder.setMaxRange(RANGE);
-        }
-        comDevice = Optional.of(builder
-                .build());
-    }
-    @Override
-    public Optional<Point> getPosition() {
-        return Optional.of((Point)this);
-    }
-
-    public double getX(){
-        return this.x;
-    }
-
-    public void setBackwardsReachable(ArrayList<CommUser> cds){
-        backwardsReachable = cds;
-    }
-
-    public CommUser getCommUser() {
-        return this;
-    }
-
+    /**
+     * @return True if this crossroad is directly connected to a assembly point
+     */
     public boolean assemblyPointPresent(){
         if(assemblyPoint == null){return  false;}
         return true;
@@ -136,6 +42,7 @@ public class Crossroad extends Point implements CommUser, TickListener{
     public AssemblyPoint getAssemblyPoint() {
         return assemblyPoint;
     }
+
     public void setFunction(int function){
         this.function = function;
     }
@@ -144,27 +51,28 @@ public class Crossroad extends Point implements CommUser, TickListener{
         return function;
     }
 
+    /**
+     * If possible make a reservation
+     * @param res
+     */
     public void makeReservation(Reservation res){
         Iterator it = reservations.iterator();
         while(it.hasNext()){
             Reservation r = (Reservation)it.next();
             if(r.overlapping(res)){
                 reservations.remove(r);
-                reservations.add(res);/*
-                if(print && Point.distance(new Point(10,39),this) ==0)System.out.print(this);
-                if(print && Point.distance(new Point(10,39),this)==0)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
-                */
-                if(print)System.out.print(this);
-                if(print)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
-
+                reservations.add(res);
                 return;
             }
         }
         reservations.add(res);
-        if(print)System.out.print(this);
-        if(print)System.out.println(String.format("  CR reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
+    /**
+     * If the Crossroad contains a reservation on tick return the reservation
+     * @param tick
+     * @return
+     */
     public Reservation getReservationTick(int tick){
         for(Reservation r: reservations){
             if(r.containsTick(tick)){
@@ -174,6 +82,12 @@ public class Crossroad extends Point implements CommUser, TickListener{
         return null;
     }
 
+    /**
+     * Deletes reservations in the past
+     * An AGV changes paths constantly thus reservations are updated regularly. Because
+     * of this, certain reservations can become irrelevant. To maintain the most accurate
+     * reservations list, reservations that aren't updated are removed.
+     */
     private void updateReservations(){
         ArrayList<Reservation> temp = new ArrayList<>();
         for(Reservation r : reservations){
@@ -184,31 +98,4 @@ public class Crossroad extends Point implements CommUser, TickListener{
         }
     }
 
-    public ArrayList<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public int firstAvailableMoment(int tick, AGV agv){
-        // No need to wait
-        if(!containsTick(tick-5,agv) && !containsTick(tick+5,agv)) return tick;
-
-        while(true){
-            if(!containsTick(tick+5,agv) && !containsTick(tick+15,agv)) return tick +5;
-            tick++;
-        }
-    }
-
-    private boolean containsTick(int tick, AGV agv){
-        for(Reservation r: reservations){
-            if(r.containsTick(tick) && r.getAgv() != agv) return true;
-        }
-        return false;
-    }
-
-    private Reservation containsTickReservation(int tick, AGV agv){
-        for(Reservation r: reservations){
-            if(r.containsTick(tick) && r.getAgv() != agv) return r;
-        }
-        return null;
-    }
 }

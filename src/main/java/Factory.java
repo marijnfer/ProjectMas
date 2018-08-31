@@ -1,5 +1,4 @@
 import com.github.rinde.rinsim.core.Simulator;
-import com.github.rinde.rinsim.core.model.comm.CommUser;
 import com.github.rinde.rinsim.core.model.road.CollisionGraphRoadModelImpl;
 import com.github.rinde.rinsim.geom.Connection;
 import com.github.rinde.rinsim.geom.Point;
@@ -7,40 +6,30 @@ import com.github.rinde.rinsim.geom.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 public class Factory {
 
     private final CollisionGraphRoadModelImpl roadModel;
     private final Simulator simulator;
-
     private ArrayList<Crossroad> crossroads;
     private ArrayList<DeliveryPoint> deliverPoints;
     private ArrayList<InboundPoint> inboundPoints;
     private ArrayList<AssemblyPoint> assemblyPoints;
     private ArrayList<Connect>  connections;
-    private ArrayList<Task> tasks;
-
+    private int deliveryCounter;
 
     private ArrayList<Connect> allConnections;
-
-
-    private int deliveryCounter;
 
     public Factory(Simulator simulator){
         this.simulator = simulator;
         roadModel = getRoadModel();
-
         crossroads = new ArrayList<>();
         deliverPoints = new ArrayList<>();
         inboundPoints= new ArrayList<>();
         assemblyPoints = new ArrayList<>();
         connections = new ArrayList<>();
-        tasks = new ArrayList<>();
         allConnections = new ArrayList<>();
-
         getPoints();
-
     }
 
 
@@ -53,13 +42,17 @@ public class Factory {
         return null;
     }
 
+    /**
+     * @return All points in the graph
+     */
     public Iterator<Point> getAllPointsIterator(){
         Iterator<Point> it = roadModel.getGraph().getNodes().iterator();
         return it;
     }
-    public java.util.Set<Point> getAllPoints(){
-        return roadModel.getGraph().getNodes();
-    }
+
+    /**
+     * Place all important points in the graph in the appropriate arraylist
+     */
     private void getPoints(){
         Iterator<Point> it = getAllPointsIterator();
         while(it.hasNext()){
@@ -76,27 +69,6 @@ public class Factory {
 
             if(p instanceof AssemblyPoint){
                 assemblyPoints.add((AssemblyPoint)p);
-
-            }
-        }
-
-        ArrayList<Crossroad> temp = (ArrayList) crossroads.stream().sorted(Comparator.comparing(Crossroad::getX))
-                .collect(Collectors.toList());
-
-        for(int i = 0; i < temp.size()/4-1;i++){
-            //Gather comms previous points
-            Iterator it1 = temp.subList(i*4,i*4+4).iterator();
-            ArrayList<CommUser> cds = new ArrayList<>();
-            while(it1.hasNext()){
-                Crossroad ap = (Crossroad)it1.next();
-                cds.add(ap.getCommUser());
-            }
-
-            Iterator it2 = temp.subList(i*4+4,i*4+8).iterator();
-            while (it2.hasNext()){
-                Crossroad ap = (Crossroad)it2.next();
-                ap.setBackwardsReachable(cds);
-
             }
         }
     }
@@ -109,14 +81,15 @@ public class Factory {
         return crossroads;
     }
 
-    public ArrayList<DeliveryPoint> getDeliverPoints() {
-        return deliverPoints;
-    }
-
     public ArrayList<AssemblyPoint> getAssemblyPoints() {
         return assemblyPoints;
     }
 
+    /**
+     * Alternate between DeliveryPoints for task generation.
+     * (Distribute the DeliveryPoints evenly among all tasks)
+     * @return
+     */
     public Point nextDeliveryPoint(){
         if(deliveryCounter == deliverPoints.size()-1){
             deliveryCounter = 0;
@@ -127,31 +100,11 @@ public class Factory {
         }
     }
 
-    public void setSearchInboundPoint(InboundPoint ip, boolean bool){
-        for(InboundPoint i : inboundPoints){
-            if(i.equals(ip)){
-                if(i.getStored()){
-                    i.setStored(bool);
-                }
-                return;
-            }
-        }
-        System.out.println("not found");
-
-    }
-
-    public int getFullPOints(){
-        int i = 0;
-        Iterator it = inboundPoints.iterator();
-        while (it.hasNext()){
-            InboundPoint ip = (InboundPoint)it.next();
-            if(ip.getStored()){
-                i++;
-            }
-        }
-        return i;
-    }
-
+    /**
+     * Generate a tasks. The first station always need to be visited. Other stations
+     * are generated according to some probability.
+     * @return
+     */
     public ArrayList<Boolean> taskGenerator(){
         ArrayList<Boolean> temp = new ArrayList<>();
         //Always do task 0
@@ -169,32 +122,17 @@ public class Factory {
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
                 case 5:
                     if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
-            } /*
-            switch (i){
-                case 1:
-                    if(random <= 0.8){temp.add(false);} else{temp.add(false);} break;
-                case 2:
-                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
-                case 3:
-                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
-                case 4:
-                    if(random <= 0.5){temp.add(false);} else{temp.add(false);} break;
-                case 5:
-                    if(random <= 0.5){temp.add(true);} else{temp.add(false);} break;
             }
-            */
         }
-
-        ArrayList<Boolean> temp2 = new ArrayList<>();
-        temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);temp2.add(true);
         return temp;
-
-
-
-
-        //return temp;
     }
 
+    /**
+     * Determines all possible paths that can be traveled for completing a task
+     * @param crossroad Start the search from this crossroad
+     * @param task The stations that need to be visited depend on the task.
+     * @return Arraylist of possible paths
+     */
     public ArrayList<ArrayList<Crossroad>> findPossiblePaths(Crossroad crossroad,Task task){
 
         ArrayList<ArrayList<Crossroad>> paths = new ArrayList<>();
@@ -212,7 +150,6 @@ public class Factory {
 
             if(con != null) {
                 for (Crossroad cr : con) {
-                    //check if viable connection
                     if (viableConnection(task, first, cr)) {
                         ArrayList<Crossroad> copy = new ArrayList<>(first);
                         copy.add(cr);
@@ -230,11 +167,22 @@ public class Factory {
         return paths;
     }
 
-
+    /**
+     * Each possible path contains only one of each station (in the same order).
+     * Return true if the current crossroad doesn't lie on a shortcut that skips a station
+     * that needs to be visited. Also returns true if that crossroad isn't connected to any
+     * station (keep search). Suppose that this is a bad path, this will return false in the
+     * next call of viableConnection with the connected crossroad.
+     *
+     * @param task
+     * @param current partial path
+     * @param toAdd crossroad to add to current
+     * @return
+     */
     private boolean viableConnection(Task task,ArrayList<Crossroad> current, Crossroad toAdd){
         int lastStation = lastStation(current);
         int nextStation = task.nextStation(lastStation);
-        //if no assemblyPoint is present => keep searching
+
         if(!toAdd.assemblyPointPresent()){
             return true;
         } else{
@@ -244,11 +192,15 @@ public class Factory {
         return false;
     }
 
+    /**
+     * Search the last station visited on crs
+     * @param crs
+     * @return
+     */
     private int lastStation(ArrayList<Crossroad> crs){
         int lastIndex = crs.size() -1;
         int station = -1;
         while(station == -1){
-        //AssemblyPoint present => crossroad present
             if(crs.get(lastIndex).assemblyPointPresent()){
                 return crs.get(lastIndex).getAssemblyPoint().getStationNr();
             } else{
@@ -261,6 +213,10 @@ public class Factory {
         return station;
     }
 
+    /**
+     * @param cr
+     * @return All crossroads that are connected to cr
+     */
     public ArrayList<Crossroad> findConnections(Crossroad cr){
         for(Connect con: connections){
             if(Point.distance(con.getCrossroad(),cr)==0){
@@ -276,6 +232,9 @@ public class Factory {
         }
     }
 
+    /**
+     * Create the list of connections. (easy look up of all connected crossroads)
+     */
     public void buildConnects() {
         for (Connect con : connections) {
             for(Connection c: getRoadModel().getGraph().getConnections()){
@@ -287,9 +246,12 @@ public class Factory {
                 }
             }
         }
-        int i = 0;
     }
 
+    /**
+     * @param p
+     * @return the crossroad with the same location as p
+     */
     private Crossroad searchCrossroad(Point p){
         for(Crossroad cr : crossroads){
             if(Point.distance(cr,p)==0){
@@ -299,20 +261,9 @@ public class Factory {
         return null;
     }
 
-    public ArrayList<Crossroad> getCrossroadsStation(int nr) {
-        ArrayList<Crossroad> temp = new ArrayList<>();
-        for(Crossroad c: crossroads){
-            if(c.assemblyPointPresent() && c.getAssemblyPoint().getStationNr() == nr){
-                temp.add(c);
-            }
-        }
-        return temp;
-    }
-
-    public ArrayList<Connect> getConnections() {
-        return connections;
-    }
-
+    /**
+     *  Fill the list of connections. (easy look up of all connected crossroads)
+     */
     public void buildAllconnections(){
         for(Connect c: connections){
             for(Crossroad cr: c.getCoupled()){
@@ -323,24 +274,11 @@ public class Factory {
         }
     }
 
-    public void addData(Point c1, Point c2,int ticks){
-        try{
-            Connect c = searchAllconnection(c1,c2);
-            c.addTravelTime(ticks);
-        } catch (Exception e){}
-    }
-
-    public Connect searchAllconnection(Point c1, Point c2){
-        for(Connect con: allConnections){
-            if(Point.distance(c1,con.getCrossroad())==0){
-                if(Point.distance(c2,con.getCoupled().get(0))==0){
-                    return con;
-                }
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Make a reservation with the appropriate AssemblyPoint, Crossroad, InboundPoint or DeliveryPoint.
+     * @param res
+     * @param p
+     */
     public void makeReservations(Reservation res, Point p){
         if(p instanceof Crossroad){
             Crossroad cr = searchCrossroad((Crossroad)p);
@@ -358,6 +296,13 @@ public class Factory {
         }
     }
 
+    /**
+     * @param p
+     * @param tick
+     * @param agv
+     * @return Return a reservation of the appropriate AssemblyPoint, Crossroad, InboundPoint
+     * or DeliveryPoint if it contains tick
+     */
     public Reservation getRervations(Point p, int tick, AGV agv){
             if(p instanceof Crossroad){
                 Crossroad cr = (Crossroad)p;
@@ -389,40 +334,21 @@ public class Factory {
                     if(cr.getReservationTick(tick).getAgv() != agv){
                         return (cr.getReservationTick(tick));
                     }
-                }            }
-
-
-        return null;
-    }
-
-    private Crossroad searchCrossRoad(Crossroad cr){
-        for(Crossroad c: crossroads){
-            if(Point.distance(c,cr)==0){
-                return  c;
+                }
             }
-        }
+
         return null;
     }
 
-    private AssemblyPoint searchAssembly(AssemblyPoint as){
-        for(AssemblyPoint a: assemblyPoints){
-            if(Point.distance(a,as)==0){
-                return  a;
-            }
-        }
-        return null;
-    }
-
-    public Connect searchConnect(Crossroad cr){
-        for(Connect con: connections){
-            if(Point.distance(cr,con.getCrossroad()) == 0) return con;
-        }
-        return null;
-    }
-
+    /**
+     * @return Points to spawn AGV's
+     */
     public ArrayList<Point> getSpawnPoints(){
         Iterator it = getAllPointsIterator();
         ArrayList<Point> temp = new ArrayList<>();
+        ArrayList<Point> temp2 = new ArrayList<>();
+
+
 
         while(it.hasNext()){
             Point p = (Point)it.next();
@@ -430,15 +356,24 @@ public class Factory {
                 if(p.x >= 30 && p.x < 45) temp.add(p);
             }
         }
+        temp.sort(Comparator.comparing(r -> r.x));
+
+        temp2.sort(Comparator.comparing(r -> r.y));
+        temp.addAll(temp2);
 
         return temp;
     }
 
+    /**
+     *
+     * @param cr
+     * @param tick
+     * @param agv
+     * @return Returns the first moment that the an agv can visit the assembly
+     */
     public int nextFreeAssembly(Crossroad cr, int tick, AGV agv){
             return cr.getAssemblyPoint().firstAvailableMoment(tick,agv);
     }
-    public int nextCrossRoad(Crossroad cr, int tick, AGV agv){
-        return cr.firstAvailableMoment(tick,agv);
-    }
+
 }
 

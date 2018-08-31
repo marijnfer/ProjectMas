@@ -5,6 +5,9 @@ import com.github.rinde.rinsim.core.model.road.RoadModel;
 
 import java.util.ArrayList;
 
+/**
+ * Which stations to visit
+ */
 public class Task extends Parcel {
     ArrayList<Boolean> tasks;
     public Task(ParcelDTO dto) {
@@ -23,13 +26,13 @@ public class Task extends Parcel {
         tasks = t;
     }
 
-
-    public void removeFirstTask(){
-        tasks.remove(0);
-    }
-
-    public int nextStation(int lastStation){
-        for(int i = lastStation+1; i<tasks.size();i++){
+    /**
+     * Next station to visit (index of first true value after index lastVisited)
+     * @param lastVisited
+     * @return
+     */
+    public int nextStation(int lastVisited){
+        for(int i = lastVisited+1; i<tasks.size();i++){
            if(tasks.get(i)){
                return i;
            }
@@ -37,6 +40,10 @@ public class Task extends Parcel {
         return -1;
     }
 
+    /**
+     * Last station to visit (index of last true value of tasks)
+     * @return
+     */
     public int lastStation(){
         for(int i = tasks.size()-1; i >= 0; i--){
             if(tasks.get(i)){

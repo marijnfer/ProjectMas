@@ -1,5 +1,10 @@
 import com.github.rinde.rinsim.core.model.comm.MessageContents;
 
+/**
+ * Message for wait communication
+ * Possibly need to wait for an Crossroad, InboundPoint, DeliveryPoint.
+ * Crossroad: crossroad and coupled assemblyPoint (specified by message)
+ */
 public class WaitMessage implements MessageContents {
     String message;
     Crossroad cr;
@@ -18,10 +23,6 @@ public class WaitMessage implements MessageContents {
         this.distance = distance;
     }
 
-    public Double getDistance() {
-        return distance;
-    }
-
     public WaitMessage(String message, InboundPoint ip) {
         this.message = message;
         this.ip =ip;
@@ -31,20 +32,17 @@ public class WaitMessage implements MessageContents {
         this.message = message;
         this. dp = dp;
     }
+
+    public Double getDistance() {
+        return distance;
+    }
+
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public Crossroad getCr() {
         return cr;
-    }
-
-    public void setCr(Crossroad cr) {
-        this.cr = cr;
     }
 
     public InboundPoint getIp() {

@@ -11,10 +11,6 @@ public class InboundPoint extends Point  implements TickListener {
     private static int RESERVATIONRESET = 10;
     private int tickCounter = 0;
 
-    private boolean print = true;
-
-
-
     public InboundPoint(double px, double py){
         super(px,py);
         stored = false;
@@ -38,7 +34,10 @@ public class InboundPoint extends Point  implements TickListener {
         updateReservations();
     }
 
-
+    /**
+     * If possible make a reservation
+     * @param res
+     */
     public void makeReservation(Reservation res){
         Iterator it = reservations.iterator();
         while(it.hasNext()){
@@ -46,16 +45,17 @@ public class InboundPoint extends Point  implements TickListener {
             if(r.overlapping(res)){
                 reservations.remove(r);
                 reservations.add(res);
-                if(print)System.out.print(this);
-                if(print) System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
             }
         }
         reservations.add(res);
-        if(print)System.out.print(this);
-        if(print)System.out.println(String.format("  IP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
+    /**
+     * If the InboundPoints contains a reservation on tick return the reservation
+     * @param tick
+     * @return
+     */
     public Reservation getReservationTick(int tick){
         for(Reservation r: reservations){
             if(r.containsTick(tick)){
@@ -64,6 +64,13 @@ public class InboundPoint extends Point  implements TickListener {
         }
         return null;
     }
+
+    /**
+     * Deletes reservations in the past
+     * An AGV changes paths constantly thus reservations are updated regularly. Because
+     * of this, certain reservations can become irrelevant. To maintain the most accurate
+     * reservations list, reservations that aren't updated are removed.
+     */
     private void updateReservations(){
         ArrayList<Reservation> temp = new ArrayList<>();
         for(Reservation r : reservations){
@@ -74,9 +81,6 @@ public class InboundPoint extends Point  implements TickListener {
         }
     }
 
-    public ArrayList<Reservation> getReservations() {
-        return reservations;
-    }
 
 
 

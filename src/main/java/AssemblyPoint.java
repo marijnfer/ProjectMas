@@ -19,27 +19,22 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
     private Optional<CommDevice> comDevice;
     private ArrayList<Point> backwardsReachable;
     private int stationNr;
-    private ArrayList<AssemblyPoint> reachable;
 
-    private int resources;
-    private ArrayList<ExploreInfo> exploreTree;
+    private ArrayList<ExploreInfo> pheromones;
     private ArrayList<Reservation> reservations;
     private int tickCounter = 0;
 
-    private boolean print = false;
+    private double pheromone = 0;
 
-
+    private int amountOfTimesVisited = 0;
 
     public AssemblyPoint(double px, double py, int stationNr){
         super(px,py);
         backwardsReachable = new ArrayList<>();
-        reachable = new ArrayList<>();
-        exploreTree = new ArrayList<>();
+        pheromones = new ArrayList<>();
         this.stationNr = stationNr;
-        resources = 10;
         reservations = new ArrayList<>();
     }
-
 
     @Override
     public void tick(TimeLapse timeLapse){
@@ -47,8 +42,12 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         handleMessages();
         sendInfo();
         updateReservations();
+        pheromone = pheromone * 0.99;
     }
 
+    /**
+     * Handles incoming exlore messages containing the pheromone of all assemblypoints that are reachable
+     */
     private void handleMessages(){
         ImmutableList<Message> messages = comDevice.get().getUnreadMessages();
         for(Message m: messages){
@@ -57,75 +56,55 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
                 switch (em.getMessage()){
                     case "Build tree":
                         updateExploreInfo(em);
-
                 }
             }
         }
 
     }
 
+    /**
+     * Updates the arraylist of all pheromones
+     * @param em
+     */
     private void updateExploreInfo(ExploreMessage em){
-        ExploreInfo ei = em.getInfo();
-        int index = containsPoint(ei.getSender());
-        if(index !=-1){
-            exploreTree.remove(index);
-        }
-        exploreTree.add(ei);
+        ArrayList<ExploreInfo> info = em.getInfo();
 
+        for(ExploreInfo exInfo: info){
+            if(searchExploreInfo(exInfo) != null){
+                ExploreInfo ex = searchExploreInfo(exInfo);
+                pheromones.remove(ex);
+            }
+            pheromones.add(exInfo);
+        }
     }
 
     /**
-     *
-     * @param p
-     * @return -1 if exploreTree doesn't contain the point otherwise the index
+     * @param info
+     * @return ExploreInfo of the same assemblyPoint as info otherwise null
      */
-    private int containsPoint(Point p){
-        for(int i = 0; i<exploreTree.size(); i++){
-            ExploreInfo ei = exploreTree.get(i);
-            /*
-            System.out.print(Point.distance(ei.getSender(),p));
-            System.out.print(p);
-            System.out.print("  ");
-            System.out.print(exploreTree.size());
-            System.out.print("  ");
-            System.out.println(this);
-            */
-            if(Point.distance(ei.getSender(),p) == 0){
-                return  i;
+    private ExploreInfo searchExploreInfo(ExploreInfo info){
+        for(ExploreInfo exInfo: pheromones){
+            if(Point.distance(exInfo.getSender(),info.getSender()) == 0){
+                return exInfo;
             }
         }
-
-        return -1;
+        return null;
     }
 
     /**
      * Send explore information to all backwards reachable nodes
      */
     private void sendInfo(){
-        /*
-        Iterator it = backwardsReachable.iterator();
-        while (it.hasNext()){
-            AssemblyPoint ap = (AssemblyPoint)it.next();
-            ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
-            comDevice.get().send(em,ap);
-        }
-        */
-
         for(Point p:  backwardsReachable){
             if(p instanceof AssemblyPoint){
                 AssemblyPoint ap = (AssemblyPoint)p;
-                ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
+                ArrayList<ExploreInfo> temp = new ArrayList<>(pheromones);
+                temp.add(new ExploreInfo(this,pheromone));
+
+                ExploreMessage em = new ExploreMessage("Build tree",temp);
                 comDevice.get().send(em,ap);
             }
-            if(p instanceof Crossroad){
-                Crossroad cr = (Crossroad)p;
-                if(cr.getFunction() == 10){
-                    ExploreMessage em = new ExploreMessage("Build tree",new ExploreInfo(this,resources,exploreTree));
-                    comDevice.get().send(em,cr);
-                }
-            }
         }
-
     }
 
     @Override
@@ -144,6 +123,10 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         return Optional.of((Point)this);
     }
 
+    /**
+     * If possible make a reservation
+     * @param res
+     */
     public void makeReservation(Reservation res){
         Iterator it = reservations.iterator();
         while(it.hasNext()){
@@ -151,21 +134,17 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
             if(r.overlapping(res)){
                 reservations.remove(r);
                 reservations.add(res);
-               /*
-                if(print && Point.distance(new Point(10,41),this) ==0)System.out.print(this);
-                if(print && Point.distance(new Point(10,41),this)==0)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
-                return;
-             */
-                if(print)System.out.print(this);
-                if(print)System.out.println(String.format("  AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
                 return;
             }
         }
         reservations.add(res);
-        if(print)System.out.print(this);
-        if(print)System.out.println(String.format("AP reservation made %d  %d",res.getStartTick(),res.getStopTick()));
     }
 
+    /**
+     * If the AssemblyPoint contains a reservation on tick return the reservation
+     * @param tick
+     * @return
+     */
     public Reservation getReservationTick(int tick){
         for(Reservation r: reservations){
             if(r.containsTick(tick)){
@@ -175,6 +154,12 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         return null;
     }
 
+    /**
+     * Deletes reservations in the past
+     * An AGV changes paths constantly thus reservations are updated regularly. Because
+     * of this, certain reservations can become irrelevant. To maintain the most accurate
+     * reservations list, reservations that aren't updated are removed.
+     */
     private void updateReservations(){
         ArrayList<Reservation> temp = new ArrayList<>();
         for(Reservation r : reservations){
@@ -185,20 +170,20 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         }
     }
 
-    public ArrayList<Reservation> getReservations() {
-        return reservations;
-    }
-
     public int getStationNr(){
         return stationNr;
     }
 
     public void addBackwardsReachable(Point as){
         backwardsReachable.add(as);
-        //as.addReachable(this);
-
     }
 
+    /**
+     * Determine first available moment an agv can visit this AssemblyPoint
+     * @param t
+     * @param agv
+     * @return
+     */
     public int firstAvailableMoment(int t, AGV agv){
         if(reservations.size() > 0){
             int f = 0;
@@ -227,6 +212,11 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
 
     }
 
+    /**
+     * @param tick
+     * @param agv
+     * @return True if one of the reservations contains tick and it isn't from agv
+     */
     private boolean containsTick(int tick, AGV agv){
         for(Reservation r: reservations){
             if(r.containsTick(tick) && r.getAgv() != agv) return true;
@@ -234,11 +224,30 @@ public class AssemblyPoint extends Point implements CommUser, TickListener {
         return false;
     }
 
+    /**
+     * @param tick
+     * @param agv
+     * @return if one of the reservations contains tick and it isn't from agv return the reservation otherwise null
+     */
     private Reservation containsTickReservation(int tick, AGV agv){
         for(Reservation r: reservations){
             if(r.containsTick(tick) && r.getAgv() != agv) return r;
         }
         return null;
+    }
+
+    /**
+     * Increase pheromone value
+     * and increase amountOfTimesVisited(for statistic purposes)
+     * @return pheromone list from this and reachable assembly points
+     */
+    public ArrayList<ExploreInfo> increasePheromone(){
+        amountOfTimesVisited++;
+        pheromone += 100;
+        ArrayList<ExploreInfo> temp = new ArrayList<>(pheromones);
+        temp.add(new ExploreInfo(this,pheromone));
+        if(Point.distance(new Point(10,7), this)==0) System.out.println(pheromone);
+        return temp;
     }
 
 }

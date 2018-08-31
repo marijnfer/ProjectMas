@@ -7,7 +7,9 @@ import com.github.rinde.rinsim.core.model.time.TimeLapse;
 
 
 import java.util.ArrayList;
-
+/**
+ * Parcel for station 2 (only for graphic purposes)
+ */
 public class AssemblyParcel2 extends Parcel implements TickListener{
     private ArrayList<AssemblyPoint> reachable;
 
@@ -16,9 +18,6 @@ public class AssemblyParcel2 extends Parcel implements TickListener{
         reachable = new ArrayList<>();
     }
 
-    private void addReachable(AssemblyPoint as){
-        reachable.add(as);
-    }
 
     @Override
     public void initRoadPDP(RoadModel pRoadModel, PDPModel pPdpModel) {}

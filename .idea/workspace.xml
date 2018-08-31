@@ -7,29 +7,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8baf71b-0a43-4916-9904-a03bbdfdae14" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/factory_jar.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/WaitMessage.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/factory_jar/factory.jar" afterPath="$PROJECT_DIR$/out/artifacts/factory_jar/factory.jar" />
       <change beforePath="$PROJECT_DIR$/src/main/java/AGV.java" afterPath="$PROJECT_DIR$/src/main/java/AGV.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/AGVState.java" afterPath="$PROJECT_DIR$/src/main/java/AGVState.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel0.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel0.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel1.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel1.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel2.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel2.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel3.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel3.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel4.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel4.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyParcel5.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyParcel5.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/AssemblyPoint.java" afterPath="$PROJECT_DIR$/src/main/java/AssemblyPoint.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Connect.java" afterPath="$PROJECT_DIR$/src/main/java/Connect.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Crossroad.java" afterPath="$PROJECT_DIR$/src/main/java/Crossroad.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DeliveryPoint.java" afterPath="$PROJECT_DIR$/src/main/java/DeliveryPoint.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ExploreInfo.java" afterPath="$PROJECT_DIR$/src/main/java/ExploreInfo.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ExploreMessage.java" afterPath="$PROJECT_DIR$/src/main/java/ExploreMessage.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Factory.java" afterPath="$PROJECT_DIR$/src/main/java/Factory.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/InboundPoint.java" afterPath="$PROJECT_DIR$/src/main/java/InboundPoint.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Layout.java" afterPath="$PROJECT_DIR$/src/main/java/Layout.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Main.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Path.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Pheromone.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Reservation.java" afterPath="$PROJECT_DIR$/src/main/java/Reservation.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Task.java" afterPath="$PROJECT_DIR$/src/main/java/Task.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Tree.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Twindow.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/WaitMessage.java" afterPath="$PROJECT_DIR$/src/main/java/WaitMessage.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Afbeelding1.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ap0 - kopie.png" afterPath="" />
       <change beforePath="$PROJECT_DIR$/target/classes/AGV.class" afterPath="$PROJECT_DIR$/target/classes/AGV.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AGVState.class" afterPath="$PROJECT_DIR$/target/classes/AGVState.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Afbeelding1.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel0.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel0.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel1.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel1.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel2.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel2.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel3.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel3.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel4.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel4.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AssemblyParcel5.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyParcel5.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/AssemblyPoint.class" afterPath="$PROJECT_DIR$/target/classes/AssemblyPoint.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Connect.class" afterPath="$PROJECT_DIR$/target/classes/Connect.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/Crossroad.class" afterPath="$PROJECT_DIR$/target/classes/Crossroad.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/DeliveryPoint.class" afterPath="$PROJECT_DIR$/target/classes/DeliveryPoint.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ExploreInfo.class" afterPath="$PROJECT_DIR$/target/classes/ExploreInfo.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ExploreMessage.class" afterPath="$PROJECT_DIR$/target/classes/ExploreMessage.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/Factory.class" afterPath="$PROJECT_DIR$/target/classes/Factory.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/InboundPoint.class" afterPath="$PROJECT_DIR$/target/classes/InboundPoint.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/Layout.class" afterPath="$PROJECT_DIR$/target/classes/Layout.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main$1.class" afterPath="$PROJECT_DIR$/target/classes/Main$1.class" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" afterPath="$PROJECT_DIR$/target/classes/Main.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Path.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Pheromone.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Reservation.class" afterPath="$PROJECT_DIR$/target/classes/Reservation.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Task.class" afterPath="$PROJECT_DIR$/target/classes/Task.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Tree.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Twindow.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/target/classes/WaitMessage.class" afterPath="$PROJECT_DIR$/target/classes/WaitMessage.class" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ap0 - kopie.png" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,81 +78,67 @@
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/factory$Main.coverage" NAME="Main Coverage Results" MODIFIED="1535650303536" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/factory$Main.coverage" NAME="Main Coverage Results" MODIFIED="1535726812802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AGV.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AGV.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/AGV.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="136" column="10" lean-forward="false" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
+            <state relative-caret-position="66">
+              <caret line="103" column="5" lean-forward="false" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#AGV#0;class#AGV#0" expanded="true" />
-                <element signature="method#nextDestination#0;class#AGV#0" expanded="true" />
                 <element signature="method#getPosition#0;class#AGV#0" expanded="true" />
                 <element signature="method#setCommDevice#0;class#AGV#0" expanded="true" />
-                <element signature="method#print#0;class#AGV#0" expanded="true" />
-                <element signature="docComment;method#calculateTravelTime#0;class#AGV#0" expanded="true" />
-                <element signature="method#calculateTravelTime#0;class#AGV#0" expanded="true" />
-                <element signature="method#buildDestinationsToInbound#0;class#AGV#0" expanded="true" />
-                <element signature="method#getOutboundReservations#0;class#AGV#0" expanded="true" />
-                <element signature="method#buildDestinationsInboundToAss#0;class#AGV#0" expanded="true" />
+                <element signature="method#tickImpl#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#nextDestination#0;class#AGV#0" expanded="true" />
+                <element signature="method#nextDestination#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#buildDestinationsDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="method#buildDestinationsDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#getPointsToReservateDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="method#getPointsToReservateDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#buildDestinationsInboundToAssembly#0;class#AGV#0" expanded="true" />
+                <element signature="method#buildDestinationsInboundToAssembly#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#reservateInboundToAssembly#0;class#AGV#0" expanded="true" />
                 <element signature="method#reservateInboundToAssembly#0;class#AGV#0" expanded="true" />
                 <element signature="docComment;method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
                 <element signature="method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#buildDestinationsAssemblyDuring#0;class#AGV#0" expanded="true" />
                 <element signature="method#buildDestinationsAssemblyDuring#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#calculateTicksAssemblyDuring#0;class#AGV#0" expanded="true" />
                 <element signature="method#calculateTicksAssemblyDuring#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#buildDestinationsAssembly#0;class#AGV#0" expanded="true" />
                 <element signature="method#buildDestinationsAssembly#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#howLongToWait#0;class#AGV#0" expanded="true" />
                 <element signature="method#howLongToWait#0;class#AGV#0" expanded="true" />
-                <element signature="method#waitUntil#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#buildDestinationsAssemblyToOut#0;class#AGV#0" expanded="true" />
                 <element signature="method#buildDestinationsAssemblyToOut#0;class#AGV#0" expanded="true" />
-                <element signature="method#doAssToOutReservations#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#doAssemblyToDeliveryReservations#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#sendReservation#0;class#AGV#0" expanded="true" />
                 <element signature="method#sendReservation#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#needToVisitAssembly#0;class#AGV#0" expanded="true" />
                 <element signature="method#needToVisitAssembly#0;class#AGV#0" expanded="true" />
-                <element signature="method#burnIn#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#burnIn#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#calculateTicksAssembly#0;class#AGV#0" expanded="true" />
                 <element signature="method#calculateTicksAssembly#0;class#AGV#0" expanded="true" />
-                <element signature="method#calculateTicksAssToOut#0;class#AGV#0" expanded="true" />
-                <element signature="method#calculateTicksOutToIn#0;class#AGV#0" expanded="true" />
-                <element signature="method#calculateTicksInToAss#0;class#AGV#0" expanded="true" />
-                <element signature="method#pointsLists#0;class#AGV#0" expanded="true" />
-                <element signature="method#crossRoadLists#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#calculateTicksAssemblyToDelivery#0;class#AGV#0" expanded="true" />
+                <element signature="method#calculateTicksAssemblyToDelivery#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#calculateTicksDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="method#calculateTicksDeliveryToInbound#0;class#AGV#0" expanded="true" />
+                <element signature="method#calculateTicksInboundToAssembly#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#handleMessages#0;class#AGV#0" expanded="true" />
                 <element signature="method#handleMessages#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#handleMessage#0;class#AGV#0" expanded="true" />
                 <element signature="method#handleMessage#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#removeExploreInfo#0;class#AGV#0" expanded="true" />
+                <element signature="method#removeExploreInfo#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#getPheromone#0;class#AGV#0" expanded="true" />
+                <element signature="method#getPheromone#0;class#AGV#0" expanded="true" />
+                <element signature="docComment;method#calculatePheromones#0;class#AGV#0" expanded="true" />
+                <element signature="method#calculatePheromones#0;class#AGV#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Layout.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Layout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="58" column="57" lean-forward="false" selection-start-line="58" selection-start-column="57" selection-end-line="58" selection-end-column="57" />
-              <folding>
-                <element signature="method#createAssemblyLine#0;class#Layout#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AGVState.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/AGVState.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="119" lean-forward="false" selection-start-line="1" selection-start-column="119" selection-end-line="1" selection-end-column="119" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Crossroad.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Crossroad.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="25" column="32" lean-forward="false" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -126,8 +146,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="44" column="8" lean-forward="false" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
+            <state relative-caret-position="102">
+              <caret line="40" column="40" lean-forward="false" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
               <folding>
                 <element signature="method#run#0;class#Main#0" expanded="true" />
               </folding>
@@ -135,39 +155,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeliveryPoint.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/DeliveryPoint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InboundPoint.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/InboundPoint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="13" column="33" lean-forward="false" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Factory.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Factory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="237" column="0" lean-forward="false" selection-start-line="237" selection-start-column="0" selection-end-line="237" selection-end-column="0" />
+            <state relative-caret-position="1496">
+              <caret line="362" column="0" lean-forward="false" selection-start-line="362" selection-start-column="0" selection-end-line="362" selection-end-column="0" />
               <folding>
-                <element signature="method#taskGenerator#0;class#Factory#0" expanded="true" />
-                <element signature="method#findPossiblePaths#0;class#Factory#0" expanded="true" />
-                <element signature="e#9938#9939#0" expanded="true" />
-                <element signature="e#9972#9973#0" expanded="true" />
-                <element signature="method#nextFreeAssembly#0;class#Factory#0" expanded="true" />
-                <element signature="e#13967#13968#0" expanded="true" />
-                <element signature="e#14023#14024#0" expanded="true" />
+                <element signature="method#getAllPointsIterator#0;class#Factory#0" expanded="true" />
+                <element signature="docComment;method#nextFreeAssembly#0;class#Factory#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AssemblyPoint.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyPoint.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="44" column="36" lean-forward="false" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+              <folding>
+                <element signature="method#makeReservation#0;class#AssemblyPoint#0" expanded="true" />
+                <element signature="docComment;method#increasePheromone#0;class#AssemblyPoint#0" expanded="true" />
+                <element signature="method#increasePheromone#0;class#AssemblyPoint#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -184,21 +193,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>you need to w</find>
-      <find>need to wa</find>
-      <find>need to w</find>
-      <find>true</find>
-      <find>need to</find>
-      <find>Sys</find>
-      <find>wait</find>
-      <find>checkennnnnnnnnnnn</find>
-      <find>dude</find>
-      <find>30.0,29.</find>
-      <find>during</find>
-      <find>bipath</find>
-      <find>6,3</find>
-      <find>6,1</find>
-      <find>begin</find>
       <find>min</find>
       <find>min</find>
       <find>5,1</find>
@@ -213,7 +207,22 @@
       <find>You need to wa</find>
       <find>1,1</find>
       <find>2,1</find>
+      <find>4,1</find>
+      <find>explorei</find>
       <find>ticksd</find>
+      <find>cross</find>
+      <find>state</find>
+      <find>spawn</find>
+      <find>not</find>
+      <find>not</find>
+      <find>Dista</find>
+      <find>not found</find>
+      <find>assemblyTo</find>
+      <find>Dis</find>
+      <find>xDiff == 2 &amp;&amp; yDi</find>
+      <find>Sys</find>
+      <find>agv</find>
+      <find>wait CR</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -248,36 +257,36 @@
         <option value="$PROJECT_DIR$/src/main/java/Tree.java" />
         <option value="$PROJECT_DIR$/src/main/java/AssemblyParcels/AssemblyParcel0.java" />
         <option value="$PROJECT_DIR$/src/main/java/AssemblyParcels/AssemblyPoint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel0.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel1.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel5.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel4.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel3.java" />
         <option value="$PROJECT_DIR$/src/main/java/Twindow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ExploreInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ExploreMessage.java" />
         <option value="$PROJECT_DIR$/src/main/java/PheromoneHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Connection.java" />
         <option value="$PROJECT_DIR$/src/main/java/Path.java" />
         <option value="$PROJECT_DIR$/src/main/java/Pheromone.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Connect.java" />
         <option value="$PROJECT_DIR$/src/main/java/IntentionMessage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Task.java" />
         <option value="$PROJECT_DIR$/src/main/java/SpawnPoint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Reservation.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AssemblyPoint.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/src/main/java/WaitMessage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Factory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/InboundPoint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/DeliveryPoint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Layout.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Crossroad.java" />
-        <option value="$PROJECT_DIR$/src/main/java/AGV.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Task.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Reservation.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ExploreInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ExploreMessage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Connect.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel0.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel1.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel5.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel4.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel3.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyParcel2.java" />
         <option value="$PROJECT_DIR$/src/main/java/AGVState.java" />
+        <option value="$PROJECT_DIR$/src/main/java/DeliveryPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Crossroad.java" />
+        <option value="$PROJECT_DIR$/src/main/java/InboundPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Layout.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Factory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AssemblyPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/AGV.java" />
       </list>
     </option>
   </component>
@@ -605,7 +614,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.407465" sideWeight="0.43704244" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4821151" sideWeight="0.5629575" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20528771" sideWeight="0.5629575" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -617,7 +626,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43545878" sideWeight="0.4736457" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24572317" sideWeight="0.4736457" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -638,18 +647,18 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28460342" sideWeight="0.4736457" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2021773" sideWeight="0.4736457" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970452" sideWeight="0.37188873" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.407465" sideWeight="0.5629575" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20062208" sideWeight="0.5629575" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970452" sideWeight="0.4941435" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -663,36 +672,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/AGV.java</url>
-          <line>1223</line>
+          <line>1109</line>
           <properties />
-          <option name="timeStamp" value="1006" />
+          <option name="timeStamp" value="1057" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/AGV.java</url>
-          <line>1232</line>
+          <line>107</line>
           <properties />
-          <option name="timeStamp" value="1007" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/AGV.java</url>
-          <line>1249</line>
-          <properties />
-          <option name="timeStamp" value="1008" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/AGV.java</url>
-          <line>1241</line>
-          <properties />
-          <option name="timeStamp" value="1009" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/AGV.java</url>
-          <line>1207</line>
-          <properties />
-          <option name="timeStamp" value="1012" />
+          <option name="timeStamp" value="1060" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="1013" />
+      <option name="time" value="1061" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -735,52 +726,47 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>wm.getCr()</expression-string>
+        <expression-string>factory</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>sender</expression-string>
+        <expression-string>face</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>((AGV) sender).waitCrossroad</expression-string>
+        <expression-string>yDiff</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>sender.getPosition()</expression-string>
+        <expression-string>xDiff</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>getPosition()</expression-string>
+        <expression-string>temp</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>getRoadModel().getShortestPathTo(new Point(30,19),new Point(40,19))</expression-string>
+        <expression-string>getAllPointsIterator()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>assembly.get(3,1)</expression-string>
+        <expression-string>index</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>assembly.get(4,1)</expression-string>
+        <expression-string>ticksDelivery</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>assembly.get(5,1)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>assembly.get(4;1)</expression-string>
+        <expression-string>possiblePaths</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -834,62 +820,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcels/AssemblyPoint.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel0.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel5.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel4.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel3.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Tree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Twindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="33" lean-forward="false" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/rinde/rinsim-core/4.3.0/rinsim-core-4.3.0-sources.jar!/com/github/rinde/rinsim/core/model/time/TimeModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="101">
@@ -914,33 +844,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Test.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Part.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Path.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/rinde/rinsim-geom/4.4.2/rinsim-geom-4.4.2.jar!/com/github/rinde/rinsim/geom/Point.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Connect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#630#631#0" expanded="false" />
-            <element signature="e#662#663#0" expanded="false" />
-            <element signature="e#710#711#0" expanded="false" />
-            <element signature="e#740#741#0" expanded="false" />
-            <element signature="e#995#996#0" expanded="false" />
-            <element signature="e#1028#1029#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -951,28 +858,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Pheromone.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="815">
-          <caret line="87" column="0" lean-forward="false" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/IntentionMessage.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/rinde/rinsim-geom/4.4.2/rinsim-geom-4.4.2.jar!/com/github/rinde/rinsim/geom/Graphs.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="134">
           <caret line="61" column="50" lean-forward="false" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Task.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6">
-          <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-          <folding>
-            <element signature="method#lastStation#0;class#Task#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -992,67 +882,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ExploreInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ExploreMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="28" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding>
-            <element signature="method#ExploreMessage#0;class#ExploreMessage#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Reservation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="method#Reservation#0;class#Reservation#0" expanded="false" />
-            <element signature="method#Reservation#1;class#Reservation#0" expanded="false" />
-            <element signature="e#1534#1535#0" expanded="false" />
-            <element signature="e#1576#1577#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/rinde/rinsim-core/4.4.6/rinsim-core-4.4.6.jar!/com/github/rinde/rinsim/core/model/time/TimeModel.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyPoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="33" />
-          <folding>
-            <element signature="method#updateExploreInfo#0;class#AssemblyPoint#0" expanded="false" />
-            <element signature="method#makeReservation#0;class#AssemblyPoint#0" expanded="false" />
-            <element signature="e#6099#6100#0" expanded="false" />
-            <element signature="e#6134#6135#0" expanded="false" />
-            <element signature="e#6166#6167#0" expanded="false" />
-            <element signature="e#6198#6199#0" expanded="false" />
-            <element signature="method#firstAvailableMoment#0;class#AssemblyPoint#0" expanded="false" />
-            <element signature="method#containsTick#0;class#AssemblyPoint#0" expanded="false" />
-            <element signature="method#containsTickReservation#0;class#AssemblyPoint#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/function/Function.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="48" column="6" lean-forward="false" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -1081,139 +914,329 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/WaitMessage.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/function/Function.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="6" column="20" lean-forward="false" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-          <folding>
-            <element signature="method#WaitMessage#0;class#WaitMessage#0" expanded="false" />
-            <element signature="method#WaitMessage#1;class#WaitMessage#0" expanded="false" />
-            <element signature="e#537#538#0" expanded="false" />
-            <element signature="e#568#569#0" expanded="false" />
-            <element signature="method#WaitMessage#2;class#WaitMessage#0" expanded="false" />
-            <element signature="method#WaitMessage#3;class#WaitMessage#0" expanded="false" />
-            <element signature="e#839#840#0" expanded="false" />
-            <element signature="e#869#870#0" expanded="false" />
-            <element signature="e#915#916#0" expanded="false" />
-            <element signature="e#953#954#0" expanded="false" />
-            <element signature="e#985#986#0" expanded="false" />
-            <element signature="e#1010#1011#0" expanded="false" />
-            <element signature="e#1049#1050#0" expanded="false" />
-            <element signature="e#1077#1078#0" expanded="false" />
-            <element signature="e#1112#1113#0" expanded="false" />
-            <element signature="e#1137#1138#0" expanded="false" />
-            <element signature="e#1173#1174#0" expanded="false" />
-            <element signature="e#1198#1199#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="170">
+          <caret line="48" column="6" lean-forward="false" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/InboundPoint.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Twindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="33" lean-forward="false" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Tree.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="13" column="33" lean-forward="false" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+          <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DeliveryPoint.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Path.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/WaitMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-98">
+          <caret line="5" column="51" lean-forward="false" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="30" column="25" lean-forward="false" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+          <folding>
+            <element signature="docComment;class#Task#0" expanded="false" />
+            <element signature="method#Task#0;class#Task#0" expanded="false" />
+            <element signature="e#545#546#0" expanded="false" />
+            <element signature="e#573#574#0" expanded="false" />
+            <element signature="e#622#623#0" expanded="false" />
+            <element signature="e#647#648#0" expanded="false" />
+            <element signature="method#nextStation#0;class#Task#0" expanded="false" />
+            <element signature="docComment;method#lastStation#0;class#Task#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Reservation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-71">
+          <caret line="7" column="48" lean-forward="false" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
+          <folding>
+            <element signature="e#553#554#0" expanded="false" />
+            <element signature="e#579#580#0" expanded="false" />
+            <element signature="e#611#612#0" expanded="false" />
+            <element signature="e#643#644#0" expanded="false" />
+            <element signature="e#675#676#0" expanded="false" />
+            <element signature="e#707#708#0" expanded="false" />
+            <element signature="e#738#739#0" expanded="false" />
+            <element signature="e#769#770#0" expanded="false" />
+            <element signature="e#1283#1284#0" expanded="false" />
+            <element signature="e#1311#1312#0" expanded="false" />
+            <element signature="e#1356#1357#0" expanded="false" />
+            <element signature="e#1398#1399#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Pheromone.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="94" column="5" lean-forward="true" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ExploreInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Factory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="237" column="0" lean-forward="false" selection-start-line="237" selection-start-column="0" selection-end-line="237" selection-end-column="0" />
+          <caret line="4" column="35" lean-forward="false" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
           <folding>
-            <element signature="method#taskGenerator#0;class#Factory#0" expanded="true" />
-            <element signature="method#findPossiblePaths#0;class#Factory#0" expanded="true" />
-            <element signature="e#9938#9939#0" expanded="true" />
-            <element signature="e#9972#9973#0" expanded="true" />
-            <element signature="method#nextFreeAssembly#0;class#Factory#0" expanded="true" />
-            <element signature="e#13967#13968#0" expanded="true" />
-            <element signature="e#14023#14024#0" expanded="true" />
+            <element signature="e#338#339#0" expanded="false" />
+            <element signature="e#367#368#0" expanded="false" />
+            <element signature="e#403#404#0" expanded="false" />
+            <element signature="e#435#436#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Layout.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/ExploreMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="58" column="57" lean-forward="false" selection-start-line="58" selection-start-column="57" selection-end-line="58" selection-end-column="57" />
+        <state relative-caret-position="68">
+          <caret line="6" column="79" lean-forward="false" selection-start-line="6" selection-start-column="79" selection-end-line="6" selection-end-column="79" />
           <folding>
-            <element signature="method#createAssemblyLine#0;class#Layout#0" expanded="true" />
+            <element signature="method#ExploreMessage#0;class#ExploreMessage#0" expanded="false" />
+            <element signature="e#550#551#0" expanded="false" />
+            <element signature="e#580#581#0" expanded="false" />
+            <element signature="e#627#628#0" expanded="false" />
+            <element signature="e#654#655#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Connect.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="70" lean-forward="false" selection-start-line="5" selection-start-column="70" selection-end-line="5" selection-end-column="70" />
+          <folding>
+            <element signature="method#Connect#0;class#Connect#0" expanded="false" />
+            <element signature="method#addCoupledCrossroad#0;class#Connect#0" expanded="false" />
+            <element signature="e#625#626#0" expanded="false" />
+            <element signature="e#657#658#0" expanded="false" />
+            <element signature="e#705#706#0" expanded="false" />
+            <element signature="e#735#736#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel0.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="12" selection-end-column="3" />
+          <folding>
+            <element signature="docComment;class#AssemblyParcel0#0" expanded="false" />
+            <element signature="method#tick#0;class#AssemblyParcel0#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+          <folding>
+            <element signature="docComment;class#AssemblyParcel1#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel5.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="44" column="8" lean-forward="false" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
+          <caret line="20" column="4" lean-forward="false" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
           <folding>
-            <element signature="method#run#0;class#Main#0" expanded="true" />
+            <element signature="docComment;class#AssemblyParcel5#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Crossroad.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel4.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="25" column="32" lean-forward="false" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        <state relative-caret-position="136">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#AssemblyParcel4#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="10" column="23" lean-forward="false" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/AGV.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyParcel2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="136" column="10" lean-forward="false" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
+        <state relative-caret-position="153">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#AGV#0;class#AGV#0" expanded="true" />
-            <element signature="method#nextDestination#0;class#AGV#0" expanded="true" />
-            <element signature="method#getPosition#0;class#AGV#0" expanded="true" />
-            <element signature="method#setCommDevice#0;class#AGV#0" expanded="true" />
-            <element signature="method#print#0;class#AGV#0" expanded="true" />
-            <element signature="docComment;method#calculateTravelTime#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTravelTime#0;class#AGV#0" expanded="true" />
-            <element signature="method#buildDestinationsToInbound#0;class#AGV#0" expanded="true" />
-            <element signature="method#getOutboundReservations#0;class#AGV#0" expanded="true" />
-            <element signature="method#buildDestinationsInboundToAss#0;class#AGV#0" expanded="true" />
-            <element signature="method#reservateInboundToAssembly#0;class#AGV#0" expanded="true" />
-            <element signature="docComment;method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
-            <element signature="method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
-            <element signature="method#buildDestinationsAssemblyDuring#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTicksAssemblyDuring#0;class#AGV#0" expanded="true" />
-            <element signature="method#buildDestinationsAssembly#0;class#AGV#0" expanded="true" />
-            <element signature="method#howLongToWait#0;class#AGV#0" expanded="true" />
-            <element signature="method#waitUntil#0;class#AGV#0" expanded="true" />
-            <element signature="method#buildDestinationsAssemblyToOut#0;class#AGV#0" expanded="true" />
-            <element signature="method#doAssToOutReservations#0;class#AGV#0" expanded="true" />
-            <element signature="method#sendReservation#0;class#AGV#0" expanded="true" />
-            <element signature="method#needToVisitAssembly#0;class#AGV#0" expanded="true" />
-            <element signature="method#burnIn#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTicksAssembly#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTicksAssToOut#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTicksOutToIn#0;class#AGV#0" expanded="true" />
-            <element signature="method#calculateTicksInToAss#0;class#AGV#0" expanded="true" />
-            <element signature="method#pointsLists#0;class#AGV#0" expanded="true" />
-            <element signature="method#crossRoadLists#0;class#AGV#0" expanded="true" />
-            <element signature="method#handleMessages#0;class#AGV#0" expanded="true" />
-            <element signature="method#handleMessage#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;class#AssemblyParcel2#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/AGVState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="119" lean-forward="false" selection-start-line="1" selection-start-column="119" selection-end-line="1" selection-end-column="119" />
+        <state relative-caret-position="51">
+          <caret line="3" column="108" lean-forward="false" selection-start-line="3" selection-start-column="108" selection-end-line="3" selection-end-column="108" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/DeliveryPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding>
+            <element signature="method#DeliveryPoint#0;class#DeliveryPoint#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Crossroad.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <folding>
+            <element signature="method#Crossroad#0;class#Crossroad#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/InboundPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Layout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="91" column="8" lean-forward="false" selection-start-line="91" selection-start-column="8" selection-end-line="91" selection-end-column="8" />
+          <folding>
+            <element signature="method#createAssemblyLine#0;class#Layout#0" expanded="false" />
+            <element signature="method#createBounds#0;class#Layout#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="40" column="40" lean-forward="false" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
+          <folding>
+            <element signature="method#run#0;class#Main#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Factory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="362" column="0" lean-forward="false" selection-start-line="362" selection-start-column="0" selection-end-line="362" selection-end-column="0" />
+          <folding>
+            <element signature="method#getAllPointsIterator#0;class#Factory#0" expanded="true" />
+            <element signature="docComment;method#nextFreeAssembly#0;class#Factory#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AssemblyPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="44" column="36" lean-forward="false" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+          <folding>
+            <element signature="method#makeReservation#0;class#AssemblyPoint#0" expanded="true" />
+            <element signature="docComment;method#increasePheromone#0;class#AssemblyPoint#0" expanded="true" />
+            <element signature="method#increasePheromone#0;class#AssemblyPoint#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/AGV.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="103" column="5" lean-forward="false" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#AGV#0;class#AGV#0" expanded="true" />
+            <element signature="method#getPosition#0;class#AGV#0" expanded="true" />
+            <element signature="method#setCommDevice#0;class#AGV#0" expanded="true" />
+            <element signature="method#tickImpl#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#nextDestination#0;class#AGV#0" expanded="true" />
+            <element signature="method#nextDestination#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#buildDestinationsDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="method#buildDestinationsDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#getPointsToReservateDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="method#getPointsToReservateDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#buildDestinationsInboundToAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="method#buildDestinationsInboundToAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#reservateInboundToAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="method#reservateInboundToAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
+            <element signature="method#toReserveCrossRoads#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#buildDestinationsAssemblyDuring#0;class#AGV#0" expanded="true" />
+            <element signature="method#buildDestinationsAssemblyDuring#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#calculateTicksAssemblyDuring#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculateTicksAssemblyDuring#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#buildDestinationsAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="method#buildDestinationsAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#howLongToWait#0;class#AGV#0" expanded="true" />
+            <element signature="method#howLongToWait#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#buildDestinationsAssemblyToOut#0;class#AGV#0" expanded="true" />
+            <element signature="method#buildDestinationsAssemblyToOut#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#doAssemblyToDeliveryReservations#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#sendReservation#0;class#AGV#0" expanded="true" />
+            <element signature="method#sendReservation#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#needToVisitAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="method#needToVisitAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#burnIn#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#calculateTicksAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculateTicksAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#calculateTicksAssemblyToDelivery#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculateTicksAssemblyToDelivery#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#calculateTicksDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculateTicksDeliveryToInbound#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculateTicksInboundToAssembly#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#handleMessages#0;class#AGV#0" expanded="true" />
+            <element signature="method#handleMessages#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#handleMessage#0;class#AGV#0" expanded="true" />
+            <element signature="method#handleMessage#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#removeExploreInfo#0;class#AGV#0" expanded="true" />
+            <element signature="method#removeExploreInfo#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#getPheromone#0;class#AGV#0" expanded="true" />
+            <element signature="method#getPheromone#0;class#AGV#0" expanded="true" />
+            <element signature="docComment;method#calculatePheromones#0;class#AGV#0" expanded="true" />
+            <element signature="method#calculatePheromones#0;class#AGV#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

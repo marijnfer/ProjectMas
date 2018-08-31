@@ -1,20 +1,23 @@
 
 import com.github.rinde.rinsim.geom.Point;
 
-import java.util.ArrayList;
-
+/**
+ * Pheromone with its AssemblyPoint
+ */
 public class ExploreInfo {
     private Point sender;
-    private int resources;
-    private ArrayList<ExploreInfo> list;
+    private double pheromone;
 
-    public ExploreInfo(AssemblyPoint sender, int resources, ArrayList<ExploreInfo> list){
+    public ExploreInfo(AssemblyPoint sender, double pheromone){
         this.sender = sender;
-        this.resources = resources;
-        this.list = list;
+        this.pheromone = pheromone;
     }
 
     public Point getSender(){
         return sender;
+    }
+
+    public double getPheromone() {
+        return pheromone;
     }
 }

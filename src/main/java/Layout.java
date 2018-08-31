@@ -5,10 +5,6 @@ import com.google.common.collect.Table;
 import java.util.ArrayList;
 
 public class Layout {
-    private static final int ROWS = 4;
-    private static final int COLUMNS = 5;
-
-
     static ListenableGraph<LengthData> getGraph() {
         final Graph<LengthData> g = new TableGraph<>();
 
@@ -55,13 +51,11 @@ public class Layout {
         Graphs.addPath(g,assembly.get(0,2),assembly.get(1,3));
 
         Graphs.addPath(g,assembly.get(1,0),assembly.get(3,0));
-
         Graphs.addPath(g,assembly.get(1,0),assembly.get(2,1));
         Graphs.addPath(g,assembly.get(3,0),assembly.get(3,1));
 
         Graphs.addPath(g,assembly.get(1,1),assembly.get(2,1));
         Graphs.addPath(g,assembly.get(2,1),assembly.get(3,1));
-
 
         Graphs.addPath(g,assembly.get(1,2),assembly.get(1,1));
         Graphs.addPath(g,assembly.get(1,1), assembly.get(2,2));
@@ -310,7 +304,6 @@ public class Layout {
         return builder.build();
 
     }
-
 
 
 }

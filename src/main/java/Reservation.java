@@ -4,8 +4,8 @@ public class Reservation {
     private AGV agv;
     private int startTick;
     private int stopTick;
-    private int timeStamp;
-    private Point point;
+    private int timeStamp; //Tick when the reservation was made
+    private Point point; //Crossroad or assembly
 
 
     public Reservation(AGV agv, double startTick, double stopTick, int timeStamp,Point point){
@@ -15,16 +15,6 @@ public class Reservation {
         this.timeStamp = timeStamp;
         this.point = point;
     }
-
-    public Reservation(double startTick, double stopTick, int timeStamp,Point point){
-        this.startTick = (int)startTick;
-        this.stopTick= (int)stopTick;
-        this.timeStamp = timeStamp;
-        this.point = point;
-    }
-
-
-
 
     public AGV getAgv() {
         return agv;
